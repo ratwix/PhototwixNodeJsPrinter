@@ -12,6 +12,9 @@ const parameter = require('../config/parameter-config');
     //Save all change in form
     app.post('/admin/save', function(req, res) {
       logger.debug(JSON.stringify(req.body));
+      if (!parameter.p.twitterClient)
+        parameter.p.twitterClient = {};
+      parameter.p.twitterClient.twitter_active = (req.body.twitter_active === "true");
       parameter.p.twitterClient.account  = req.body.twitterAccount;
       parameter.p.twitterClient.tags = req.body.twitterTag;
       parameter.p.twitterClient.consumer_key = req.body.twitter_consumer_key;
@@ -19,7 +22,16 @@ const parameter = require('../config/parameter-config');
       parameter.p.twitterClient.access_token_key = req.body.twitter_access_token_key;
       parameter.p.twitterClient.access_token_secret = req.body.twitter_access_token_secret;
       parameter.p.twitterClient.lastScanId = req.body.twitter_last_scan_id;
+
       parameter.p.needValidation = (req.body.needValidation === "true");
+
+      if (!parameter.p.render)
+        parameter.p.render = {};
+      if (!parameter.p.render.onePhotoLandscape)
+        parameter.p.render.onePhotoLandscape = {};
+      parameter.p.render.onePhotoLandscape.active = (req.body.onePhotoLandscapeActivated === "true");
+
+
       parameter.serialize();
       res.contentType('text/html');
     	res.send("Parameter saved");

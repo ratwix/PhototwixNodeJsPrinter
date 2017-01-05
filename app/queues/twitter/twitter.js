@@ -20,24 +20,28 @@ const moderate = require("../moderate/moderate");
   */
 
   twitterQueue.init = function () { //Initialise Twitter
+    if (parameter.p.twitterClient.twitter_active) {
+      logger.debug("Init twitter");
+      var twitterClient = new Twitter({
+        consumer_key: parameter.p.twitterClient.consumer_key,
+        consumer_secret: parameter.p.twitterClient.consumer_secret,
+        access_token_key: parameter.p.twitterClient.access_token_key,
+        access_token_secret: parameter.p.twitterClient.access_token_secret
+      });
+      twitterQueue.client = twitterClient;
+      logger.debug("Twitter initialise");
 
-    logger.debug("Init twitter");
-    var twitterClient = new Twitter({
-      consumer_key: parameter.p.twitterClient.consumer_key,
-      consumer_secret: parameter.p.twitterClient.consumer_secret,
-      access_token_key: parameter.p.twitterClient.access_token_key,
-      access_token_secret: parameter.p.twitterClient.access_token_secret
-    });
-    twitterQueue.client = twitterClient;
-    logger.debug("Twitter initialise");
+      setInterval(function() {
+        twitterQueue.requestTwitter();
+      }, twitterInterval);
 
-    setInterval(function() {
-      twitterQueue.requestTwitter();
-    }, twitterInterval);
+      setInterval(function() {
+        twitterQueue.scanTwitterNoDownloadedQueue();
+      }, twitterQueueNoDownloadedInterval);
+    } else {
+      logger.info("Twitter not activated");
+    }
 
-    setInterval(function() {
-      twitterQueue.scanTwitterNoDownloadedQueue();
-    }, twitterQueueNoDownloadedInterval);
   };
 
   /**

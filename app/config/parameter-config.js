@@ -7,6 +7,7 @@ var configFile = require('app-root-path') + '/configjson/config.json';
 
   parameterConfig.p = {
     twitterClient : {
+      twitter_active : true,
       consumer_key: '',
       consumer_secret: '',
       access_token_key: '',
@@ -15,7 +16,16 @@ var configFile = require('app-root-path') + '/configjson/config.json';
       account : '',
       lastScanId : ''
     },
-    needValidation : false
+    needValidation : false,
+    render : {
+      onePhotoLandscape: {
+        active:true,
+        templateFile:'',
+        positions:[
+          {xa:0,yb:0,xb:0,yb:0,rotate:0}
+        ]
+      }
+    }
   };
 
   parameterConfig.serialize = function () {

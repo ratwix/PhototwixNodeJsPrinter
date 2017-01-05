@@ -11,6 +11,13 @@
         <div class="panel-heading">Twitter</div>
         <div class="panel-body">
           <div class="form-group">
+            <label for="twitter_active" class="control-label col-sm-2">Activate</label>
+            <div class="col-sm-10">
+              <input type="checkbox" class="form-control" id="twitter_active" name="twitter_active" value="true" {{#if param.twitterClient.twitter_active}}checked{{/if}}></input>
+            </div>
+          </div>
+
+          <div class="form-group">
             <label for="twitterAccount" class="control-label col-sm-2">Account</label>
             <div class="col-sm-10">
               <input type="text" class="form-control" id="twitterAccount" name="twitterAccount" value="{{param.twitterClient.account}}"></input>
@@ -83,8 +90,37 @@
           </div>
         </div>
       </div>
+      <!-- BEGIN VALIDATION -->
 
-
+      <!--BEGIN RENDERING -->
+      <div class="panel panel-info">
+        <div class="panel-heading">Rendering</div>
+        <div class="panel-body">
+          <div class="form-group">
+            <label for="onePhotoLandscape" class="control-label col-sm-2">1 photo landscape</label>
+            <div class="col-sm-10" id="onePhotoLandscape">
+              <div class="row row-centered">
+                <div class="col-sm-1 col-centered">
+                  <input type="checkbox" class="form-control" id="onePhotoLandscapeActivated" name="onePhotoLandscapeActivated" value="true" {{#if param.render.onePhotoLandscape.active}}checked{{/if}}></input>
+                </div>
+                <div class="col-sm-1 col-centered">
+                  <div class="column">
+                    <button type="button" class="btn btn-primary" id="loadOnePhotoLandscape">load</button>
+                    <button type="test" class="btn btn-warning" id="testOnePhotoLandscape">test</button>
+                  </div>
+                </div>
+                <div class="col-sm-4 col-centered">
+                  <img class="img-responsive" src='http://wallpaper-gallery.net/images/image/image-17.png'></img>
+                </div>
+                <div class="col-sm-6 col-centered">
+                  <textarea class="form-control" rows="6" id="onePhotoLandscapeCode" name="onePhotoLandscapeCode"></textarea>
+                </div>
+              </div>
+          </div>
+          </div>
+        </div>
+      </div>
+      <!-- END RENDERING -->
     </form>
 
 
