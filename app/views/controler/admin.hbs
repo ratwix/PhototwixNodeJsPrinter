@@ -1,0 +1,106 @@
+<h1>Admin</h1>
+
+<div class="col-sm-10 col-sm-offset-1">
+  <div class="alert alert-success" id="successAlert">
+
+  </div>
+
+    <!-- LOGIN FORM -->
+    <form action="/admin/save" class="form-horizontal" id="adminForm" method="post">
+      <div class="panel panel-info">
+        <div class="panel-heading">Twitter</div>
+        <div class="panel-body">
+          <div class="form-group">
+            <label for="twitterAccount" class="control-label col-sm-2">Account</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="twitterAccount" name="twitterAccount" value="{{param.twitterClient.account}}"></input>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="twitterTag" class="control-label col-sm-2">Tag(s)</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="twitterTag" name="twitterTag" value="{{param.twitterClient.tags}}"></input>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="twitter_consumer_key" class="control-label col-sm-2">consumer_key</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="twitter_consumer_key" name="twitter_consumer_key" value="{{param.twitterClient.consumer_key}}"></input>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="twitter_consumer_secret" class="control-label col-sm-2">consumer_secret</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="twitter_consumer_secret" name="twitter_consumer_secret" value="{{param.twitterClient.consumer_secret}}"></input>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="twitter_access_token_key" class="control-label col-sm-2">access_token_key</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="twitter_access_token_key" name="twitter_access_token_key" value="{{param.twitterClient.access_token_key}}"></input>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="twitter_access_token_secret" class="control-label col-sm-2">access_token_secret</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="twitter_access_token_secret" name="twitter_access_token_secret" value="{{param.twitterClient.access_token_secret}}"></input>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="twitter_last_scan_id" class="control-label col-sm-2">Last scan id</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="twitter_last_scan_id" name="twitter_last_scan_id" value="{{param.twitterClient.lastScanId}}"></input>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- END TWITTER -->
+
+      <!-- BEGIN INSTAGRAM -->
+      <div class="panel panel-info">
+        <div class="panel-heading">Instagram</div>
+        <div class="panel-body">
+
+        </div>
+      </div>
+      <!-- END INSTAGRAM -->
+
+      <!-- BEGIN VALIDATION -->
+      <div class="panel panel-info">
+        <div class="panel-heading">Moderator</div>
+        <div class="panel-body">
+          <div class="form-group">
+            <label for="needValidation" class="control-label col-sm-2">Moderate</label>
+            <div class="col-sm-10">
+              <input type="checkbox" class="form-control" id="needValidation" name="needValidation" value="true" {{#if param.needValidation}}checked{{/if}}></input>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </form>
+
+
+
+    <button class="btn btn-warning btn-lg" id="save_button">Valider</button>
+
+    <script>
+      $("#successAlert").hide();
+
+      $("#save_button").click(function() {
+        $.post( "/admin/save", $( "#adminForm" ).serialize())
+          .done(function( data ) {
+            $("#successAlert").html(data);
+            $("#successAlert").show();
+            $('html, body').animate({ scrollTop: 0 }, 'fast');
+          });
+      });
+    </script>
+</div>
