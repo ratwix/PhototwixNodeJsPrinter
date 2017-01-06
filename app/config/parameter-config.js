@@ -21,9 +21,42 @@ var configFile = require('app-root-path') + '/configjson/config.json';
       onePhotoLandscape: {
         active:true,
         templateFile:'',
-        positions:[
-          {xa:0,yb:0,xb:0,yb:0,rotate:0}
-        ]
+        positions:{
+          photos:[{xa:0,yb:0,xb:0,yb:0}],
+          text:{xa:0,yb:0,xb:0,yb:0}
+        }
+      },
+      onePhotoPortrait: {
+        active:true,
+        templateFile:'',
+        positions:{
+          photos:[{xa:0,yb:0,xb:0,yb:0}],
+          text:{xa:0,yb:0,xb:0,yb:0}
+        }
+      },
+      twoPhotos: {
+        active:true,
+        templateFile:'',
+        positions:{
+          photos:[{xa:0,yb:0,xb:0,yb:0},{xa:0,yb:0,xb:0,yb:0}],
+          text:{xa:0,yb:0,xb:0,yb:0}
+        }
+      },
+      threePhotos: {
+        active:true,
+        templateFile:'',
+        positions:{
+          photos:[{xa:0,yb:0,xb:0,yb:0},{xa:0,yb:0,xb:0,yb:0},{xa:0,yb:0,xb:0,yb:0}],
+          text:{xa:0,yb:0,xb:0,yb:0}
+        }
+      },
+      fourPhotos: {
+        active:true,
+        templateFile:'',
+        positions:{
+          photos:[{xa:0,yb:0,xb:0,yb:0},{xa:0,yb:0,xb:0,yb:0},{xa:0,yb:0,xb:0,yb:0},{xa:0,yb:0,xb:0,yb:0}],
+          text:{xa:0,yb:0,xb:0,yb:0}
+        }
       }
     }
   };

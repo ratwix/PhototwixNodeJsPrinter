@@ -1,12 +1,11 @@
 <h1>Admin</h1>
 
 <div class="col-sm-10 col-sm-offset-1">
-  <div class="alert alert-success" id="successAlert">
-
-  </div>
+  <div class="alert alert-success" id="successAlert"></div>
+  <div class="alert alert-danger" id="errorAlert"></div>
 
     <!-- LOGIN FORM -->
-    <form action="/admin/save" class="form-horizontal" id="adminForm" method="post">
+    <form class="form-horizontal" id="adminForm">
       <div class="panel panel-info">
         <div class="panel-heading">Twitter</div>
         <div class="panel-body">
@@ -96,6 +95,7 @@
       <div class="panel panel-info">
         <div class="panel-heading">Rendering</div>
         <div class="panel-body">
+
           <div class="form-group">
             <label for="onePhotoLandscape" class="control-label col-sm-2">1 photo landscape</label>
             <div class="col-sm-10" id="onePhotoLandscape">
@@ -103,40 +103,236 @@
                 <div class="col-sm-1 col-centered">
                   <input type="checkbox" class="form-control" id="onePhotoLandscapeActivated" name="onePhotoLandscapeActivated" value="true" {{#if param.render.onePhotoLandscape.active}}checked{{/if}}></input>
                 </div>
-                <div class="col-sm-1 col-centered">
+                <div class="col-sm-3 col-centered">
                   <div class="column">
-                    <button type="button" class="btn btn-primary" id="loadOnePhotoLandscape">load</button>
-                    <button type="test" class="btn btn-warning" id="testOnePhotoLandscape">test</button>
+                    <input type='button' class="btn btn-primary" id="onePhotoLandscapeLoadTemplate" value='load'></button>
+                    <input type="text" class="form-control" id="onePhotoLandscapeFilename" name="onePhotoLandscapeFilename" value="{{param.render.onePhotoLandscape.templateFile}}" readonly></input>
+                    <input type='button' class="btn btn-warning" id="onePhotoLandscapeTest" value='test'></button>
                   </div>
                 </div>
                 <div class="col-sm-4 col-centered">
-                  <img class="img-responsive" src='http://wallpaper-gallery.net/images/image/image-17.png'></img>
+                  <img class="img-responsive small_img" id="onePhotoLandscapePreview" src="{{#if param.render.onePhotoLandscape.templateFile}}templates/{{param.render.onePhotoLandscape.templateFile}}{{/if}}"></img>
                 </div>
-                <div class="col-sm-6 col-centered">
-                  <textarea class="form-control" rows="6" id="onePhotoLandscapeCode" name="onePhotoLandscapeCode"></textarea>
+                <div class="col-sm-4 col-centered">
+                  <textarea class="form-control" rows="6" id="onePhotoLandscapePositions" name="onePhotoLandscapePositions">{{json param.render.onePhotoLandscape.positions}}</textarea>
                 </div>
               </div>
+            </div>
           </div>
+
+          <div class="form-group">
+            <label for="onePhotoPortrait" class="control-label col-sm-2">1 photo portrait</label>
+            <div class="col-sm-10" id="onePhotoPortrait">
+              <div class="row row-centered">
+                <div class="col-sm-1 col-centered">
+                  <input type="checkbox" class="form-control" id="onePhotoPortraitActivated" name="onePhotoPortraitActivated" value="true" {{#if param.render.onePhotoPortrait.active}}checked{{/if}}></input>
+                </div>
+                <div class="col-sm-3 col-centered">
+                  <div class="column">
+                    <input type='button' class="btn btn-primary" id="onePhotoPortraitLoadTemplate" value='load'></button>
+                    <input type="text" class="form-control" id="onePhotoPortraitFilename" name="onePhotoPortraitFilename" value="{{param.render.onePhotoPortrait.templateFile}}" readonly></input>
+                    <input type='button' class="btn btn-warning" id="onePhotoPortraitTest" value='test'></button>
+                  </div>
+                </div>
+                <div class="col-sm-4 col-centered">
+                  <img class="img-responsive small_img" id="onePhotoPortraitPreview" src="{{#if param.render.onePhotoPortrait.templateFile}}templates/{{param.render.onePhotoPortrait.templateFile}}{{/if}}"></img>
+                </div>
+                <div class="col-sm-4 col-centered">
+                  <textarea class="form-control" rows="6" id="onePhotoPortraitPositions" name="onePhotoPortraitPositions">{{json param.render.onePhotoPortrait.positions}}</textarea>
+                </div>
+              </div>
+            </div>
           </div>
+
+          <div class="form-group">
+            <label for="twoPhotos" class="control-label col-sm-2">2 photos</label>
+            <div class="col-sm-10" id="twoPhotos">
+              <div class="row row-centered">
+                <div class="col-sm-1 col-centered">
+                  <input type="checkbox" class="form-control" id="twoPhotosActivated" name="twoPhotosActivated" value="true" {{#if param.render.twoPhotos.active}}checked{{/if}}></input>
+                </div>
+                <div class="col-sm-3 col-centered">
+                  <div class="column">
+                    <input type='button' class="btn btn-primary" id="twoPhotosLoadTemplate" value='load'></button>
+                    <input type="text" class="form-control" id="twoPhotosFilename" name="twoPhotosFilename" value="{{param.render.twoPhotos.templateFile}}" readonly></input>
+                    <input type='button' class="btn btn-warning" id="twoPhotosTest" value='test'></button>
+                  </div>
+                </div>
+                <div class="col-sm-4 col-centered">
+                  <img class="img-responsive small_img" id="twoPhotosPreview" src="{{#if param.render.twoPhotos.templateFile}}templates/{{param.render.twoPhotos.templateFile}}{{/if}}"></img>
+                </div>
+                <div class="col-sm-4 col-centered">
+                  <textarea class="form-control" rows="6" id="twoPhotosPositions" name="twoPhotosPositions">{{json param.render.twoPhotos.positions}}</textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="threePhotos" class="control-label col-sm-2">3 photos</label>
+            <div class="col-sm-10" id="threePhotos">
+              <div class="row row-centered">
+                <div class="col-sm-1 col-centered">
+                  <input type="checkbox" class="form-control" id="threePhotosActivated" name="threePhotosActivated" value="true" {{#if param.render.threePhotos.active}}checked{{/if}}></input>
+                </div>
+                <div class="col-sm-3 col-centered">
+                  <div class="column">
+                    <input type='button' class="btn btn-primary" id="threePhotosLoadTemplate" value='load'></button>
+                    <input type="text" class="form-control" id="threePhotosFilename" name="threePhotosFilename" value="{{param.render.threePhotos.templateFile}}" readonly></input>
+                    <input type='button' class="btn btn-warning" id="threePhotosTest" value='test'></button>
+                  </div>
+                </div>
+                <div class="col-sm-4 col-centered">
+                  <img class="img-responsive small_img" id="threePhotosPreview" src="{{#if param.render.threePhotos.templateFile}}templates/{{param.render.threePhotos.templateFile}}{{/if}}"></img>
+                </div>
+                <div class="col-sm-4 col-centered">
+                  <textarea class="form-control" rows="6" id="threePhotosPositions" name="threePhotosPositions">{{json param.render.threePhotos.positions}}</textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="fourPhotos" class="control-label col-sm-2">4 photos</label>
+            <div class="col-sm-10" id="fourPhotos">
+              <div class="row row-centered">
+                <div class="col-sm-1 col-centered">
+                  <input type="checkbox" class="form-control" id="fourPhotosActivated" name="fourPhotosActivated" value="true" {{#if param.render.fourPhotos.active}}checked{{/if}}></input>
+                </div>
+                <div class="col-sm-3 col-centered">
+                  <div class="column">
+                    <input type='button' class="btn btn-primary" id="fourPhotosLoadTemplate" value='load'></button>
+                    <input type="text" class="form-control" id="fourPhotosFilename" name="fourPhotosFilename" value="{{param.render.fourPhotos.templateFile}}" readonly></input>
+                    <input type='button' class="btn btn-warning" id="fourPhotosTest" value='test'></button>
+                  </div>
+                </div>
+                <div class="col-sm-4 col-centered">
+                  <img class="img-responsive small_img" id="fourPhotosPreview" src="{{#if param.render.fourPhotos.templateFile}}templates/{{param.render.fourPhotos.templateFile}}{{/if}}"></img>
+                </div>
+                <div class="col-sm-4 col-centered">
+                  <textarea class="form-control" rows="6" id="fourPhotosPositions" name="fourPhotosPositions">{{json param.render.fourPhotos.positions}}</textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
       <!-- END RENDERING -->
     </form>
 
-
+    <input type="file" id="onePhotoLandscapeLoadTemplateFileInput" style="visibility:hidden"/>
+    <input type="file" id="onePhotoPortraitLoadTemplateFileInput" style="visibility:hidden"/>
+    <input type="file" id="twoPhotosLoadTemplateFileInput" style="visibility:hidden"/>
+    <input type="file" id="threePhotosLoadTemplateFileInput" style="visibility:hidden"/>
+    <input type="file" id="fourPhotosLoadTemplateFileInput" style="visibility:hidden"/>
 
     <button class="btn btn-warning btn-lg" id="save_button">Valider</button>
 
     <script>
-      $("#successAlert").hide();
-
+      $( "#successAlert" ).hide();
+      $( "#errorAlert" ).hide();
       $("#save_button").click(function() {
         $.post( "/admin/save", $( "#adminForm" ).serialize())
           .done(function( data ) {
-            $("#successAlert").html(data);
-            $("#successAlert").show();
-            $('html, body').animate({ scrollTop: 0 }, 'fast');
+            showSuccessMessage(data);
           });
       });
+
+      $("#onePhotoLandscapeLoadTemplate").click(function() {
+        $("#onePhotoLandscapeLoadTemplateFileInput").click();
+      });
+
+      $("#onePhotoPortraitLoadTemplate").click(function() {
+        $("#onePhotoPortraitLoadTemplateFileInput").click();
+      });
+
+      $("#twoPhotosLoadTemplate").click(function() {
+        $("#twoPhotosLoadTemplateFileInput").click();
+      });
+
+      $("#threePhotosLoadTemplate").click(function() {
+        $("#threePhotosLoadTemplateFileInput").click();
+      });
+
+      $("#fourPhotosLoadTemplate").click(function() {
+        $("#fourPhotosLoadTemplateFileInput").click();
+      });
+
+      $('#onePhotoLandscapeLoadTemplateFileInput').on('change', function(){
+        uploadTemplate($(this), 'oneLandscape');
+      });
+
+      $('#onePhotoPortraitLoadTemplateFileInput').on('change', function(){
+        uploadTemplate($(this), 'onePortrait');
+      });
+
+      $('#twoPhotosLoadTemplateFileInput').on('change', function(){
+        uploadTemplate($(this), 'two');
+      });
+
+      $('#threePhotosLoadTemplateFileInput').on('change', function(){
+        uploadTemplate($(this), 'three');
+      });
+
+      $('#fourPhotosLoadTemplateFileInput').on('change', function(){
+        uploadTemplate($(this), 'four');
+      });
+
+      function uploadTemplate(fileInput, templateType) {
+        var files = fileInput.get(0).files;
+        if (files.length > 0){
+          var file = files[0];
+          var formData = new FormData();
+          formData.append('uploads', file, file.name);
+          formData.append('templateType',  templateType);
+          $.ajax({
+            url: '/admin/uploadTemplate',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                if (templateType == 'oneLandscape') {
+                  $('#onePhotoLandscapePreview').attr("src","templates/" + data);
+                  $('#onePhotoLandscapeFilename').attr("value", data);
+                }
+                if (templateType == 'onePortrait') {
+                  $('#onePhotoPortraitPreview').attr("src","templates/" + data);
+                  $('#onePhotoPortraitFilename').attr("value", data);
+                }
+                if (templateType == 'two') {
+                  $('#twoPhotosPreview').attr("src","templates/" + data);
+                  $('#twoPhotosFilename').attr("value", data);
+                }
+                if (templateType == 'three') {
+                  $('#threePhotosPreview').attr("src","templates/" + data);
+                  $('#threePhotosFilename').attr("value", data);
+                }
+                if (templateType == 'four') {
+                  $('#fourPhotosPreview').attr("src","templates/" + data);
+                  $('#fourPhotosFilename').attr("value", data);
+                }
+            },
+            error: function(xhr, status, error) {
+              showErrorMessage(error);
+            }
+          });
+        }
+      }
+
+      function showSuccessMessage(message) {
+        $( "#errorAlert" ).hide();
+        $("#successAlert").html(message);
+        $("#successAlert").show();
+        $('html, body').animate({ scrollTop: 0 }, 'fast');
+      }
+
+      function showErrorMessage(message) {
+        $("#successAlert").hide();
+        $("#errorAlert").html(message);
+        $("#errorAlert").show();
+        $('html, body').animate({ scrollTop: 0 }, 'fast');
+      }
     </script>
 </div>

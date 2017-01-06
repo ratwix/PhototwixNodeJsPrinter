@@ -1,4 +1,5 @@
 const exphbs  = require('express-handlebars');
+const formidable = require('express-formidable');
 
 (function (expressConfig) {
 
@@ -35,10 +36,18 @@ const exphbs  = require('express-handlebars');
     */
     app.use(express.static('public'));
 
+/*
     logger.debug("Setting parse urlencoded request bodies into req.body.");
     var bodyParser = require('body-parser');
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(bodyParser.json());
+*/
+    logger.debug("Set formidable");
+    app.use(formidable({
+      encoding: 'utf-8',
+      uploadDir: require('app-root-path') + '/upload',
+      multiples: true // req.files to be arrays of files
+    }));
 
     logger.debug("Overriding 'Express' logger");
     app.use(require('morgan')("combined", { "stream": logger.stream }));

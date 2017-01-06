@@ -9,6 +9,10 @@ i.fa {
   margin-right: 10px;
 }
 
+.small_img {
+  max-height: 200px;
+}
+
 #button-add-rules {
   margin-left: 30px;
 }

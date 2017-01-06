@@ -6,6 +6,8 @@ const logger = require("../config/logger-config");
 (function (util) {
 
   util.singlePhotoPath = require('app-root-path') + '/public/photos/single';
+  util.templatePath = require('app-root-path') + '/public/templates';
+  util.workingdir = require('app-root-path') + '/workingdir';
 
   util.downloadFile = (url, dest, callback) => {
     //Test if file already exists
