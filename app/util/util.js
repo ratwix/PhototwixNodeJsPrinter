@@ -6,6 +6,7 @@ const logger = require("../config/logger-config");
 (function (util) {
 
   util.singlePhotoPath = require('app-root-path') + '/public/photos/single';
+  util.resultPhotoPath = require('app-root-path') + '/public/photos/result';
   util.templatePath = require('app-root-path') + '/public/templates';
   util.workingdir = require('app-root-path') + '/workingdir';
 

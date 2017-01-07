@@ -9,6 +9,7 @@ function TwitterMessage() {
   this.userName = "";
   this.userId = "";
   this.userScreenName = "";
+  this.resultFile = "";
   this.validate_status = 'pending'; //'pending', 'validated', 'rejected'
 }
 

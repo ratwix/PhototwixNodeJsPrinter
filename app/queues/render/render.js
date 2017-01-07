@@ -1,6 +1,8 @@
 const logger = require("../../config/logger-config");
-const param = require("../../config/parameter-config")
-const util = require("../../util/util")
+const param = require("../../config/parameter-config");
+const util = require("../../util/util");
+const display = require("../display/display");
+
 var exec = require('child_process').exec;
 
 const convertExe = "magick convert";
@@ -51,63 +53,91 @@ const identifyFormatExe = "magick identify -format \"%wx%h\"";
     }
   }
 
-  renderQueue.render1Photos = function (message, index) {
-    var imageLocalUrl = message.media_downloaded[0];
-    //Identify is the image is landscape or Portrait
-    var cmd = identifyFormatExe + ' ' + util.singlePhotoPath + '/' + imageLocalUrl;
-    exec(cmd, function(err, stdout, stderr) {
+  function getImageSize(image, callback) {
+    var cmd = `${identifyFormatExe} "${image}"`;
+    exec(cmd, function(err, stdout, stdedd) {
       if (err) {
-        logger.error("Error in identify : " + err);
-        canRender = true;
-      }
-      try {
-        var templateWidth = parseInt(stdout.split("x")[0]);
-        var templateHeight = parseInt(stdout.split("x")[1]);
-        if (templateHeight < templateWidth) {
-          renderQueue.renderSingleLandscape(message, templateWidth, templateHeight);
-        } else {
-          renderQueue.renderSinglePortrait(message, templateWidth, templateHeight);
+        callback(err);
+      } else {
+        try {
+          var photoWidth = parseInt(stdout.split("x")[0]);
+          var photoHeight = parseInt(stdout.split("x")[1]);
+          callback(null, photoWidth, photoHeight);
+        } catch (err) {
+          callback(err);
         }
-      } catch (err) {
-        logger.error("Error parsing image size : " + err);
-        canRender = true;
       }
-    });
+    })
   }
 
-  //Calcul photo size and crop it to file
-  function crop(templateWidth, templateHeight, position, srcPath, destPath, callback) {
-    var imageWidth = (position.xb - position.xa) * templateWidth / 100;
-    var imageHeight = (position.yb - position.ya) * templateHeight / 100;
-
-    var cmd = convertExe + ' ' + srcPath + ' -resize ' + imageWidth + 'x' + imageHeight + '^ -gravity center -crop ' + imageWidth + 'x' + imageHeight + '+0+0 ' + destPath;
-    logger.debug('Resize CMD : ' + cmd);
-    exec(cmd, function(err, stdout, stderr) {
+  function merge(message, positions, nbPhotos, templateFile, destFile, callback) {
+    getImageSize(templateFile, function (err, templateWidth, templateHeight){
       if (err) {
-        logger.error("Error in convert resize : " + err);
-        callback();
+        callback(err);
+      } else {
+        var cmd = `${convertExe} -size ${templateWidth}x${templateHeight} xc:black`;
+        for (var i = 0; i < nbPhotos; i++) {
+          var imageWidth = (positions.photos[i].xb - positions.photos[i].xa) * templateWidth / 100;
+          var imageHeight = (positions.photos[i].yb - positions.photos[i].ya) * templateHeight / 100;
+          var x = positions.photos[i].xa * templateWidth / 100;
+          var y = positions.photos[i].ya * templateHeight / 100;
+          cmd += ' ( "' + util.singlePhotoPath + '/' + message.media_downloaded[0] + '"' + ` -resize "${imageWidth}x${imageHeight}^" -gravity center -crop ${imageWidth}x${imageHeight}+0+0 ) -gravity NorthWest -geometry +${x}+${y} -composite`;
+        }
+        cmd += ` "${templateFile}" -composite "${destFile}"`;
+        //TODO : Add text
+        logger.debug('Merge CMD : ' + cmd);
+        exec(cmd, function(err, stdout, stderr) {
+          if (err) {
+            callback(err + '\n' + stderr);
+          } else {
+            callback();
+          }
+        });
       }
-      logger.debug("Image " + destPath + " resized");
-      callback();
     });
-
   }
 
-  renderQueue.renderSingleLandscape = function (message, templateWidth, templateHeight) {
+  renderQueue.render1Photos = function (message, index) {
+    var imageLocalUrl = util.singlePhotoPath + '/' + message.media_downloaded[0];
+
+    getImageSize(imageLocalUrl, function (err, templateWidth, templateHeight) {
+      if (err) {
+        logger.error("Error get image size : " + err);
+        canRender = true;
+      } else {
+        if (templateHeight < templateWidth) {
+          renderQueue.renderSingleLandscape(message);
+        } else {
+          renderQueue.renderSinglePortrait(message);
+        }
+      }
+    });
+  }
+
+  renderQueue.renderSingleLandscape = function (message) {
     if (param.p.render.onePhotoLandscape.active) {
-      logger.debug("Render 1 photo landscape");
-      crop(templateWidth,
-        templateHeight,
-        param.p.render.onePhotoLandscape.positions.photos[0],
-        util.singlePhotoPath + '/' + message.media_downloaded[0],
-        util.workingdir + '/' + 'tmp1.jpg',
-        function () {
+      var cd = new Date();
+      var destFile = `photo_${cd.getFullYear()}_${cd.getMonth() + 1}_${cd.getDate()}_${cd.getHours()}-${cd.getMinutes()}-${cd.getSeconds()}.jpg`;
+      logger.debug("Render 1 photo landscape"); //Do waterfall crop + merge
+      merge(message,
+        param.p.render.onePhotoLandscape.positions,
+        1,
+        util.templatePath + '/' + param.p.render.onePhotoLandscape.templateFile,
+        util.resultPhotoPath + '/' + destFile,
+        function (err) {
+          if (err) {
+            logger.error("Error in convert merge : " + err);
+          } else {
+            logger.debug("Image " + destFile + " created");
+            message.resultFile = destFile;
+            display.pushMessage(message);
+          }
           canRender = true;
         }
       );
     } else {
       if (param.p.render.onePhotoPortrait.active) {
-        renderSinglePortrait(message);
+        renderQueue.renderSinglePortrait(message);
       } else {
         logger.warn("Render 1 photo landscape not activated");
         canRender = true;
@@ -115,13 +145,13 @@ const identifyFormatExe = "magick identify -format \"%wx%h\"";
     }
   }
 
-  renderQueue.renderSinglePortrait = function (message, widthTemplate, heightTemplate) {
+  renderQueue.renderSinglePortrait = function (message) {
     if (param.p.render.onePhotoPortrait.active) {
-      logger.debug("Render 1 photo landscape");
+      logger.debug("Render 1 photo portrait");
       canRender = true;
     } else {
       if (param.p.render.onePhotoLandscape.active) {
-        renderSingleLandscape(message);
+        renderQueue.renderSingleLandscape(message);
       } else { //If not active, generate the first photo only
         logger.warn("Render 1 photo portrait not activated");
         canRender = true;

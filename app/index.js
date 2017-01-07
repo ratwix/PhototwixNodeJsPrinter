@@ -8,6 +8,7 @@ const parameter = require("./config/parameter-config");
 const admin = require("./admin/admin.js");
 const moderate = require("./queues/moderate/moderate");
 const render = require("./queues/render/render");
+const display = require("./queues/display/display");
 
 const port = 3000
 
@@ -33,6 +34,10 @@ logger.info("Twitter Configured");
 logger.info("configuring admin");
 admin.init(app);
 logger.info("Admin configured");
+
+logger.info("configuring display");
+display.init(app);
+logger.info("Display configured");
 
 //Main route definition
 app.get('/', (request, response) => {
