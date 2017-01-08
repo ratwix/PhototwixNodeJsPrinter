@@ -58,6 +58,10 @@ var configFile = require('app-root-path') + '/configjson/config.json';
           text:{xa:0,yb:0,xb:0,yb:0}
         }
       }
+    },
+    photoScreen: {
+      mediaType:'',
+      mediaPath:''
     }
   };
 

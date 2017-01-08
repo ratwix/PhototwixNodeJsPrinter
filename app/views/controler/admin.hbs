@@ -215,10 +215,41 @@
               </div>
             </div>
           </div>
-
         </div>
       </div>
       <!-- END RENDERING -->
+
+      <!-- BEGIN SCREEN -->
+
+      <div>
+        <div class="panel panel-info">
+          <div class="panel-heading">Photo Screen</div>
+          <div class="panel-body">
+            <div class="form-group">
+              <label for="screenMediaType" class="control-label col-sm-2">Media</label>
+              <div class="radio">
+                <label class="radio-inline"><input type="radio" name="screenMediaType" value="image" {{#if (eq param.photoScreen.mediaType "image")}}checked="true"{{/if}}>Image</label>
+                <label class="radio-inline"><input type="radio" name="screenMediaType" value="video" {{#if (eq param.photoScreen.mediaType "video")}}checked="true"{{/if}}>Video</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="screenMediaFile" class="control-label col-sm-2">Media</label>
+              <div class="col-sm-3 col-centered">
+                <div class="column" id="screenMediaFile">
+                  <input type='button' class="btn btn-primary" id="screenMediaLoad" value='load'></button>
+                  <input type="text" class="form-control" id="screenMediaFilename" name="screenMediaFilename" value="{{param.photoScreen.mediaFile}}" readonly></input>
+                </div>
+              </div>
+              <div class="col-sm-4 col-centered">
+                <img class="img-responsive small_img" id="screenMediaPreviewImg" src="medias/{{param.photoScreen.mediaFile}}"></img>
+                <video controls class="small_img" id="screenMediaPreviewVid" src="medias/{{param.photoScreen.mediaFile}}"></video>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- END SCREEN -->
     </form>
 
     <input type="file" id="onePhotoLandscapeLoadTemplateFileInput" style="visibility:hidden"/>
@@ -226,10 +257,16 @@
     <input type="file" id="twoPhotosLoadTemplateFileInput" style="visibility:hidden"/>
     <input type="file" id="threePhotosLoadTemplateFileInput" style="visibility:hidden"/>
     <input type="file" id="fourPhotosLoadTemplateFileInput" style="visibility:hidden"/>
+    <input type="file" id="screenMediaTypeFileInput" style="visibility:hidden"/>
 
     <button class="btn btn-warning btn-lg" id="save_button">Valider</button>
 
     <script>
+      {{#if (eq param.photoScreen.mediaType "image")}}
+      $("#screenMediaPreviewVid").hide();
+      {{else}}
+      $("#screenMediaPreviewImg").hide();
+      {{/if}}
       $( "#successAlert" ).hide();
       $( "#errorAlert" ).hide();
       $("#save_button").click(function() {
@@ -259,6 +296,10 @@
         $("#fourPhotosLoadTemplateFileInput").click();
       });
 
+      $("#screenMediaLoad").click(function() {
+        $("#screenMediaTypeFileInput").click();
+      })
+
       $('#onePhotoLandscapeLoadTemplateFileInput').on('change', function(){
         uploadTemplate($(this), 'oneLandscape');
       });
@@ -278,6 +319,40 @@
       $('#fourPhotosLoadTemplateFileInput').on('change', function(){
         uploadTemplate($(this), 'four');
       });
+
+      $('#screenMediaTypeFileInput').on('change', function(){
+        var files = $(this).get(0).files;
+        if (files.length > 0) {
+          var file = files[0];
+          var formData = new FormData();
+          formData.append('screenMediaFile', file, file.name);
+          $.ajax({
+            url: '/admin/uploadScreenMedia',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: (data) => {
+              $("#screenMediaFilename").attr("value", data);
+              $('#screenMediaPreviewImg').attr("src","medias/" + data);
+              $('#screenMediaPreviewVid').attr("src","medias/" + data);
+            },
+            error: function(xhr, status, error) {
+              showErrorMessage(error);
+            }
+          })
+        }
+      });
+
+      $('input[type=radio][name=screenMediaType]').change(function() {
+        if (this.value == 'image') {
+          $('#screenMediaPreviewImg').show();
+          $('#screenMediaPreviewVid').hide();
+        } else {
+          $('#screenMediaPreviewImg').hide();
+          $('#screenMediaPreviewVid').show();
+        }
+    });
 
       function uploadTemplate(fileInput, templateType) {
         var files = fileInput.get(0).files;

@@ -13,7 +13,8 @@ const util = require('../util/util');
         res.render('views/controler/admin', {
           param: parameter.p,
           helpers: {
-              json: function (data) { return JSON.stringify(data, null, 2); }
+              json: function (data) { return JSON.stringify(data, null, 2); },
+              eq: function (a, b) {return a == b}
           }
         });
     });
@@ -21,6 +22,9 @@ const util = require('../util/util');
     //Save all change in form
     app.post('/admin/save', function(req, res) {
       logger.debug(JSON.stringify(req.fields));
+      if (!parameter.p)
+        parameter.p = {};
+
       if (!parameter.p.twitterClient)
         parameter.p.twitterClient = {};
       parameter.p.twitterClient.twitter_active = (req.fields.twitter_active === "true");
@@ -87,6 +91,11 @@ const util = require('../util/util');
         res.send("ERROR: JSON 4 photos invalid");
       }
 
+      if (!parameter.p.photoScreen)
+        parameter.p.photoScreen = {};
+
+      parameter.p.photoScreen.mediaType = req.fields.screenMediaType;
+      parameter.p.photoScreen.mediaFile = req.fields.screenMediaFile;
 
       parameter.serialize();
       res.contentType('text/html');
@@ -100,23 +109,37 @@ const util = require('../util/util');
                   util.templatePath + '/' + req.files.uploads.name,
                   function (err) {
                     if (err) throw err;
+                    if (req.fields.templateType == 'oneLandscape') {
+                      parameter.p.render.onePhotoLandscape.templateFile = req.files.uploads.name;
+                    }
+                    if (req.fields.templateType == 'onePortrait') {
+                      parameter.p.render.onePhotoPortrait.templateFile = req.files.uploads.name;
+                    }
+                    if (req.fields.templateType == 'two') {
+                      parameter.p.render.twoPhotos.templateFile = req.files.uploads.name;
+                    }
+                    if (req.fields.templateType == 'three') {
+                      parameter.p.render.threePhotos.templateFile = req.files.uploads.name;
+                    }
+                    if (req.fields.templateType == 'four') {
+                      parameter.p.render.fourPhotos.templateFile = req.files.uploads.name;
+                    }
+                    parameter.serialize();
                     res.send(req.files.uploads.name);
                   });
-        if (req.fields.templateType == 'oneLandscape') {
-          parameter.p.render.onePhotoLandscape.templateFile = req.files.uploads.name;
-        }
-        if (req.fields.templateType == 'onePortrait') {
-          parameter.p.render.onePhotoPortrait.templateFile = req.files.uploads.name;
-        }
-        if (req.fields.templateType == 'two') {
-          parameter.p.render.twoPhotos.templateFile = req.files.uploads.name;
-        }
-        if (req.fields.templateType == 'three') {
-          parameter.p.render.threePhotos.templateFile = req.files.uploads.name;
-        }
-        if (req.fields.templateType == 'four') {
-          parameter.p.render.fourPhotos.templateFile = req.files.uploads.name;
-        }
+      }
+    });
+
+    app.post('/admin/uploadScreenMedia', function(req, res) {
+      logger.debug("Recieve screen media file:" + JSON.stringify(req.fields) + '\n' + JSON.stringify(req.files));
+      if (req.files.screenMediaFile) {
+        fs.rename(req.files.screenMediaFile.path,
+                  util.mediaPath + '/' + req.files.screenMediaFile.name, function (err) {
+                    if (err) throw err;  
+                    parameter.p.photoScreen.mediaFile = req.files.screenMediaFile.name;
+                    parameter.serialize();
+                    res.send(req.files.screenMediaFile.name);
+                  });
       }
     });
     //END ROUTE
