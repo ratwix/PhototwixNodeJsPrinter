@@ -1,3 +1,116 @@
-<div class="wrapper">
-   <img src="medias/{{param.photoScreen.mediaFile}}" class="img-responsive" alt="Responsive image">
+<div class="videoWrapper">
+  <video class="video-background" id="videoBackground" autoplay loop>
+      <source src="" id="videoBackgroundSource" type="video/mp4">Your browser does not support the video tag. I suggest you upgrade your browser.
+  </video>
 </div>
+
+<div class="image-background" id="imageBackground"></div>
+
+<div id="photoModal" class="modal fade">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" hidden="true">
+            </div>
+            <div class="modal-body">
+              <div id="photoResultDiv text-center">
+                <img class='img-responsive' id="photoResult" src="http://www.am-paysage.com/wp-content/uploads/2014/11/paysage1.jpg"></img>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <div class="row">
+                <div class="col-md-2">
+                  <span class="fa-stack fa-3x">
+                    <i class="fa fa-square-o fa-stack-2x icon-background5"></i>
+                    <i class="fa fa-print fa-stack-1x"></i>
+                  </span>
+                </div>
+                <div class="col-md-10 vcenter">
+                  <div class="progress largeprogress">
+                    <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar"
+                    aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" id="printProgess" style="width:70%"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+
+var ioscreen = io.connect('http://localhost:3000/screen'); //TODO a remplacer
+
+var currentMessage = {};
+var showPhototimer = {};
+var printProgessTimer = {};
+
+//showPhotoTest(5000);
+
+ioscreen.on('displayPhoto', function(data) {
+  currentMessage = data;
+  showPhoto('/photos/result/' + data.resultFile, 10000);
+});
+
+$( document ).ready(function() {
+  $('#videoWrapper').hide();
+  $('#videoBackground').hide();
+  $('#imageBackground').hide();
+
+  {{#if (eq param.photoScreen.mediaType "image")}}
+  setImgBackground('medias/{{param.photoScreen.mediaFile}}');
+  {{/if}}
+
+  {{#if (eq param.photoScreen.mediaType "video")}}
+  setVideoBackground('medias/{{param.photoScreen.mediaFile}}');
+  {{/if}}
+});
+
+function setImgBackground(path) {
+  $('#videoBackground').hide();
+  $('#videoBackground').stop();
+  $('#imageBackground').css('background-image', "url('" + path + "')");
+  $('#imageBackground').show();
+}
+
+function setVideoBackground(path) {
+  $('#imageBackground').hide();
+  $('#videoBackground').stop();
+  $('#videoBackgroundSource').attr('src', path);
+  $('#videoBackground').attr('loop','loop');
+  $('#videoBackground').get(0).load();
+  $('#videoBackground').get(0).play();
+  $('#videoWrapper').show();
+  $('#videoBackground').show();
+}
+
+function showPhotoTest(displayTime) {
+  $("#photoModal").modal('show');
+}
+
+function showPhoto(path, displayTime) {
+  $("#photoResult").attr('src', path);
+  $("#photoModal").modal('show');
+  showPhototimer = setTimeout(hidePhoto, displayTime);
+
+  var startTime = new Date().getTime();
+  printProgessTimer = setInterval(function () {
+    var currentTime = new Date().getTime() - startTime;
+    if (currentTime <= displayTime) {
+      var percent = currentTime * 100 / displayTime;
+      $('#printProgess').css('width', Math.round(percent).toString() + '%')
+    } else {
+      clearInterval(printProgessTimer);
+    }
+  }, 50);
+}
+
+function hidePhoto() {
+  $("#photoModal").modal('hide');
+  $.post( "/photoScreen/printPhoto", currentMessage)
+    .done(function( data ) {
+      console.log(data);
+  });
+}
+
+</script>

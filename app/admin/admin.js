@@ -1,4 +1,5 @@
 const parameter = require('../config/parameter-config');
+const expressConfig = require('../config/express-config')
 const path = require('path');
 const fs = require('fs');
 const util = require('../util/util');
@@ -6,21 +7,17 @@ const util = require('../util/util');
 (function (admin) {
   var logger = require("../config/logger-config");
 
-  admin.init = function (app) { //Initialise de l'admin
+  admin.init = function () { //Initialise de l'admin
 
     //BEGIN ADMIN ROUTE
-    app.get('/admin', function(req, res) {
+    expressConfig.app.get('/admin', function(req, res) {
         res.render('views/controler/admin', {
-          param: parameter.p,
-          helpers: {
-              json: function (data) { return JSON.stringify(data, null, 2); },
-              eq: function (a, b) {return a == b}
-          }
+          param: parameter.p
         });
     });
 
     //Save all change in form
-    app.post('/admin/save', function(req, res) {
+    expressConfig.app.post('/admin/save', function(req, res) {
       logger.debug(JSON.stringify(req.fields));
       if (!parameter.p)
         parameter.p = {};
@@ -95,14 +92,14 @@ const util = require('../util/util');
         parameter.p.photoScreen = {};
 
       parameter.p.photoScreen.mediaType = req.fields.screenMediaType;
-      parameter.p.photoScreen.mediaFile = req.fields.screenMediaFile;
+      parameter.p.photoScreen.mediaFile = req.fields.screenMediaFilename;
 
       parameter.serialize();
       res.contentType('text/html');
     	res.send("Parameter saved");
     });
     //Template for fields
-    app.post('/admin/uploadTemplate', function(req, res) {
+    expressConfig.app.post('/admin/uploadTemplate', function(req, res) {
       logger.debug("Receive new template:\n" + JSON.stringify(req.fields) + "\n\n" + JSON.stringify(req.files));
       if (req.files.uploads) {
         fs.rename(req.files.uploads.path,
@@ -130,12 +127,12 @@ const util = require('../util/util');
       }
     });
 
-    app.post('/admin/uploadScreenMedia', function(req, res) {
+    expressConfig.app.post('/admin/uploadScreenMedia', function(req, res) {
       logger.debug("Recieve screen media file:" + JSON.stringify(req.fields) + '\n' + JSON.stringify(req.files));
       if (req.files.screenMediaFile) {
         fs.rename(req.files.screenMediaFile.path,
                   util.mediaPath + '/' + req.files.screenMediaFile.name, function (err) {
-                    if (err) throw err;  
+                    if (err) throw err;
                     parameter.p.photoScreen.mediaFile = req.files.screenMediaFile.name;
                     parameter.serialize();
                     res.send(req.files.screenMediaFile.name);

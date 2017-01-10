@@ -1,0 +1,49 @@
+.videoWrapper {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: -101;
+  background-color: black;
+  text-align: center;
+}
+
+.video-background {
+  min-height: 100%;
+  width: auto; height: auto;
+  z-index: -100;
+}
+
+.image-background {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: -100;
+  display: block;
+  background-repeat:no-repeat;
+  background-position:center;
+  background-color: black;
+  background-size:contain;
+}
+
+.container-full {
+  margin: 0 auto;
+  width: 100%;
+}
+
+.largeprogress {
+  height: 60px;
+}
+
+#photoResultDiv {
+  height: 500px;
+}
+
+#photoResultDiv  .img-responsive {
+    display: block;
+    width: auto;
+    max-height: 100%;
+}
