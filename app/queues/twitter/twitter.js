@@ -21,7 +21,7 @@ const moderate = require("../moderate/moderate");
 
   twitterQueue.init = function () { //Initialise Twitter
     if (parameter.p.twitterClient.twitter_active) {
-      logger.debug("Init twitter");
+      logger.debug("[TWITTER] Init twitter");
       var twitterClient = new Twitter({
         consumer_key: parameter.p.twitterClient.consumer_key,
         consumer_secret: parameter.p.twitterClient.consumer_secret,
@@ -29,7 +29,7 @@ const moderate = require("../moderate/moderate");
         access_token_secret: parameter.p.twitterClient.access_token_secret
       });
       twitterQueue.client = twitterClient;
-      logger.debug("Twitter initialise");
+      logger.debug("[TWITTER] Twitter initialise");
 
       setInterval(function() {
         twitterQueue.requestTwitter();
@@ -39,7 +39,7 @@ const moderate = require("../moderate/moderate");
         twitterQueue.scanTwitterNoDownloadedQueue();
       }, twitterQueueNoDownloadedInterval);
     } else {
-      logger.info("Twitter not activated");
+      logger.info("[TWITTER] Twitter not activated");
     }
 
   };
@@ -49,17 +49,17 @@ const moderate = require("../moderate/moderate");
   * Put twitterMessage in the queueNoDownloaded
   */
   twitterQueue.requestTwitter = function () {
-    logger.debug("Scan twitter");
+    logger.debug("[TWITTER] Scan twitter");
     var twitterQuery = {
       q: parameter.p.twitterClient.account + " " + parameter.p.twitterClient.tags + " filter:images"
     };
     if (parameter.p.twitterClient.lastScanId != '') {
       twitterQuery.since_id = parameter.p.twitterClient.lastScanId;
     }
-    logger.debug(JSON.stringify(twitterQuery));
+    logger.debug("[TWITTER] " + JSON.stringify(twitterQuery));
     twitterQueue.client.get('search/tweets', twitterQuery, function(error, tweets, response) {
       if(error) {
-        logger.error("Twitter error:" + JSON.stringify(error));
+        logger.error("[TWITTER] Twitter error:" + JSON.stringify(error));
         return;
       }
       for (var i = tweets.statuses.length - 1; i >= 0; i--) {
@@ -79,7 +79,7 @@ const moderate = require("../moderate/moderate");
         //If do not need validation, auto validate message
         t.validate_status = 'validated';
         twitterQueue.queueNoDownloaded.push(t);
-        logger.info(JSON.stringify(t, null, 2));
+        logger.info("[TWITTER] " + JSON.stringify(t, null, 2));
       }
     });
   }
@@ -93,7 +93,7 @@ const moderate = require("../moderate/moderate");
       if (twitterQueue.queueNoDownloaded.length > 0) {
           canPopQueueNoDownloaded = false;
           var tm = twitterQueue.queueNoDownloaded.shift(); //get twitter message
-          logger.debug("Download of twitter message :\n" + JSON.stringify(tm, null, 2) + "\n");
+          logger.debug("[TWITTER] Download of twitter message :\n" + JSON.stringify(tm, null, 2) + "\n");
           //Download each file
           async.eachOf(
             tm.media_url,
@@ -105,9 +105,9 @@ const moderate = require("../moderate/moderate");
             },
             function (err) {
                 if (err) {
-                  logger.error("Error downloading file " + JSON.stringify(err));
+                  logger.error("[TWITTER] Error downloading file " + JSON.stringify(err));
                 } else {
-                  logger.info("All photos downloaded");
+                  logger.info("[TWITTER] All photos downloaded");
                   //Send message to moderateQueue
                   moderate.pushMessage(tm);
                 }

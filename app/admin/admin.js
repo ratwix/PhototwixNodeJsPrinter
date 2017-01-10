@@ -3,6 +3,7 @@ const expressConfig = require('../config/express-config')
 const path = require('path');
 const fs = require('fs');
 const util = require('../util/util');
+const display = require('../queues/display/display');
 
 (function (admin) {
   var logger = require("../config/logger-config");
@@ -18,7 +19,7 @@ const util = require('../util/util');
 
     //Save all change in form
     expressConfig.app.post('/admin/save', function(req, res) {
-      logger.debug(JSON.stringify(req.fields));
+      logger.debug("[ADMIN] " + JSON.stringify(req.fields));
       if (!parameter.p)
         parameter.p = {};
 
@@ -91,6 +92,17 @@ const util = require('../util/util');
       if (!parameter.p.photoScreen)
         parameter.p.photoScreen = {};
 
+      if ((parameter.p.photoScreen.mediaType != req.fields.screenMediaType) || (parameter.p.photoScreen.mediaFile != req.fields.screenMediaFilename)) { //New media file
+        parameter.p.photoScreen.mediaType = req.fields.screenMediaType;
+        parameter.p.photoScreen.mediaFile = req.fields.screenMediaFilename;
+        if (req.fields.screenMediaType == 'video') {
+          display.changeDisplayToVideo();
+        }
+        if (req.fields.screenMediaType == 'image') {
+          display.changeDisplayToImage();
+        }
+      }
+
       parameter.p.photoScreen.mediaType = req.fields.screenMediaType;
       parameter.p.photoScreen.mediaFile = req.fields.screenMediaFilename;
 
@@ -100,7 +112,7 @@ const util = require('../util/util');
     });
     //Template for fields
     expressConfig.app.post('/admin/uploadTemplate', function(req, res) {
-      logger.debug("Receive new template:\n" + JSON.stringify(req.fields) + "\n\n" + JSON.stringify(req.files));
+      logger.debug("[ADMIN] " + "Receive new template:\n" + JSON.stringify(req.fields) + "\n\n" + JSON.stringify(req.files));
       if (req.files.uploads) {
         fs.rename(req.files.uploads.path,
                   util.templatePath + '/' + req.files.uploads.name,
@@ -128,12 +140,12 @@ const util = require('../util/util');
     });
 
     expressConfig.app.post('/admin/uploadScreenMedia', function(req, res) {
-      logger.debug("Recieve screen media file:" + JSON.stringify(req.fields) + '\n' + JSON.stringify(req.files));
+      logger.debug("[ADMIN] " + "Recieve screen media file:" + JSON.stringify(req.fields) + '\n' + JSON.stringify(req.files));
       if (req.files.screenMediaFile) {
         fs.rename(req.files.screenMediaFile.path,
                   util.mediaPath + '/' + req.files.screenMediaFile.name, function (err) {
                     if (err) throw err;
-                    parameter.p.photoScreen.mediaFile = req.files.screenMediaFile.name;
+                    //parameter.p.photoScreen.mediaFile = req.files.screenMediaFile.name;
                     parameter.serialize();
                     res.send(req.files.screenMediaFile.name);
                   });

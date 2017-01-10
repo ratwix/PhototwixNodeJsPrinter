@@ -16,18 +16,18 @@ const render = require("../render/render");
 
   moderateQueue.pushMessage = function (message) {
     if (message.validate_status == 'pending') {
-      logger.debug("Push message to pending queue")
+      logger.debug("[MODERATE] Push message to pending queue")
       moderateQueue.pendingQueue.push(message);
     } else if (message.validate_status == 'validated') {
       moderateQueue.validatedQueue.push(message);
     } else {
-      logger.error("Try to push message with invalid validate_status");
+      logger.error("[MODERATE] Try to push message with invalid validate_status");
     }
   }
 
   moderateQueue.runValidated = function () {
     if (moderateQueue.validatedQueue.length > 0) {
-      logger.debug("Shift validated message");
+      logger.debug("[MODERATE] Shift validated message");
       var message = moderateQueue.validatedQueue.shift();
       render.pushMessage(message);
     }

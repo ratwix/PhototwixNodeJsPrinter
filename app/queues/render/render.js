@@ -31,7 +31,7 @@ const identifyFormatExe = "magick identify -format \"%wx%h\"";
         var message = renderQueue.toRenderQueue.shift();
         switch (message.media_downloaded.length) {
           case 0:
-            logger.error("No photot to render on message " + JSON.stringify(message));
+            logger.error("[RENDER] No photos to render on message " + JSON.stringify(message));
             break;
           case 1:
             renderQueue.render1Photos(message);
@@ -46,7 +46,7 @@ const identifyFormatExe = "magick identify -format \"%wx%h\"";
             renderQueue.render4Photos(message);
             break;
           default:
-            logger.warn("Too many photos to render" + JSON.stringify(message));
+            logger.warn("[RENDER] Too many photos to render" + JSON.stringify(message));
             renderQueue.render4Photos(message);
         }
       }
@@ -81,11 +81,11 @@ const identifyFormatExe = "magick identify -format \"%wx%h\"";
           var imageHeight = (positions.photos[i].yb - positions.photos[i].ya) * templateHeight / 100;
           var x = positions.photos[i].xa * templateWidth / 100;
           var y = positions.photos[i].ya * templateHeight / 100;
-          cmd += ' ( "' + util.singlePhotoPath + '/' + message.media_downloaded[0] + '"' + ` -resize "${imageWidth}x${imageHeight}^" -gravity center -crop ${imageWidth}x${imageHeight}+0+0 ) -gravity NorthWest -geometry +${x}+${y} -composite`;
+          cmd += ' ( "' + util.singlePhotoPath + '/' + message.media_downloaded[i] + '"' + ` -resize "${imageWidth}x${imageHeight}^" -gravity center -crop ${imageWidth}x${imageHeight}+0+0 ) -gravity NorthWest -geometry +${x}+${y} -composite`;
         }
         cmd += ` "${templateFile}" -composite "${destFile}"`;
         //TODO : Add text
-        logger.debug('Merge CMD : ' + cmd);
+        logger.debug('[RENDER] Merge CMD : ' + cmd);
         exec(cmd, function(err, stdout, stderr) {
           if (err) {
             callback(err + '\n' + stderr);
@@ -102,7 +102,7 @@ const identifyFormatExe = "magick identify -format \"%wx%h\"";
 
     getImageSize(imageLocalUrl, function (err, templateWidth, templateHeight) {
       if (err) {
-        logger.error("Error get image size : " + err);
+        logger.error("[RENDER] Error get image size : " + err);
         canRender = true;
       } else {
         if (templateHeight < templateWidth) {
@@ -118,7 +118,7 @@ const identifyFormatExe = "magick identify -format \"%wx%h\"";
     if (param.p.render.onePhotoLandscape.active) {
       var cd = new Date();
       var destFile = `photo_${cd.getFullYear()}_${cd.getMonth() + 1}_${cd.getDate()}_${cd.getHours()}-${cd.getMinutes()}-${cd.getSeconds()}.jpg`;
-      logger.debug("Render 1 photo landscape"); //Do waterfall crop + merge
+      logger.debug("[RENDER] Render 1 photo landscape"); //Do waterfall crop + merge
       merge(message,
         param.p.render.onePhotoLandscape.positions,
         1,
@@ -126,9 +126,9 @@ const identifyFormatExe = "magick identify -format \"%wx%h\"";
         util.resultPhotoPath + '/' + destFile,
         function (err) {
           if (err) {
-            logger.error("Error in convert merge : " + err);
+            logger.error("[RENDER] Error in convert merge : " + err);
           } else {
-            logger.debug("Image " + destFile + " created");
+            logger.debug("[RENDER] Image " + destFile + " created");
             message.resultFile = destFile;
             display.pushMessage(message);
           }
@@ -139,7 +139,7 @@ const identifyFormatExe = "magick identify -format \"%wx%h\"";
       if (param.p.render.onePhotoPortrait.active) {
         renderQueue.renderSinglePortrait(message);
       } else {
-        logger.warn("Render 1 photo landscape not activated");
+        logger.warn("[RENDER] Render 1 photo landscape not activated");
         canRender = true;
       }
     }
@@ -147,13 +147,30 @@ const identifyFormatExe = "magick identify -format \"%wx%h\"";
 
   renderQueue.renderSinglePortrait = function (message) {
     if (param.p.render.onePhotoPortrait.active) {
-      logger.debug("Render 1 photo portrait");
-      canRender = true;
+      var cd = new Date();
+      var destFile = `photo_${cd.getFullYear()}_${cd.getMonth() + 1}_${cd.getDate()}_${cd.getHours()}-${cd.getMinutes()}-${cd.getSeconds()}.jpg`;
+      logger.debug("[RENDER] Render 1 photo portrait"); //Do waterfall crop + merge
+      merge(message,
+        param.p.render.onePhotoPortrait.positions,
+        1,
+        util.templatePath + '/' + param.p.render.onePhotoPortrait.templateFile,
+        util.resultPhotoPath + '/' + destFile,
+        function (err) {
+          if (err) {
+            logger.error("[RENDER] Error in convert merge : " + err);
+          } else {
+            logger.debug("[RENDER] Image " + destFile + " created");
+            message.resultFile = destFile;
+            display.pushMessage(message);
+          }
+          canRender = true;
+        }
+      );
     } else {
       if (param.p.render.onePhotoLandscape.active) {
         renderQueue.renderSingleLandscape(message);
       } else { //If not active, generate the first photo only
-        logger.warn("Render 1 photo portrait not activated");
+        logger.warn("[RENDER] Render 1 photo portrait not activated");
         canRender = true;
       }
     }
@@ -161,8 +178,25 @@ const identifyFormatExe = "magick identify -format \"%wx%h\"";
 
   renderQueue.render2Photos = function (message) {
     if (param.p.render.twoPhotos.active) {
-      logger.debug("Render 2 photos");
-      canRender = true;
+      var cd = new Date();
+      var destFile = `photo_${cd.getFullYear()}_${cd.getMonth() + 1}_${cd.getDate()}_${cd.getHours()}-${cd.getMinutes()}-${cd.getSeconds()}.jpg`;
+      logger.debug("[RENDER] Render 2 photos"); //Do waterfall crop + merge
+      merge(message,
+        param.p.render.twoPhotos.positions,
+        2,
+        util.templatePath + '/' + param.p.render.twoPhotos.templateFile,
+        util.resultPhotoPath + '/' + destFile,
+        function (err) {
+          if (err) {
+            logger.error("[RENDER] Error in convert merge : " + err);
+          } else {
+            logger.debug("[RENDER] Image " + destFile + " created");
+            message.resultFile = destFile;
+            display.pushMessage(message);
+          }
+          canRender = true;
+        }
+      );
     } else { //If not active, generate the first photo only
       renderQueue.render1Photos(message);
     }
@@ -170,8 +204,25 @@ const identifyFormatExe = "magick identify -format \"%wx%h\"";
 
   renderQueue.render3Photos = function (message) {
     if (param.p.render.threePhotos.active) {
-      logger.debug("Render 3 photos");
-      canRender = true;
+      var cd = new Date();
+      var destFile = `photo_${cd.getFullYear()}_${cd.getMonth() + 1}_${cd.getDate()}_${cd.getHours()}-${cd.getMinutes()}-${cd.getSeconds()}.jpg`;
+      logger.debug("[RENDER] Render 3 photos");
+      merge(message,
+        param.p.render.threePhotos.positions,
+        3,
+        util.templatePath + '/' + param.p.render.threePhotos.templateFile,
+        util.resultPhotoPath + '/' + destFile,
+        function (err) {
+          if (err) {
+            logger.error("[RENDER] Error in convert merge : " + err);
+          } else {
+            logger.debug("[RENDER] Image " + destFile + " created");
+            message.resultFile = destFile;
+            display.pushMessage(message);
+          }
+          canRender = true;
+        }
+      );
     } else { //If not active, generate the first photo only
       renderQueue.render1Photos(message);
     }
@@ -179,8 +230,25 @@ const identifyFormatExe = "magick identify -format \"%wx%h\"";
 
   renderQueue.render4Photos = function (message) {
     if (param.p.render.fourPhotos.active) {
-      logger.debug("Render 4 photos");
-      canRender = true;
+      var cd = new Date();
+      var destFile = `photo_${cd.getFullYear()}_${cd.getMonth() + 1}_${cd.getDate()}_${cd.getHours()}-${cd.getMinutes()}-${cd.getSeconds()}.jpg`;
+      logger.debug("[RENDER] Render 4 photos"); //Do waterfall crop + merge
+      merge(message,
+        param.p.render.fourPhotos.positions,
+        4,
+        util.templatePath + '/' + param.p.render.fourPhotos.templateFile,
+        util.resultPhotoPath + '/' + destFile,
+        function (err) {
+          if (err) {
+            logger.error("[RENDER] Error in convert merge : " + err);
+          } else {
+            logger.debug("[RENDER] Image " + destFile + " created");
+            message.resultFile = destFile;
+            display.pushMessage(message);
+          }
+          canRender = true;
+        }
+      );
     } else { //If not active, generate the first photo only
       renderQueue.render1Photos(message);
     }

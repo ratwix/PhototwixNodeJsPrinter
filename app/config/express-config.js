@@ -33,13 +33,13 @@ const formidable = require('express-formidable');
     expressConfig.app.set('views', path.join(__dirname, '../'))
 
     //Enable GZip compression
-    logger.debug("Enabling GZip compression.");
+    logger.debug("[CONFIG EXP] Enabling GZip compression.");
     var compression = require('compression');
     expressConfig.app.use(compression({
       threshold: 512
     }));
 
-    logger.debug("Setting 'Public' folder with maxAge: 1 Day.");
+    logger.debug("[CONFIG EXP] Setting 'Public' folder with maxAge: 1 Day.");
     /*
     var publicFolder = path.dirname(module.parent.filename)  + "/public";
     var oneYear = 31557600000;
@@ -53,14 +53,14 @@ const formidable = require('express-formidable');
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(bodyParser.json());
 */
-    logger.debug("Set formidable");
+    logger.debug("[CONFIG EXP] Set formidable");
     expressConfig.app.use(formidable({
       encoding: 'utf-8',
       uploadDir: require('app-root-path') + '/upload',
       multiples: true // req.files to be arrays of files
     }));
 
-    logger.debug("Overriding 'Express' logger");
+    logger.debug("[CONFIG EXP] Overriding 'Express' logger");
     expressConfig.app.use(require('morgan')("combined", { "stream": logger.stream }));
 
     //Main route definition
@@ -74,7 +74,7 @@ const formidable = require('express-formidable');
     expressConfig.server = expressConfig.app.listen(expressConfig.port);
     expressConfig.host = expressConfig.server.address().address;
     expressConfig.io = require('socket.io').listen(expressConfig.server);
-    logger.info('Example app listening with io at http://%s:%s', expressConfig.host, expressConfig.port);
+    logger.info('[CONFIG EXP] Example app listening with io at http://%s:%s', expressConfig.host, expressConfig.port);
   }
 
 })(module.exports);

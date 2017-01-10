@@ -61,16 +61,16 @@ var configFile = require('app-root-path') + '/configjson/config.json';
     },
     photoScreen: {
       mediaType:'',
-      mediaPath:''
+      mediaFile:''
     }
   };
 
   parameterConfig.serialize = function () {
     fs.writeFile(configFile, JSON.stringify(parameterConfig.p), function(err) {
         if (err) {
-            return logger.error("Error writing config file " + err);
+            return logger.error("[PARAMETER] Error writing config file " + err);
         }
-        logger.info("Config serialized");
+        logger.info("[PARAMETER] Config serialized");
     });
   };
 

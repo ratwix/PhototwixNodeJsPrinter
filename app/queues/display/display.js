@@ -1,6 +1,7 @@
 const logger = require("../../config/logger-config");
 const parameter = require('../../config/parameter-config');
 const expressConfig = require('../../config/express-config');
+const print = require('../print/print');
 
 (function (displayQueue) {
   var displayInterval = 500;
@@ -13,14 +14,16 @@ const expressConfig = require('../../config/express-config');
   displayQueue.init = function () {
     //BEGIN PHOTO SCREEN ROUTE
     expressConfig.app.get('/photoScreen', function(req, res) {
-        res.render('views/controler/screen', {
+        res.render('views/controler/display', {
           param: parameter.p
         });
     });
 
     //Timer end. Put the message in print queue
-    expressConfig.app.post('/photoScreen/printPhoto', function(req, res){
-      var message = req.fields.message;
+    expressConfig.app.post('/photoScreen/printPhoto', function(req, res) {
+      logger.debug(`[DISPLAY] get print message : ${JSON.stringify(req.fields, 2, null)}`);
+      var message = req.fields;
+      print.pushMessage(message);
       canDisplay = true;
       res.contentType('text/html');
       res.send("Photo send to print");
@@ -28,13 +31,13 @@ const expressConfig = require('../../config/express-config');
 
     //TODO: Timer interupt, and do not print the photo
     expressConfig.app.post('/photoScreen/noPrintPhoto', function(req, res){
-      var message = req.fields.message;
+      var message = req.fields;
       canDisplay = true;
     });
 
     //TODO: Timer interupt, and delete the photo
     expressConfig.app.post('/photoScreen/deletePhoto', function(req, res){
-      var message = req.fields.message;
+      var message = req.fields;
       canDisplay = true;
     });
 
@@ -48,6 +51,14 @@ const expressConfig = require('../../config/express-config');
     setInterval(function() {
       runDisplay();
     }, displayInterval);
+  }
+
+  displayQueue.changeDisplayToVideo = function () {
+    displayQueue.socket.emit('changeBgToVideo', parameter.p);
+  }
+
+  displayQueue.changeDisplayToImage = function () {
+    displayQueue.socket.emit('changeBgToImage', parameter.p);
   }
 
   displayQueue.pushMessage = function (message) {

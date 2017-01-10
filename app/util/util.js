@@ -14,10 +14,10 @@ const logger = require("../config/logger-config");
     //Test if file already exists
     fs.exists(dest, (exists) => {
       if (exists) {
-        logger.info(`File ${dest} already exists`);
+        logger.info(`[UTIL] File ${dest} already exists`);
         callback();
       } else {
-        logger.info(`Downloading ${url} to ${dest}`);
+        logger.info(`[UTIL] Downloading ${url} to ${dest}`);
         const file = fs.createWriteStream(dest);
         http.get(url, (response) => {
             response.pipe(file);

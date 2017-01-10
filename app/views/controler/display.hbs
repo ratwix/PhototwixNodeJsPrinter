@@ -1,5 +1,5 @@
 <div class="videoWrapper">
-  <video class="video-background" id="videoBackground" autoplay loop>
+  <video class="video-background" id="videoBackground" autoplay loop muted>
       <source src="" id="videoBackgroundSource" type="video/mp4">Your browser does not support the video tag. I suggest you upgrade your browser.
   </video>
 </div>
@@ -12,8 +12,8 @@
             <div class="modal-header" hidden="true">
             </div>
             <div class="modal-body">
-              <div id="photoResultDiv text-center">
-                <img class='img-responsive' id="photoResult" src="http://www.am-paysage.com/wp-content/uploads/2014/11/paysage1.jpg"></img>
+              <div id="photoResultDiv" class="text-center">
+                <img class='img-responsive' id="photoResult" src="photos/result/photo_2017_1_10_19-50-33.jpg"></img>
               </div>
             </div>
             <div class="modal-footer">
@@ -45,11 +45,21 @@ var currentMessage = {};
 var showPhototimer = {};
 var printProgessTimer = {};
 
-//showPhotoTest(5000);
+//showPhotoTest(50000);
 
 ioscreen.on('displayPhoto', function(data) {
   currentMessage = data;
   showPhoto('/photos/result/' + data.resultFile, 10000);
+});
+
+ioscreen.on('changeBgToVideo', function(param) {
+  console.log(JSON.stringify(param, null, 2));
+  setVideoBackground('medias/' + param.photoScreen.mediaFile);
+});
+
+ioscreen.on('changeBgToImage', function(param) {
+    console.log(JSON.stringify(param, null, 2));
+  setImgBackground('medias/' + param.photoScreen.mediaFile);
 });
 
 $( document ).ready(function() {
@@ -107,10 +117,12 @@ function showPhoto(path, displayTime) {
 
 function hidePhoto() {
   $("#photoModal").modal('hide');
-  $.post( "/photoScreen/printPhoto", currentMessage)
-    .done(function( data ) {
-      console.log(data);
-  });
+  setTimeout(function() {
+    $.post( "/photoScreen/printPhoto", currentMessage)
+      .done(function( data ) {
+        console.log(data);
+    })
+  }, 2000);
 }
 
 </script>
