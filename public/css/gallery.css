@@ -1,0 +1,14 @@
+.gallery-item {
+  margin-bottom: 10px;
+}
+
+#photoResultDivGallery {
+  height: 400px;
+}
+
+#photoResultDivGallery  .img-responsive {
+    display: block;
+    width: auto;
+    max-height: 100%;
+    margin: 0 auto;
+}

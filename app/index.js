@@ -8,6 +8,7 @@ const moderate = require("./queues/moderate/moderate");
 const render = require("./queues/render/render");
 const display = require("./queues/display/display");
 const print = require("./queues/print/print");
+const gallery = require("./gallery/gallery")
 
 var port = 3000;
 
@@ -42,6 +43,10 @@ logger.info("[MAIN] Display configured");
 logger.info("[MAIN] configuring print");
 print.init();
 logger.info("[MAIN] Print configured");
+
+logger.info("[MAIN] configuring gallery");
+gallery.init();
+logger.info("[MAIN] Gallery configured");
 
 //Error management
 expressConfig.app.use((err, request, response, next) => {
