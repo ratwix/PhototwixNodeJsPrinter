@@ -13,7 +13,7 @@
             </div>
             <div class="modal-body">
               <div id="photoResultDiv" class="text-center">
-                <img class='img-responsive' id="photoResult" src="photos/result/photo_2017_1_10_19-50-33.jpg"></img>
+                <img class='img-responsive' id="photoResult" src=""></img>
               </div>
             </div>
             <div class="modal-footer">
@@ -21,7 +21,7 @@
                 <div class="col-md-2">
                   <span class="fa-stack fa-3x">
                     <i class="fa fa-square-o fa-stack-2x icon-background5"></i>
-                    <i class="fa fa-print fa-stack-1x"></i>
+                    <i id="actionIcon" class="fa fa-print fa-stack-1x"></i>
                   </span>
                 </div>
                 <div class="col-md-10 vcenter">
@@ -49,6 +49,13 @@ var printProgessTimer = {};
 
 ioscreen.on('displayPhoto', function(data) {
   currentMessage = data;
+  //Change logo if print or view
+  $("#actionIcon").removeClass("fa-print fa-eye");
+  if (!currentMessage.print || (currentMessage.print === 'false')) {
+    $("#actionIcon").addClass("fa-eye");
+  } else {
+    $("#actionIcon").addClass("fa-print");
+  }
   showPhoto('/photos/result/' + data.resultFile, 10000);
 });
 

@@ -1,10 +1,10 @@
 <div class="container-fluid">
   <div class="gallery" id="gallery">
-
     {{#each photos}}
-      <div class="gallery-item col-xs-4 col-sm-3 col-lg-2"><img src="/photos/result/{{this}}" class="img-responsive photoGallery"></div>
+      <div class="gallery-item container col-sm-4 col-md-3 col-lg-2 text-center">
+        <img src="/photos/result/{{this}}" basicsrc="{{this}}" class="img-responsive photoGallery"></img>
+      </div>
     {{/each}}
-        <div class="gallery-sizer col-xs-4 col-sm-3 col-lg-2"></div>
   </div>
 </div>
 
@@ -16,28 +16,129 @@
             </div>
             <div class="modal-body">
               <div id="photoResultDivGallery" class="text-center">
-                <img class='img-responsive' id="photoResult" src=""></img>
+                <img class='img-responsive' id="photoResult" basicsrc="" src=""></img>
               </div>
             </div>
             <div class="modal-footer">
+              <div class="row">
+                <div class="col-xs-2 col-xs-offset-2" id="buttonViewPhoto">
+                  <span class="fa-stack fa-4x">
+                    <i class="fa fa-square fa-stack-2x icon-background5"></i>
+                    <i class="fa fa-eye fa-inverse fa-stack-1x"></i>
+                  </span>
+                </div>
+                <div class="col-xs-offset-1 col-xs-2" id="buttonPrintPhoto">
+                  <span class="fa-stack fa-4x">
+                    <i class="fa fa-square fa-stack-2x icon-background5"></i>
+                    <i class="fa fa-print fa-inverse fa-stack-1x"></i>
+                  </span>
+                </div>
+                <div class="col-xs-offset-1 col-xs-2" id="buttonDeletePhoto">
+                  <span class="fa-stack fa-4x">
+                    <i class="fa fa-square fa-stack-2x icon-background5"></i>
+                    <i class="fa fa-trash fa-inverse fa-stack-1x"></i>
+                  </span>
+                </div>
+              </div>
             </div>
         </div>
     </div>
 </div>
 
+<div id="alertModal" class="modal fade">
+  <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+          <div class="modal-header modal-header-success">
+            <h3>Message</h3>
+          </div>
+          <div class="modal-body">
+            <h3 id="alertMessage"></h3>
+          </div>
+          <div class="modal-footer" hidden="true"></div>
+      </div>
+  </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
 <script>
-var $grid = $( document ).ready(function() {
-  $('.gallery').isotope({
-    itemSelector: '.gallery-item',
-    percentPosition: true,
-    masonry: {
-      columnWidth: '.gallery-sizer'
-    }
+
+$( document ).ready(function() {
+  $('body').css('background-image', "url('/img/gallery_background.jpg')");
+
+  $( document ).ready(function() {
+    //Click on each photo
+    $('.photoGallery').click(function(event) {
+      $("#photoResult").attr('src', event.target.src);
+      $("#photoResult").attr('basicsrc', event.target.attributes.basicsrc.nodeValue);
+      $("#photoModal").modal('show');
+    });
+
+    //click on viewPhoto
+    $('#buttonViewPhoto').click(function(event) {
+      var photoSrc = $('#photoResult').attr('basicSrc');
+      viewPhoto(photoSrc);
+    });
+
+    //click on printPhoto
+    $('#buttonPrintPhoto').click(function(event) {
+      var photoSrc = $('#photoResult').attr('basicSrc');
+      printPhoto(photoSrc);
+    });
+
+    //click on delete
+    $('#buttonDeletePhoto').click(function(event) {
+      var photoSrc = $('#photoResult').attr('basicSrc');
+      deletePhoto(photoSrc);
+    });
   });
+});
+
+var iogallery = io.connect('http://localhost:3000/gallery'); //TODO a remplacer
+
+iogallery.on('addPhoto', function(data) {
+  addPhoto(data);
+});
+
+function addPhoto(photo) {
+  var photoHtml = $(`<div class="gallery-item container col-sm-4 col-md-3 col-lg-2 text-center">
+                      <img src="/photos/result/${photo}" basicsrc="${photo}" class="img-responsive photoGallery"></img>
+                    </div>`);
+  $('#gallery').append(photoHtml)
 
   $('.photoGallery').click(function(event) {
     $("#photoResult").attr('src', event.target.src);
+    $("#photoResult").attr('basicsrc', event.target.attributes.basicsrc.nodeValue);
     $("#photoModal").modal('show');
   });
-});
+}
+
+function deletePhoto(photo) {
+  var photo = $("#photoResult").attr('basicsrc');
+  $("#alertMessage").html("La photo est supprimée");
+  $("#photoModal").modal('hide');
+  $.post( "/gallery/deletePhoto", {"photo": photo})
+    .done(function( data ) {
+      var element = $('.photoGallery[basicsrc="' + photo + '"]').parent().remove();
+      $("#alertModal").modal('show');
+  });
+}
+
+function viewPhoto(photo) {
+  var photo = $("#photoResult").attr('basicsrc');
+  $("#alertMessage").html("La photo va s'afficher");
+  $("#photoModal").modal('hide');
+  $.post( "/gallery/viewPhoto", {"photo": photo})
+    .done(function( data ) {
+        $("#alertModal").modal('show');
+  });
+}
+
+function printPhoto(photo) {
+  $("#alertMessage").html("La photo va s'imprimée");
+  $("#photoModal").modal('hide');
+  $.post( "/gallery/printPhoto", {"photo": photo})
+    .done(function( data ) {
+        $("#alertModal").modal('show');
+  });
+}
 </script>

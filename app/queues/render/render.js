@@ -2,6 +2,7 @@ const logger = require("../../config/logger-config");
 const param = require("../../config/parameter-config");
 const util = require("../../util/util");
 const display = require("../display/display");
+const gallery = require("../../gallery/gallery");
 
 var exec = require('child_process').exec;
 
@@ -130,7 +131,7 @@ const identifyFormatExe = "magick identify -format \"%wx%h\"";
           } else {
             logger.debug("[RENDER] Image " + destFile + " created");
             message.resultFile = destFile;
-            display.pushMessage(message);
+            endProcess(message);
           }
           canRender = true;
         }
@@ -161,7 +162,7 @@ const identifyFormatExe = "magick identify -format \"%wx%h\"";
           } else {
             logger.debug("[RENDER] Image " + destFile + " created");
             message.resultFile = destFile;
-            display.pushMessage(message);
+            endProcess(message);
           }
           canRender = true;
         }
@@ -192,7 +193,7 @@ const identifyFormatExe = "magick identify -format \"%wx%h\"";
           } else {
             logger.debug("[RENDER] Image " + destFile + " created");
             message.resultFile = destFile;
-            display.pushMessage(message);
+            endProcess(message);
           }
           canRender = true;
         }
@@ -218,7 +219,7 @@ const identifyFormatExe = "magick identify -format \"%wx%h\"";
           } else {
             logger.debug("[RENDER] Image " + destFile + " created");
             message.resultFile = destFile;
-            display.pushMessage(message);
+            endProcess(message);
           }
           canRender = true;
         }
@@ -244,7 +245,7 @@ const identifyFormatExe = "magick identify -format \"%wx%h\"";
           } else {
             logger.debug("[RENDER] Image " + destFile + " created");
             message.resultFile = destFile;
-            display.pushMessage(message);
+            endProcess(message);
           }
           canRender = true;
         }
@@ -252,6 +253,11 @@ const identifyFormatExe = "magick identify -format \"%wx%h\"";
     } else { //If not active, generate the first photo only
       renderQueue.render1Photos(message);
     }
+  }
+
+  function endProcess(message) {
+    display.pushMessage(message);
+    gallery.addPhoto(message);
   }
 
 })(module.exports);

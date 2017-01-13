@@ -7,6 +7,7 @@ const logger = require("../config/logger-config");
 
   util.singlePhotoPath = require('app-root-path') + '/public/photos/single';
   util.resultPhotoPath = require('app-root-path') + '/public/photos/result';
+  util.deletedPhotoPath = require('app-root-path') + '/public/photos/deleted';  
   util.templatePath = require('app-root-path') + '/public/templates';
   util.mediaPath = require('app-root-path') + '/public/medias';
 

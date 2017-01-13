@@ -1,5 +1,18 @@
+
 .gallery-item {
+  height: 200px;
   margin-bottom: 10px;
+}
+
+.gallery-item .photoGallery {
+  margin-left:auto;
+  margin-right:auto;
+  display:block;
+  max-height: 100%;
+  width: auto;
+  border-style: solid;
+  border-width: 5px;
+  border-color: white;
 }
 
 #photoResultDivGallery {
@@ -11,4 +24,17 @@
     width: auto;
     max-height: 100%;
     margin: 0 auto;
+}
+
+.modal-header-success {
+    color:#fff;
+    padding:9px 15px;
+    border-bottom:1px solid #eee;
+    background-color: #5cb85c;
+    -webkit-border-top-left-radius: 5px;
+    -webkit-border-top-right-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-topright: 5px;
+     border-top-left-radius: 5px;
+     border-top-right-radius: 5px;
 }

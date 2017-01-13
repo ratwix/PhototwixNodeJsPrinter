@@ -23,22 +23,16 @@ const print = require('../print/print');
     expressConfig.app.post('/photoScreen/printPhoto', function(req, res) {
       logger.debug(`[DISPLAY] get print message : ${JSON.stringify(req.fields, 2, null)}`);
       var message = req.fields;
-      print.pushMessage(message);
+      //if message is a print message (not single view), put it on print message
+      if (!message.print || (message.print === 'false')) {
+        logger.debug('[DISPLAY] Do not put message in print queue');
+      } else {
+        logger.debug('[DISPLAY] Put message in print queue');
+        print.pushMessage(message);
+      }
       canDisplay = true;
       res.contentType('text/html');
       res.send("Photo send to print");
-    });
-
-    //TODO: Timer interupt, and do not print the photo
-    expressConfig.app.post('/photoScreen/noPrintPhoto', function(req, res){
-      var message = req.fields;
-      canDisplay = true;
-    });
-
-    //TODO: Timer interupt, and delete the photo
-    expressConfig.app.post('/photoScreen/deletePhoto', function(req, res){
-      var message = req.fields;
-      canDisplay = true;
     });
 
     displayQueue.socket = expressConfig.io
@@ -66,12 +60,17 @@ const print = require('../print/print');
     displayQueue.toDisplayQueue.push(message);
   }
 
+  displayQueue.unshiftMessage = function (message) {
+    logger.debug("[DISPLAY] Push New message to display FIRST");
+    displayQueue.toDisplayQueue.unshift(message);
+  }
+
   //Display the Image
   function runDisplay() {
     if (canDisplay) {
       if (displayQueue.toDisplayQueue.length > 0) {
         canDisplay = false;
-        logger.debug("[DISPLAY] Envoie d'un message pour affichage");
+        logger.debug("[DISPLAY] Send photo to display Screen");
         var message = displayQueue.toDisplayQueue.shift();
         message.displayTime = displayTime;
         displayQueue.socket.emit('displayPhoto', message);

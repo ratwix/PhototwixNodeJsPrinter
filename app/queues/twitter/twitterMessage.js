@@ -11,6 +11,7 @@ function TwitterMessage() {
   this.userScreenName = "";
   this.resultFile = "";
   this.validate_status = 'pending'; //'pending', 'validated', 'rejected'
+  this.print = true;
 }
 
 module.exports = TwitterMessage;
