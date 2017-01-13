@@ -103,7 +103,7 @@ function addPhoto(photo) {
   var photoHtml = $(`<div class="gallery-item container col-sm-4 col-md-3 col-lg-2 text-center">
                       <img src="/photos/result/${photo}" basicsrc="${photo}" class="img-responsive photoGallery"></img>
                     </div>`);
-  $('#gallery').append(photoHtml)
+  $('#gallery').append(photoHtml);
 
   $('.photoGallery').click(function(event) {
     $("#photoResult").attr('src', event.target.src);
