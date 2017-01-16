@@ -1,5 +1,5 @@
 var fs = require('fs');
-var configFile = require('app-root-path') + '/configjson/config.json';
+var util = require('../util/util');
 
 
 (function (parameterConfig) {
@@ -66,7 +66,7 @@ var configFile = require('app-root-path') + '/configjson/config.json';
   };
 
   parameterConfig.serialize = function () {
-    fs.writeFile(configFile, JSON.stringify(parameterConfig.p), function(err) {
+    fs.writeFile(util.configFile, JSON.stringify(parameterConfig.p), function(err) {
         if (err) {
             return logger.error("[PARAMETER] Error writing config file " + err);
         }
@@ -75,7 +75,7 @@ var configFile = require('app-root-path') + '/configjson/config.json';
   };
 
   parameterConfig.unserialize = function () {
-    var data = fs.readFileSync(configFile);
+    var data = fs.readFileSync(util.configFile);
     parameterConfig.p = JSON.parse(data);
     logger.info("Config unserialize");
   };

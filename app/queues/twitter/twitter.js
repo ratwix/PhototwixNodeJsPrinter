@@ -1,6 +1,6 @@
 const Twitter = require('twitter');
 var parameter = require('../../config/parameter-config');
-var twitterMessage = require ('./TwitterMessage');
+var twitterMessage = require ('./twitterMessage');
 const twitterInterval = 12500;
 const twitterQueueNoDownloadedInterval = 500;
 const async = require("async");

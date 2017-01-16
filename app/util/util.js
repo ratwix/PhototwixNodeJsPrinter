@@ -15,6 +15,8 @@ const logger = require("../config/logger-config");
   util.imgPath = require('app-root-path') + '/public/img';
   util.uploadPath = require('app-root-path') + '/upload';
   util.workingPath = require('app-root-path') + '/working';
+  util.configFolder = require('app-root-path') + '/configjson';
+  util.configFile =  util.configFolder + '/config.json';
 
   util.downloadFile = (url, dest, callback) => {
     //Test if file already exists
@@ -42,6 +44,9 @@ const logger = require("../config/logger-config");
   }
 
   util.createFolders = () => {
+    mkdirp(util.configFolder, function(err) {
+      if (err) {logger.error('Unable to create dir ' + util.configFolder + ":" + err);}
+    });
     mkdirp(util.singlePhotoPath, function(err) {
       if (err) {logger.error('Unable to create dir ' + util.singlePhotoPath + ":" + err);}
     });

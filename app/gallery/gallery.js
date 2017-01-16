@@ -5,7 +5,7 @@ const expressConfig = require('../config/express-config');
 const util = require('../util/util');
 const logger = require("../config/logger-config");
 const display = require('../queues/display/display');
-var photoMessage = require ('../queues/twitter/TwitterMessage'); //TODO: inherite message
+var photoMessage = require ('../queues/twitter/twitterMessage'); //TODO: inherite message
 
 (function (gallery) {
 
