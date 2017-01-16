@@ -8,9 +8,12 @@ const moderate = require("./queues/moderate/moderate");
 const render = require("./queues/render/render");
 const display = require("./queues/display/display");
 const print = require("./queues/print/print");
-const gallery = require("./gallery/gallery")
+const gallery = require("./gallery/gallery");
+const util = require("./util/util");
 
 var port = 3000;
+
+util.createFolders();
 
 logger.info("[MAIN] Read parameters");
 parameter.unserialize();

@@ -1,7 +1,18 @@
 //TODO : inherite from generique message
 
+function guid() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+    s4() + '-' + s4() + s4() + s4();
+}
+
 function TwitterMessage() {
   this.messageType = 'twitter';
+  this.internalId = guid();
   this.id = "";
   this.text = "";
   this.media_url = [];

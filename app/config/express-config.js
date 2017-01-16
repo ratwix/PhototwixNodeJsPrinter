@@ -33,12 +33,13 @@ const formidable = require('express-formidable');
     expressConfig.app.set('views', path.join(__dirname, '../'))
 
     //Enable GZip compression
+    /*
     logger.debug("[CONFIG EXP] Enabling GZip compression.");
     var compression = require('compression');
     expressConfig.app.use(compression({
       threshold: 512
     }));
-
+*/
     logger.debug("[CONFIG EXP] Setting 'Public' folder with maxAge: 1 Day.");
     /*
     var publicFolder = path.dirname(module.parent.filename)  + "/public";
