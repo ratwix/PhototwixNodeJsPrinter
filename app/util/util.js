@@ -17,6 +17,9 @@ const logger = require("../config/logger-config");
   util.workingPath = require('app-root-path') + '/working';
   util.configFolder = require('app-root-path') + '/configjson';
   util.configFile =  util.configFolder + '/config.json';
+  util.logPath = require('app-root-path') + '/logs';
+
+  util.convertExe = /^win/.test(process.platform) ? "magick convert" : "convert"; //depending windows or linux Imagemagick binary
 
   util.downloadFile = (url, dest, callback) => {
     //Test if file already exists
@@ -44,6 +47,9 @@ const logger = require("../config/logger-config");
   }
 
   util.createFolders = () => {
+    mkdirp(util.logPath, function(err) {
+      if (err) {logger.error('Unable to create dir ' + util.logPath + ":" + err);}
+    });
     mkdirp(util.configFolder, function(err) {
       if (err) {logger.error('Unable to create dir ' + util.configFolder + ":" + err);}
     });

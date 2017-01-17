@@ -1,6 +1,8 @@
 const express = require('express');
 const exphbs  = require('express-handlebars');
 const formidable = require('express-formidable');
+const util = require('../util/util');
+const thumb = require('./express-thumbnail');
 
 (function (expressConfig) {
 
@@ -32,6 +34,11 @@ const formidable = require('express-formidable');
     expressConfig.app.set('view engine', '.hbs')
     expressConfig.app.set('views', path.join(__dirname, '../'))
 
+    expressConfig.app.use(thumb.register(
+      require('app-root-path') + '/public',
+      util.thumbs
+    ));
+
     //Enable GZip compression
     /*
     logger.debug("[CONFIG EXP] Enabling GZip compression.");
@@ -47,7 +54,6 @@ const formidable = require('express-formidable');
     app.use(express.static(publicFolder, { maxAge: oneYear }));
     */
     expressConfig.app.use(express.static('public'));
-
 /*
     logger.debug("Setting parse urlencoded request bodies into req.body.");
     var bodyParser = require('body-parser');

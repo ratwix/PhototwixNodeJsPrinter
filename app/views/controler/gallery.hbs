@@ -2,7 +2,7 @@
   <div class="gallery" id="gallery">
     {{#each photos}}
       <div class="gallery-item container col-sm-4 col-md-3 col-lg-2 text-center">
-        <img src="/photos/result/{{this}}" basicsrc="{{this}}" class="img-responsive photoGallery"></img>
+        <img src="/photos/result/{{this}}?height=250" basicsrc="{{this}}" class="img-responsive photoGallery"></img>
       </div>
     {{/each}}
   </div>
@@ -68,7 +68,7 @@ $( document ).ready(function() {
   $( document ).ready(function() {
     //Click on each photo
     $('.photoGallery').click(function(event) {
-      $("#photoResult").attr('src', event.target.src);
+      $("#photoResult").attr('src', "/photos/result/" + event.target.attributes.basicsrc.nodeValue);
       $("#photoResult").attr('basicsrc', event.target.attributes.basicsrc.nodeValue);
       $("#photoModal").modal('show');
     });
@@ -101,12 +101,12 @@ iogallery.on('addPhoto', function(data) {
 
 function addPhoto(photo) {
   var photoHtml = $(`<div class="gallery-item container col-sm-4 col-md-3 col-lg-2 text-center">
-                      <img src="/photos/result/${photo}" basicsrc="${photo}" class="img-responsive photoGallery"></img>
+                      <img src="/photos/result/${photo}?height=250" basicsrc="${photo}" class="img-responsive photoGallery"></img>
                     </div>`);
   $('#gallery').append(photoHtml);
 
   $('.photoGallery').click(function(event) {
-    $("#photoResult").attr('src', event.target.src);
+    $("#photoResult").attr('src', "/photos/result/" + event.target.attributes.basicsrc.nodeValue);
     $("#photoResult").attr('basicsrc', event.target.attributes.basicsrc.nodeValue);
     $("#photoModal").modal('show');
   });

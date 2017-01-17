@@ -3,11 +3,11 @@ const param = require("../../config/parameter-config");
 const util = require("../../util/util");
 const display = require("../display/display");
 const gallery = require("../../gallery/gallery");
+const sizeOf = require('image-size');
 
 var exec = require('child_process').exec;
 
-const convertExe = "magick convert";
-const identifyFormatExe = "magick identify -format \"%wx%h\"";
+
 
 (function (renderQueue) {
   var renderInterval = 500;
@@ -54,34 +54,22 @@ const identifyFormatExe = "magick identify -format \"%wx%h\"";
     }
   }
 
-  function getImageSize(image, callback) {
-    var cmd = `${identifyFormatExe} "${image}"`;
-    exec(cmd, function(err, stdout, stdedd) {
-      if (err) {
-        callback(err);
-      } else {
-        try {
-          var photoWidth = parseInt(stdout.split("x")[0]);
-          var photoHeight = parseInt(stdout.split("x")[1]);
-          callback(null, photoWidth, photoHeight);
-        } catch (err) {
-          callback(err);
-        }
-      }
-    })
+  function generateFileName() {
+    var cd = new Date();
+    return `photo_${cd.getFullYear()}_${cd.getMonth() + 1}_${cd.getDate()}_${cd.getHours()}-${cd.getMinutes()}-${cd.getSeconds()}-${Math.floor((Math.random() * 10000) + 1)}.jpg`;
   }
 
   function merge(message, positions, nbPhotos, templateFile, destFile, callback) {
-    getImageSize(templateFile, function (err, templateWidth, templateHeight){
+    sizeOf(templateFile, function (err, dimensions){
       if (err) {
         callback(err);
       } else {
-        var cmd = `${convertExe} -size ${templateWidth}x${templateHeight} xc:black`;
+        var cmd = `${util.convertExe} -size ${dimensions.width}x${dimensions.height} xc:black`;
         for (var i = 0; i < nbPhotos; i++) {
-          var imageWidth = (positions.photos[i].xb - positions.photos[i].xa) * templateWidth / 100;
-          var imageHeight = (positions.photos[i].yb - positions.photos[i].ya) * templateHeight / 100;
-          var x = positions.photos[i].xa * templateWidth / 100;
-          var y = positions.photos[i].ya * templateHeight / 100;
+          var imageWidth = (positions.photos[i].xb - positions.photos[i].xa) * dimensions.width / 100;
+          var imageHeight = (positions.photos[i].yb - positions.photos[i].ya) * dimensions.height / 100;
+          var x = positions.photos[i].xa * dimensions.width / 100;
+          var y = positions.photos[i].ya * dimensions.height / 100;
           cmd += ' ( "' + util.singlePhotoPath + '/' + message.media_downloaded[i] + '"' + ` -resize "${imageWidth}x${imageHeight}^" -gravity center -crop ${imageWidth}x${imageHeight}+0+0 ) -gravity NorthWest -geometry +${x}+${y} -composite`;
         }
         cmd += ` "${templateFile}" -composite "${destFile}"`;
@@ -101,12 +89,12 @@ const identifyFormatExe = "magick identify -format \"%wx%h\"";
   renderQueue.render1Photos = function (message, index) {
     var imageLocalUrl = util.singlePhotoPath + '/' + message.media_downloaded[0];
 
-    getImageSize(imageLocalUrl, function (err, templateWidth, templateHeight) {
+    sizeOf(imageLocalUrl, function (err, dimensions) {
       if (err) {
         logger.error("[RENDER] Error get image size : " + err);
         canRender = true;
       } else {
-        if (templateHeight < templateWidth) {
+        if (dimensions.height < dimensions.width) {
           renderQueue.renderSingleLandscape(message);
         } else {
           renderQueue.renderSinglePortrait(message);
@@ -117,8 +105,7 @@ const identifyFormatExe = "magick identify -format \"%wx%h\"";
 
   renderQueue.renderSingleLandscape = function (message) {
     if (param.p.render.onePhotoLandscape.active) {
-      var cd = new Date();
-      var destFile = `photo_${cd.getFullYear()}_${cd.getMonth() + 1}_${cd.getDate()}_${cd.getHours()}-${cd.getMinutes()}-${cd.getSeconds()}.jpg`;
+      var destFile = generateFileName();
       logger.debug("[RENDER] Render 1 photo landscape"); //Do waterfall crop + merge
       merge(message,
         param.p.render.onePhotoLandscape.positions,
@@ -148,8 +135,7 @@ const identifyFormatExe = "magick identify -format \"%wx%h\"";
 
   renderQueue.renderSinglePortrait = function (message) {
     if (param.p.render.onePhotoPortrait.active) {
-      var cd = new Date();
-      var destFile = `photo_${cd.getFullYear()}_${cd.getMonth() + 1}_${cd.getDate()}_${cd.getHours()}-${cd.getMinutes()}-${cd.getSeconds()}.jpg`;
+      var destFile = generateFileName();
       logger.debug("[RENDER] Render 1 photo portrait"); //Do waterfall crop + merge
       merge(message,
         param.p.render.onePhotoPortrait.positions,
@@ -179,8 +165,7 @@ const identifyFormatExe = "magick identify -format \"%wx%h\"";
 
   renderQueue.render2Photos = function (message) {
     if (param.p.render.twoPhotos.active) {
-      var cd = new Date();
-      var destFile = `photo_${cd.getFullYear()}_${cd.getMonth() + 1}_${cd.getDate()}_${cd.getHours()}-${cd.getMinutes()}-${cd.getSeconds()}.jpg`;
+      var destFile = generateFileName();
       logger.debug("[RENDER] Render 2 photos"); //Do waterfall crop + merge
       merge(message,
         param.p.render.twoPhotos.positions,
@@ -205,8 +190,7 @@ const identifyFormatExe = "magick identify -format \"%wx%h\"";
 
   renderQueue.render3Photos = function (message) {
     if (param.p.render.threePhotos.active) {
-      var cd = new Date();
-      var destFile = `photo_${cd.getFullYear()}_${cd.getMonth() + 1}_${cd.getDate()}_${cd.getHours()}-${cd.getMinutes()}-${cd.getSeconds()}.jpg`;
+      var destFile = generateFileName();
       logger.debug("[RENDER] Render 3 photos");
       merge(message,
         param.p.render.threePhotos.positions,
@@ -231,8 +215,7 @@ const identifyFormatExe = "magick identify -format \"%wx%h\"";
 
   renderQueue.render4Photos = function (message) {
     if (param.p.render.fourPhotos.active) {
-      var cd = new Date();
-      var destFile = `photo_${cd.getFullYear()}_${cd.getMonth() + 1}_${cd.getDate()}_${cd.getHours()}-${cd.getMinutes()}-${cd.getSeconds()}.jpg`;
+      var destFile = generateFileName();
       logger.debug("[RENDER] Render 4 photos"); //Do waterfall crop + merge
       merge(message,
         param.p.render.fourPhotos.positions,
