@@ -7,6 +7,8 @@ const logger = require("../config/logger-config");
 (function (util) {
 
   util.singlePhotoPath = require('app-root-path') + '/public/photos/single';
+  util.singleSocialPhotoPath = 'social';
+  util.singleCameraPhotoPath = 'camera';
   util.resultPhotoPath = require('app-root-path') + '/public/photos/result';
   util.deletedPhotoPath = require('app-root-path') + '/public/photos/deleted';
   util.thumbs = require('app-root-path') + '/public/photos/thumbs';
@@ -55,6 +57,12 @@ const logger = require("../config/logger-config");
     });
     mkdirp(util.singlePhotoPath, function(err) {
       if (err) {logger.error('Unable to create dir ' + util.singlePhotoPath + ":" + err);}
+    });
+    mkdirp(util.singlePhotoPath + '/' + util.singleSocialPhotoPath, function(err) {
+      if (err) {logger.error('Unable to create dir ' + util.singlePhotoPath + '/' + util.singleSocialPhotoPath + ":" + err);}
+    });
+    mkdirp(util.singlePhotoPath + '/' + util.singleCameraPhotoPath, function(err) {
+      if (err) {logger.error('Unable to create dir ' + util.singlePhotoPath + '/' +util.singleCameraPhotoPath + ":" + err);}
     });
     mkdirp(util.resultPhotoPath, function(err) {
       if (err) {logger.error('Unable to create dir ' + util.resultPhotoPath + ":" + err);}

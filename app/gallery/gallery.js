@@ -15,19 +15,30 @@ var photoMessage = require ('../queues/twitter/twitterMessage'); //TODO: inherit
     expressConfig.app.get('/gallery', function(req, res) {
         //Get all photos in result directory
         var photos = [];
-        fs.readdir(util.resultPhotoPath, (err, files) => {
-          files.forEach(file => {
-            var ext = path.extname(file);
-            if ((ext.toLowerCase() == ".jpg") || (ext.toLowerCase() == ".png")) {
-              photos.push(file);
-            }
-          });
-          res.render('views/controler/gallery', {
-            param: parameter.p,
-            photos: photos
-          });
-        })
-    });
+        var camera = [];
+        var files = [];
+
+        files = fs.readdirSync(util.resultPhotoPath);
+        files.forEach(file => {
+          var ext = path.extname(file);
+          if ((ext.toLowerCase() == ".jpg") || (ext.toLowerCase() == ".png")) {
+            photos.push(file);
+          }
+        });
+
+        files = fs.readdirSync(util.singlePhotoPath + '/' + util.singleCameraPhotoPath);
+        files.forEach(file => {
+          var ext = path.extname(file);
+          if ((ext.toLowerCase() == ".jpg") || (ext.toLowerCase() == ".png")) {
+            camera.push(file);
+          }
+        });
+        res.render('views/controler/gallery', {
+          param: parameter.p,
+          photos: photos,
+          camera: camera
+        });
+      });
 
     expressConfig.app.post('/gallery/printPhoto', function(req, res) {
         //Send photo to display queue (who will send it to print queue)

@@ -100,8 +100,8 @@ const moderate = require("../moderate/moderate");
             function (media_url, index, callback) {
               var urlSplit = media_url.split("/");
               var media_name = urlSplit[urlSplit.length -1];
-              tm.media_downloaded[index] = media_name;
-              util.downloadFile(media_url, util.singlePhotoPath + "/" + media_name, callback);
+              tm.media_downloaded[index] = util.singleSocialPhotoPath + '/' + media_name;
+              util.downloadFile(media_url, util.singlePhotoPath + '/' + util.singleSocialPhotoPath + "/" + media_name, callback);
             },
             function (err) {
                 if (err) {

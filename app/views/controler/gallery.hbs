@@ -1,12 +1,47 @@
-<div class="container-fluid">
-  <div class="gallery" id="gallery">
-    {{#each photos}}
-      <div class="gallery-item container col-sm-4 col-md-3 col-lg-2 text-center">
-        <img src="/photos/result/{{this}}?height=250" basicsrc="{{this}}" class="img-responsive photoGallery"></img>
+<div id="wrapper">
+  <div id="sidebar-wrapper">
+      <ul class="sidebar-nav">
+          <li><a href="#" id="galleryButton"><i class="fa fa-picture-o fa-4x" aria-hidden="true"></i></a></li>
+          <li><a href="#" id="cameraButton"><i class="fa fa-camera-retro fa-4x" aria-hidden="true"></i></a></li>
+      </ul>
+  </div>
+
+  <div id="page-content-wrapper">
+    <div class="page-content">
+      <div class="container-fluid">
+        <div class="gallery col-sm-12" id="gallery">
+          {{#each photos}}
+            <div class="gallery-item container col-sm-4 col-md-3 col-lg-2 text-center">
+              <img src="/photos/result/{{this}}?height=250" basicsrc="{{this}}" class="img-responsive photoGallery"></img>
+            </div>
+          {{/each}}
+        </div>
+
+        <div class="camera col-sm-12" id="camera">
+
+          <nav class="navbar navbar-inverse navbar-fixed-bottom">
+            <div class="container-fluid">
+              <div class="row">
+                  <div class="col-md-12">
+                    <ul class="horizontal-slide">
+                      {{#each camera}}
+                          <li class="col-md-2 cameraPhoto profile-img-container">
+                            <img class="img-responsive" src="/photos/single/camera/{{this}}?height=150" basicsrc="{{this}}"/>
+                            <a href="#" class="cameraSelectedItem"><span class="fa fa-check-circle fa-5x"></span></a>
+                          </li>
+                      {{/each}}
+                    </ul>
+                </div>
+              </div>
+            </div>
+          </nav>
+        </div>
       </div>
-    {{/each}}
+    </div>
   </div>
 </div>
+
+
 
 <div id="photoModal" class="modal fade">
     <div class="modal-dialog modal-lg">
@@ -62,34 +97,54 @@
 <script src="/socket.io/socket.io.js"></script>
 <script>
 
+$("head").append("<link href='css/gallery.css' rel='stylesheet'>");
+
 $( document ).ready(function() {
   $('body').css('background-image', "url('/img/gallery_background.jpg')");
 
-  $( document ).ready(function() {
-    //Click on each photo
-    $('.photoGallery').click(function(event) {
-      $("#photoResult").attr('src', "/photos/result/" + event.target.attributes.basicsrc.nodeValue);
-      $("#photoResult").attr('basicsrc', event.target.attributes.basicsrc.nodeValue);
-      $("#photoModal").modal('show');
-    });
+  showLeftMenu();
+  showGallery();
 
-    //click on viewPhoto
-    $('#buttonViewPhoto').click(function(event) {
-      var photoSrc = $('#photoResult').attr('basicSrc');
-      viewPhoto(photoSrc);
-    });
+  $('#galleryButton').click(function(e) {
+    e.preventDefault();
+    showGallery();
+  });
 
-    //click on printPhoto
-    $('#buttonPrintPhoto').click(function(event) {
-      var photoSrc = $('#photoResult').attr('basicSrc');
-      printPhoto(photoSrc);
-    });
+  $('#cameraButton').click(function(e) {
+    e.preventDefault();
+    showCamera();
+  });
 
-    //click on delete
-    $('#buttonDeletePhoto').click(function(event) {
-      var photoSrc = $('#photoResult').attr('basicSrc');
-      deletePhoto(photoSrc);
-    });
+  //Click on each photo
+  $('.photoGallery').click(function(event) {
+    $("#photoResult").attr('src', "/photos/result/" + event.target.attributes.basicsrc.nodeValue);
+    $("#photoResult").attr('basicsrc', event.target.attributes.basicsrc.nodeValue);
+    $("#photoModal").modal('show');
+  });
+
+  //click on viewPhoto
+  $('#buttonViewPhoto').click(function(event) {
+    var photoSrc = $('#photoResult').attr('basicSrc');
+    viewPhoto(photoSrc);
+  });
+
+  //click on printPhoto
+  $('#buttonPrintPhoto').click(function(event) {
+    var photoSrc = $('#photoResult').attr('basicSrc');
+    printPhoto(photoSrc);
+  });
+
+  //click on delete
+  $('#buttonDeletePhoto').click(function(event) {
+    var photoSrc = $('#photoResult').attr('basicSrc');
+    deletePhoto(photoSrc);
+  });
+
+  //click on camera images
+  $('.cameraSelectedItem').click(function(event) {
+    event.stopPropagation();
+    event.preventDefault();
+    $(this).toggleClass('cameraSelected');
   });
 });
 
@@ -98,6 +153,26 @@ var iogallery = io.connect('http://localhost:3000/gallery'); //TODO a remplacer
 iogallery.on('addPhoto', function(data) {
   addPhoto(data);
 });
+
+function hideLeftMenu() {
+  if(!$("#wrapper").hasClass("toggled")){
+    $("#wrapper").addClass("toggled");
+  }
+}
+
+function showLeftMenu() {
+  $("#wrapper").removeClass("toggled");
+}
+
+function showGallery() {
+  $('#camera').hide();
+  $('#gallery').show();
+}
+
+function showCamera() {
+  $('#gallery').hide();
+  $('#camera').show();
+}
 
 function addPhoto(photo) {
   var photoHtml = $(`<div class="gallery-item container col-sm-4 col-md-3 col-lg-2 text-center">
