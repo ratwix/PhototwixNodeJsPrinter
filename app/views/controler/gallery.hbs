@@ -17,25 +17,49 @@
           {{/each}}
         </div>
 
-        <div class="camera col-sm-12" id="camera">
+        <div class="gallery col-sm-12" id="camera">
+          <div class="col-sm-12" id="cameraBody">
+            <div id="cameraMessage">
 
-          <nav class="navbar navbar-inverse navbar-fixed-bottom">
-            <div class="container-fluid">
-              <div class="row">
+            </div>
+            <div id="cameraResult" class="col-sm-12">
+              <div id="cameraResultSelected" class="col-sm-3">
+                
+              </div>
+
+              <div id="cameraResultTemplate" class="col-sm-7">
+                <img class="img-responsive" id="cameraResultTemplateImg" src=""></img>
+              </div>
+
+              <div id="cameraResultControl" class="col-sm-2">
+                aaaa
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-12" id="cameraMenu">
+            <nav class="navbar navbar-inverse navbar-fixed-bottom">
+              <div class="container-fluid">
+                <div class="row">
                   <div class="col-md-12">
                     <ul class="horizontal-slide">
                       {{#each camera}}
-                          <li class="col-md-2 cameraPhoto profile-img-container">
-                            <img class="img-responsive" src="/photos/single/camera/{{this}}?height=150" basicsrc="{{this}}"/>
+                          <li class="col-md-3 col-lg-2 cameraPhoto profile-img-container">
+                            <img class="img-responsive cameraPreview" src="/photos/single/camera/{{this}}?height=150" basicsrc="{{this}}"/>
                             <a href="#" class="cameraSelectedItem"><span class="fa fa-check-circle fa-5x"></span></a>
                           </li>
                       {{/each}}
                     </ul>
+                  </div>
                 </div>
               </div>
-            </div>
-          </nav>
+            </nav>
+          </div>
+
         </div>
+
+
+
       </div>
     </div>
   </div>
@@ -95,15 +119,26 @@
 </div>
 
 <script src="/socket.io/socket.io.js"></script>
+<script src="/scripts/gallery.js"></script>
+<script src="/scripts/camera.js"></script>
 <script>
+
+var param = JSON.parse("{{jsonLinear param}}".replace(/&quot;/g,'"'));
 
 $("head").append("<link href='css/gallery.css' rel='stylesheet'>");
 
 $( document ).ready(function() {
   $('body').css('background-image', "url('/img/gallery_background.jpg')");
 
+{{#ifCond param.eyefi.active "&&!" param.eyefi.directPrint}}
   showLeftMenu();
-  showGallery();
+  hidePhoto();
+  updateNbAllowedSelected();
+  updateCameraPreview();
+{{else}}
+  hideLeftMenu();
+  hidePhoto();
+{{/ifCond}}
 
   $('#galleryButton').click(function(e) {
     e.preventDefault();
@@ -140,80 +175,8 @@ $( document ).ready(function() {
     deletePhoto(photoSrc);
   });
 
-  //click on camera images
-  $('.cameraSelectedItem').click(function(event) {
-    event.stopPropagation();
-    event.preventDefault();
-    $(this).toggleClass('cameraSelected');
-  });
+  updateCameraPhotoClick();
 });
 
-var iogallery = io.connect('http://localhost:3000/gallery'); //TODO a remplacer
 
-iogallery.on('addPhoto', function(data) {
-  addPhoto(data);
-});
-
-function hideLeftMenu() {
-  if(!$("#wrapper").hasClass("toggled")){
-    $("#wrapper").addClass("toggled");
-  }
-}
-
-function showLeftMenu() {
-  $("#wrapper").removeClass("toggled");
-}
-
-function showGallery() {
-  $('#camera').hide();
-  $('#gallery').show();
-}
-
-function showCamera() {
-  $('#gallery').hide();
-  $('#camera').show();
-}
-
-function addPhoto(photo) {
-  var photoHtml = $(`<div class="gallery-item container col-sm-4 col-md-3 col-lg-2 text-center">
-                      <img src="/photos/result/${photo}?height=250" basicsrc="${photo}" class="img-responsive photoGallery"></img>
-                    </div>`);
-  $('#gallery').append(photoHtml);
-
-  $('.photoGallery').click(function(event) {
-    $("#photoResult").attr('src', "/photos/result/" + event.target.attributes.basicsrc.nodeValue);
-    $("#photoResult").attr('basicsrc', event.target.attributes.basicsrc.nodeValue);
-    $("#photoModal").modal('show');
-  });
-}
-
-function deletePhoto(photo) {
-  var photo = $("#photoResult").attr('basicsrc');
-  $("#alertMessage").html("La photo est supprimée");
-  $("#photoModal").modal('hide');
-  $.post( "/gallery/deletePhoto", {"photo": photo})
-    .done(function( data ) {
-      var element = $('.photoGallery[basicsrc="' + photo + '"]').parent().remove();
-      $("#alertModal").modal('show');
-  });
-}
-
-function viewPhoto(photo) {
-  var photo = $("#photoResult").attr('basicsrc');
-  $("#alertMessage").html("La photo va s'afficher");
-  $("#photoModal").modal('hide');
-  $.post( "/gallery/viewPhoto", {"photo": photo})
-    .done(function( data ) {
-        $("#alertModal").modal('show');
-  });
-}
-
-function printPhoto(photo) {
-  $("#alertMessage").html("La photo va s'imprimée");
-  $("#photoModal").modal('hide');
-  $.post( "/gallery/printPhoto", {"photo": photo})
-    .done(function( data ) {
-        $("#alertModal").modal('show');
-  });
-}
 </script>

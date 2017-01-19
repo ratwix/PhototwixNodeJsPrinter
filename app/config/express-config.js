@@ -26,8 +26,37 @@ const thumb = require('./express-thumbnail');
       layoutsDir: path.join(__dirname, '../views/layouts'),
       partialsDir: path.join(__dirname, '../views/partials'),
       helpers: {
+          jsonLinear: function (data) { return JSON.stringify(data); },
           json: function (data) { return JSON.stringify(data, null, 2); },
-          eq: function (a, b) {return a == b}
+          eq: function (a, b) {return a == b},
+          ifCond: function (v1, operator, v2, options) {
+            switch (operator) {
+                case '==':
+                    return (v1 == v2) ? options.fn(this) : options.inverse(this);
+                case '===':
+                    return (v1 === v2) ? options.fn(this) : options.inverse(this);
+                case '!=':
+                    return (v1 != v2) ? options.fn(this) : options.inverse(this);
+                case '!==':
+                    return (v1 !== v2) ? options.fn(this) : options.inverse(this);
+                case '<':
+                    return (v1 < v2) ? options.fn(this) : options.inverse(this);
+                case '<=':
+                    return (v1 <= v2) ? options.fn(this) : options.inverse(this);
+                case '>':
+                    return (v1 > v2) ? options.fn(this) : options.inverse(this);
+                case '>=':
+                    return (v1 >= v2) ? options.fn(this) : options.inverse(this);
+                case '&&':
+                    return (v1 && v2) ? options.fn(this) : options.inverse(this);
+                case '&&!':
+                    return (v1 && !v2) ? options.fn(this) : options.inverse(this);
+                case '||':
+                    return (v1 || v2) ? options.fn(this) : options.inverse(this);
+                default:
+                    return options.inverse(this);
+            }
+        }
       }
     }))
 

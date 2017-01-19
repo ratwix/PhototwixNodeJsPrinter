@@ -62,6 +62,15 @@ var util = require('../util/util');
     photoScreen: {
       mediaType:'',
       mediaFile:''
+    },
+    printer : {
+      active : true
+    },
+    eyefi : {
+      active : true,
+      directPrint : true,
+      mac : '',
+      uploadKey : ''
     }
   };
 

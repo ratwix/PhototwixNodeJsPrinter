@@ -20,7 +20,6 @@ body {
     z-index: 1000;
     position: fixed;
     left: 150px;
-    width: 0;
     height: 100%;
     margin-left: -150px;
     overflow-y: auto;
@@ -121,8 +120,12 @@ body {
 #photoResultDivGallery  .img-responsive {
     display: block;
     width: auto;
-    max-height: 100%;
+    max-height: 100%
     margin: 0 auto;
+}
+
+.cameraPreview {
+  max-height: 150px;
 }
 
 .modal-header-success {
@@ -138,7 +141,7 @@ body {
      border-top-right-radius: 5px;
 }
 
-/* Camera */
+/* Camera menu */
 ul.horizontal-slide {
     margin: 0;
     padding: 0;
@@ -157,8 +160,8 @@ ul.horizontal-slide li[class*="col"]:first-child {
 }
 
 .profile-img-container a.cameraSelected {
-    opacity: 1; /* added */
-    top: 0; /* added */
+    opacity: 1;
+    top: 0;
     z-index: 500;
 }
 
@@ -181,4 +184,44 @@ ul.horizontal-slide li[class*="col"]:first-child {
     right: 0;
     text-align: center;
     color: inherit;
+}
+/* Camera body */
+
+#cameraBody {
+  position: fixed;
+  top: 10px;
+  width:auto;
+  left: 200px;
+  right: 10px;
+  bottom: 200px;
+}
+
+#cameraMessage {
+  width: 50%;
+  height: 50%;
+  overflow: auto;
+  margin: auto;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  text-align: center;
+  color: white;
+  font-size: 3.0em;
+}
+
+#cameraResult {
+  height: 100%;
+}
+
+#cameraResultTemplate {
+  text-align: center;
+  height: 100%;
+}
+
+#cameraResultTemplateImg {
+  max-height: 100%;
+  max-width: 100%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  background:darkgrey;
 }

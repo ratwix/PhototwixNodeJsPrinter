@@ -106,6 +106,16 @@ const display = require('../queues/display/display');
       parameter.p.photoScreen.mediaType = req.fields.screenMediaType;
       parameter.p.photoScreen.mediaFile = req.fields.screenMediaFilename;
 
+      parameter.p.printer = {};
+      parameter.p.printer.active = (req.fields.print_active === "true");
+
+      parameter.p.eyefi = {};
+      parameter.p.eyefi.active = (req.fields.eyefiActive === "true");
+      parameter.p.eyefi.directPrint = (req.fields.eyefiDirectPrint === "true");
+      parameter.p.eyefi.mac = req.fields.eyefiMac;
+      parameter.p.eyefi.uploadKey = req.fields.eyefiUploadKey;
+
+
       parameter.serialize();
       res.contentType('text/html');
     	res.send("Parameter saved");

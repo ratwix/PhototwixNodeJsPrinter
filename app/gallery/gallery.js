@@ -25,18 +25,20 @@ var photoMessage = require ('../queues/twitter/twitterMessage'); //TODO: inherit
             photos.push(file);
           }
         });
-
-        files = fs.readdirSync(util.singlePhotoPath + '/' + util.singleCameraPhotoPath);
-        files.forEach(file => {
-          var ext = path.extname(file);
-          if ((ext.toLowerCase() == ".jpg") || (ext.toLowerCase() == ".png")) {
-            camera.push(file);
-          }
-        });
+        if (parameter.p.eyefi.active && !parameter.p.eyefi.directPrint) {
+          files = fs.readdirSync(util.singlePhotoPath + '/' + util.singleCameraPhotoPath);
+          files.forEach(file => {
+            var ext = path.extname(file);
+            if ((ext.toLowerCase() == ".jpg") || (ext.toLowerCase() == ".png")) {
+              camera.push(file);
+            }
+          });
+        }
         res.render('views/controler/gallery', {
           param: parameter.p,
           photos: photos,
-          camera: camera
+          camera: camera,
+          param: parameter.p
         });
       });
 
