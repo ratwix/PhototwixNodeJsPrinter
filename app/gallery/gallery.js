@@ -5,6 +5,7 @@ const expressConfig = require('../config/express-config');
 const util = require('../util/util');
 const logger = require("../config/logger-config");
 const display = require('../queues/display/display');
+const render = require('../queues/render/render');
 var photoMessage = require ('../queues/twitter/twitterMessage'); //TODO: inherite message
 
 (function (gallery) {
@@ -47,13 +48,30 @@ var photoMessage = require ('../queues/twitter/twitterMessage'); //TODO: inherit
         logger.debug(`[GALLERY] get print message : ${JSON.stringify(req.fields, 2, null)}`);
         var photo = req.fields.photo;
         var message = new photoMessage();
-        message.messageType = 'print';
+        message.messageType = 'printGallery';
         message.validate_status = 'validated';
         message.resultFile = photo;
         message.print = true;
         display.unshiftMessage(message);
         res.contentType('text/html');
         res.send("Photo send to print");
+    });
+
+    expressConfig.app.post('/gallery/printCamera', function(req, res) {
+        //Send photo to display queue (who will send it to print queue)
+        logger.debug(`[GALLERY] get print camera message : ${JSON.stringify(req.fields['photos[]'], 2, null)}`);
+        var photos = req.fields['photos[]'];
+        if (!Array.isArray(photos)) {
+          photos = [photos];
+        }
+        var message = new photoMessage();
+        message.messageType = 'camera';
+        message.validate_status = 'validated';
+        message.media_downloaded = photos;
+        message.print = true;
+        render.unshiftMessage(message);
+        res.contentType('text/html');
+        res.send("Photo send to render");
     });
 
     expressConfig.app.post('/gallery/viewPhoto', function(req, res) {

@@ -25,6 +25,11 @@ var exec = require('child_process').exec;
     renderQueue.toRenderQueue.push(message);
   }
 
+  renderQueue.unshiftMessage = function (message) {
+    logger.debug("[RENDER] Push New message FIRST");
+    renderQueue.toRenderQueue.unshift(message);
+  }
+
   renderQueue.runRender = function () {
     if (canRender) {
       if (renderQueue.toRenderQueue.length > 0) {

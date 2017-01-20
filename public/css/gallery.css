@@ -225,3 +225,13 @@ ul.horizontal-slide li[class*="col"]:first-child {
   margin-right: auto;
   background:darkgrey;
 }
+
+#cameraResultSelected {
+  height: 100%;
+}
+
+
+.cameraResultSelectedImg {
+  max-height: 100px;
+  margin-top: 10px;
+}
