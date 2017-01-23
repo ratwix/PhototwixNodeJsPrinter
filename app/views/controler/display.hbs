@@ -39,8 +39,8 @@
 <script src="/socket.io/socket.io.js"></script>
 <script>
 
-var ioscreen = io.connect('http://localhost:3000/screen'); //TODO a remplacer
-
+var serverUrl = window.location.protocol + '//' + window.location.host + "/screen"
+var ioscreen = io.connect(serverUrl);
 var currentMessage = {};
 var showPhototimer = {};
 var printProgessTimer = {};

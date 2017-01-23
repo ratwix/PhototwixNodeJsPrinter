@@ -28,10 +28,15 @@ const render = require("../render/render");
   moderateQueue.runValidated = function () {
     if (moderateQueue.validatedQueue.length > 0) {
       logger.debug("[MODERATE] Shift validated message");
-      var message = moderateQueue.validatedQueue.shift();
-      render.pushMessage(message);
+      for (var i = 0; i < validatedQueue.length; i++) {
+        if (validatedQueue[i].validate_status == 'validated') {
+          var message = validatedQueue[i];
+          validatedQueue.splice(i, 1);
+          i--;
+          render.pushMessage(message);
+        }
+      }
     }
-
   }
 
 })(module.exports);

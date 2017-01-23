@@ -2,6 +2,7 @@ const logger = require("./config/logger-config");
 const path = require('path')
 const expressConfig = require("./config/express-config");
 const twitter = require("./queues/twitter/twitter");
+const instagram = require("./queues/instagram/instagram");
 const parameter = require("./config/parameter-config");
 const admin = require("./admin/admin.js");
 const moderate = require("./queues/moderate/moderate");

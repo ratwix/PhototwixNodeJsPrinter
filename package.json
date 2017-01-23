@@ -14,7 +14,7 @@
     "express-session": "^1.14.2",
     "express-validator": "^3.0.0",
     "image-size": "^0.5.1",
-    "instagram-node": "^0.5.8",
+    "instagram-api": "^1.0.3",
     "lodash": "^4.17.2",
     "method-override": "^2.3.7",
     "mkdirp": "^0.5.1",

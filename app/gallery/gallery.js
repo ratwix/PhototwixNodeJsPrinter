@@ -6,7 +6,7 @@ const util = require('../util/util');
 const logger = require("../config/logger-config");
 const display = require('../queues/display/display');
 const render = require('../queues/render/render');
-var photoMessage = require ('../queues/twitter/twitterMessage'); //TODO: inherite message
+var photoMessage = require ('../queues/message'); //TODO: inherite message
 
 (function (gallery) {
 

@@ -1,6 +1,6 @@
 const Twitter = require('twitter');
 var parameter = require('../../config/parameter-config');
-var twitterMessage = require ('./twitterMessage');
+var twitterMessage = require ('../message');
 const twitterInterval = 12500;
 const twitterQueueNoDownloadedInterval = 500;
 const async = require("async");
@@ -65,6 +65,7 @@ const moderate = require("../moderate/moderate");
       for (var i = tweets.statuses.length - 1; i >= 0; i--) {
         var message = tweets.statuses[i];
         var t = new twitterMessage();
+        t.messageType = 'twitter';
         t.id = message.id_str;
         if (t.id > parameter.p.twitterClient.lastScanId) {
           parameter.p.twitterClient.lastScanId = t.id;
@@ -77,7 +78,11 @@ const moderate = require("../moderate/moderate");
           t.media_url.push(message.extended_entities.media[j].media_url);
         }
         //If do not need validation, auto validate message
-        t.validate_status = 'validated';
+        if (!parameter.needValidation) {
+          t.validate_status = 'validated';
+        } else {
+          t.validate_status = 'pending';
+        }
         twitterQueue.queueNoDownloaded.push(t);
         logger.info("[TWITTER] " + JSON.stringify(t, null, 2));
       }
