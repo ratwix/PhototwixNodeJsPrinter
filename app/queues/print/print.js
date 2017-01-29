@@ -1,5 +1,6 @@
 const logger = require("../../config/logger-config");
 const util = require("../../util/util");
+const spawn = require('child_process').spawn;
 var sizeOf = require('image-size');
 
 (function (printQueue) {
@@ -46,14 +47,43 @@ var sizeOf = require('image-size');
 
   function printLandscape(filePath) {
     logger.info("[PRINT] print landscape:" + filePath);
+    var exe = spawn(util.printPath, ['duplicate:false', 'portrait:false', 'cutter:false', filePath]);
+
+    exe.stderr.on('data', (data) => {
+      logger.info(`[PRINT] Error printing printing ${filePath} ${data}`);
+    });
+
+    exe.on('close', (code) => {
+      logger.info(`[PRINT] end of printing ${filePath}`);
+    });
   }
 
   function printPortrait(filePath) {
     logger.info("[PRINT] print portrait:" + filePath);
+    //gutenprint 5.2.12 auto rotate
+    var exe = spawn(util.printPath, ['duplicate:false', 'portrait:false', 'cutter:false', filePath]);
+
+    exe.stderr.on('data', (data) => {
+      logger.info(`[PRINT] Error printing printing ${filePath} ${data}`);
+    });
+
+    exe.on('close', (code) => {
+      logger.info(`[PRINT] end of printing ${filePath}`);
+    });
   }
 
   function printCutter(filePath) {
     logger.info("[PRINT] print cutter:" + filePath);
+    //gutenprint 5.2.12 auto rotate
+    var exe = spawn(util.printPath, ['duplicate:true', 'portrait:false', 'cutter:true', filePath]);
+
+    exe.stderr.on('data', (data) => {
+      logger.info(`[PRINT] Error printing printing ${filePath} ${data}`);
+    });
+
+    exe.on('close', (code) => {
+      logger.info(`[PRINT] end of printing ${filePath}`);
+    });
   }
 
 })(module.exports);

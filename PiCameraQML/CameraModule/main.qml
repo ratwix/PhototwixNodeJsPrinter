@@ -4,15 +4,15 @@ import QtQuick.Window 2.2
 
 Window {
     visible: true
-    width: 800
-    height: 480
-    title: qsTr("Hello World")
+    //width: 800
+    //height: 480
+    visibility: Window.FullScreen
+    title: qsTr("Phototwix")
 
     QtObject {
         id:globalVar
         property color      backColor:               "#6C6F70"
         property color      backColorTemplate:       "#005A8C"
-        property string     serverUrl:               "http://localhost:3000"
         property int        countdown_delay : 0
         property int        currentPhoto : 0
         property int        nb_photos : 0
@@ -262,7 +262,7 @@ Window {
 
     //Start global photo process
     function startGlobalPhotoProcess(photoNumber) {
-
+        camera.switchOnLight();
         globalVar.nb_photos = photoNumber;
         globalVar.currentPhoto = 0;
         resultList.clear();
@@ -344,8 +344,9 @@ Window {
 
     //End of photo process
     function endGlobalPhotoProcess() {
-        console.log("End global Photo Process")
-        cameraItem.state = "PHOTO_FINAL_RESULT"
+        console.log("End global Photo Process");
+        camera.switchOffLight();
+        cameraItem.state = "PHOTO_FINAL_RESULT";
     }
 
 

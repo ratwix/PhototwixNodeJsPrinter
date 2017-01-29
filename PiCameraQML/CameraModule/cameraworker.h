@@ -41,6 +41,9 @@ public:
     Q_INVOKABLE void pushPhotoUrl(QString url);
     Q_INVOKABLE void sendPhotos();
 
+    Q_INVOKABLE void switchOnLight();
+    Q_INVOKABLE void switchOffLight();
+
     QList<QString> photoList() const;
     void setPhotoList(const QList<QString> &photoList);
 

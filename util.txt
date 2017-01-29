@@ -1,0 +1,4 @@
+sudo systemctl stop phototwix.service
+Program in /opt/CameraModule
+Light on pin 16
+Cups server : http://localhost:631/ . Select the default printer

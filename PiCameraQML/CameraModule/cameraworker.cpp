@@ -93,6 +93,26 @@ void CameraWorker::sendPhotos()
 
 }
 
+void CameraWorker::switchOnLight()
+{
+    QProcess lightProcess;
+    QString program = m_parameters->applicationDirPath().toString() + "/scripts/light_on.py";
+    QStringList arguments;
+    arguments << QString("on");
+    lightProcess.start(program, arguments);
+    lightProcess.waitForFinished(20000);
+}
+
+void CameraWorker::switchOffLight()
+{
+    QProcess lightProcess;
+    QString program = m_parameters->applicationDirPath().toString() + "/scripts/light_off.py";
+    QStringList arguments;
+    arguments << QString("off");
+    lightProcess.start(program, arguments);
+    lightProcess.waitForFinished(20000);
+}
+
 QList<QString> CameraWorker::photoList() const
 {
     return m_photoList;

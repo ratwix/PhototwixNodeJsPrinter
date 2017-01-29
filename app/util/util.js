@@ -21,6 +21,9 @@ const logger = require("../config/logger-config");
   util.configFolder = require('app-root-path') + '/configjson';
   util.configFile =  util.configFolder + '/config.json';
   util.logPath = require('app-root-path') + '/logs';
+  util.getPaperPath = require('app-root-path') + '/scripts/get_paper.sh';
+  util.printPath = require('app-root-path') + '/scripts/print.sh';
+
 
   util.convertExe = /^win/.test(process.platform) ? "magick convert" : "convert"; //depending windows or linux Imagemagick binary
   util.openPar = /^win/.test(process.platform) ? "(" : "\\(";

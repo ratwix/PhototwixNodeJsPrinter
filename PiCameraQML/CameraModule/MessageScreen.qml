@@ -77,6 +77,9 @@ Rectangle {
         if (state == "show") {
             t.start()
         }
+        if (state == "hide") {
+            t.stop()
+        }
     }
 
     Timer {

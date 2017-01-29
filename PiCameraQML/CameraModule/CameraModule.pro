@@ -17,7 +17,17 @@ QML_IMPORT_PATH =
 # Default rules for deployment.
 include(deployment.pri)
 
+# TODO: trouver la bonne variable pour pas mettre le path entier $$DESTDIR_TARGET : non
+scripts.path += /opt/CameraModule/bin/scripts
+scripts.files = scripts/*
+INSTALLS += scripts
+
 HEADERS += \
     cameraworker.h \
     clog.h \
     parameters.h
+
+DISTFILES += \
+    scripts/light_on.py \
+    scripts/light_off.py \
+    scripts/util.txt
