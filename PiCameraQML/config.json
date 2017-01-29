@@ -1,0 +1,9 @@
+{
+  "serverUrl": "http://localhost:3000",
+  "templatePath": "/camera/getTemplates",
+  "uploadPhotosPath": "/camera/uploadPhotos",
+  "messagePrint": "Votre photo va s'imprimée",
+  "messageUpload": "Envoie des photos",
+  "delayCountdown": 2,
+  "delayPhotoResult": 1
+}

@@ -9,6 +9,7 @@ const logger = require("../config/logger-config");
   util.singlePhotoPath = require('app-root-path') + '/public/photos/single';
   util.singleSocialPhotoPath = 'social';
   util.singleCameraPhotoPath = 'camera';
+  util.singleCameraPiPhotoPath = 'camerapi';
   util.resultPhotoPath = require('app-root-path') + '/public/photos/result';
   util.deletedPhotoPath = require('app-root-path') + '/public/photos/deleted';
   util.thumbs = require('app-root-path') + '/public/photos/thumbs';
@@ -22,6 +23,8 @@ const logger = require("../config/logger-config");
   util.logPath = require('app-root-path') + '/logs';
 
   util.convertExe = /^win/.test(process.platform) ? "magick convert" : "convert"; //depending windows or linux Imagemagick binary
+  util.openPar = /^win/.test(process.platform) ? "(" : "\\(";
+  util.closePar = /^win/.test(process.platform) ? ")" : "\\)";
 
   util.downloadFile = (url, dest, callback) => {
     //Test if file already exists
@@ -63,6 +66,9 @@ const logger = require("../config/logger-config");
     });
     mkdirp(util.singlePhotoPath + '/' + util.singleCameraPhotoPath, function(err) {
       if (err) {logger.error('Unable to create dir ' + util.singlePhotoPath + '/' +util.singleCameraPhotoPath + ":" + err);}
+    });
+    mkdirp(util.singlePhotoPath + '/' + util.singleCameraPiPhotoPath, function(err) {
+      if (err) {logger.error('Unable to create dir ' + util.singlePhotoPath + '/' +util.singleCameraPiPhotoPath + ":" + err);}
     });
     mkdirp(util.resultPhotoPath, function(err) {
       if (err) {logger.error('Unable to create dir ' + util.resultPhotoPath + ":" + err);}

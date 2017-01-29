@@ -75,7 +75,8 @@ var exec = require('child_process').exec;
           var imageHeight = (positions.photos[i].yb - positions.photos[i].ya) * dimensions.height / 100;
           var x = positions.photos[i].xa * dimensions.width / 100;
           var y = positions.photos[i].ya * dimensions.height / 100;
-          cmd += ' ( "' + util.singlePhotoPath + '/' + message.media_downloaded[i] + '"' + ` -resize "${imageWidth}x${imageHeight}^" -gravity center -crop ${imageWidth}x${imageHeight}+0+0 ) -gravity NorthWest -geometry +${x}+${y} -composite`;
+
+          cmd += ` ${util.openPar} "${util.singlePhotoPath}/${message.media_downloaded[i]}" -resize "${imageWidth}x${imageHeight}^" -gravity center -crop ${imageWidth}x${imageHeight}+0+0 ${util.closePar} -gravity NorthWest -geometry +${x}+${y} -composite`;
         }
         cmd += ` "${templateFile}" -composite "${destFile}"`;
         //TODO : Add text

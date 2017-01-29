@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>ButtonAwesome.qml</file>
+        <file>resources/font/FontAwesome.otf</file>
+        <file>resources/font/Gabrielle.ttf</file>
+        <file>MessageScreen.qml</file>
+    </qresource>
+</RCC>
