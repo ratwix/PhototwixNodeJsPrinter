@@ -1,0 +1,14 @@
+# interfaces(5) file used by ifup(8) and ifdown(8)
+auto lo
+iface lo inet loopback
+
+iface wlan0 inet manual
+
+#allow-hotplug wlan1
+#iface wlan1 inet manual
+#    wpa-driver rtl8812au
+#    wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
+
+#auto eth0
+#allow-hotplug eth0
+#iface eth0 inet dhcp
