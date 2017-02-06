@@ -269,33 +269,33 @@
 
       <!-- END PRINTER -->
 
-      <!-- EYEFI -->
+      <!-- CAMERA TOSHIBA FlashAir -->
       <div>
         <div class="panel panel-info">
-          <div class="panel-heading">Eyefi</div>
+          <div class="panel-heading">Camera</div>
           <div class="panel-body">
             <div class="form-group">
-              <label for="eyefiActive" class="control-label col-sm-2">Activate</label>
+              <label for="cameraActive" class="control-label col-sm-2">Activate</label>
               <div class="col-sm-10">
-                <input type="checkbox" class="form-control" id="eyefiActive" name="eyefiActive" value="true" {{#if param.eyefi.active}}checked{{/if}}></input>
+                <input type="checkbox" class="form-control" id="cameraActive" name="cameraActive" value="true" {{#if param.camera.active}}checked{{/if}}></input>
               </div>
             </div>
             <div class="form-group">
-              <label for="eyefiDirectPrint" class="control-label col-sm-2">Direct print</label>
+              <label for="cameraDirectPrint" class="control-label col-sm-2">Direct print</label>
               <div class="col-sm-10">
-                <input type="checkbox" class="form-control" id="eyefiDirectPrint" name="eyefiDirectPrint" value="true" {{#if param.eyefi.directPrint}}checked{{/if}}></input>
+                <input type="checkbox" class="form-control" id="cameraDirectPrint" name="cameraDirectPrint" value="true" {{#if param.camera.directPrint}}checked{{/if}}></input>
               </div>
             </div>
             <div class="form-group">
-              <label for="eyefiMac" class="control-label col-sm-2">Mac</label>
+              <label for="cameraIP" class="control-label col-sm-2">Camera IP</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="eyefiMac" name="eyefiMac" value="{{param.eyefi.mac}}"></input>
+                <input type="text" class="form-control" id="cameraIP" name="cameraIP" value="{{param.camera.ip}}"></input>
               </div>
             </div>
             <div class="form-group">
-              <label for="eyefiUploadKey" class="control-label col-sm-2">Upload Key</label>
+              <label for="cameraDCIM" class="control-label col-sm-2">DCIM Path</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="eyefiUploadKey" name="eyefiUploadKey" value="{{param.eyefi.uploadKey}}"></input>
+                <input type="text" class="form-control" id="cameraDCIM" name="cameraDCIM" value="{{param.camera.dcim}}"></input>
               </div>
             </div>
           </div>

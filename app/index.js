@@ -10,7 +10,8 @@ const render = require("./queues/render/render");
 const display = require("./queues/display/display");
 const print = require("./queues/print/print");
 const gallery = require("./gallery/gallery");
-const camera = require("./camera/camera");
+const cameraRaspi = require("./camera/cameraRaspi");
+const cameraFlashAir = require("./camera/cameraFlashAir");
 const util = require("./util/util");
 
 var port = 3000;
@@ -53,11 +54,13 @@ logger.info("[MAIN] configuring gallery");
 gallery.init();
 logger.info("[MAIN] Gallery configured");
 
-
-logger.info("[MAIN] configuring camera");
-camera.init();
+logger.info("[MAIN] configuring camera raspberry");
+cameraRaspi.init();
 logger.info("[MAIN] Camera configured");
 
+logger.info("[MAIN] configuring camera flashair");
+cameraFlashAir.init();
+logger.info("[MAIN] Camera configured");
 
 //Error management
 expressConfig.app.use((err, request, response, next) => {

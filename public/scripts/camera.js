@@ -66,7 +66,7 @@ function updateCameraPhotoClick() {
 function updateCameraPreview() {
   var numSelected = $('.cameraSelected').length;
   if ((numSelected == 0) || (!allowedSelected[numSelected])) { //Nb photo selected not ok. Build message
-    var msg = "Choisisez";
+    var msg = "Choisissez";
     var t = [];
     var j = 0;
     for (var i = 0; i <= 4; i++) {
@@ -145,4 +145,16 @@ function printCamera() {
 function cleanCamera() {
   $('.cameraSelected').removeClass("cameraSelected");
   updateCameraPreview();
+}
+
+function addPhotoCamera(data) {
+  var file = data.split('/');
+  file = file[file.length - 1];
+  var html = `<li class="col-md-3 col-lg-2 cameraPhoto profile-img-container">
+    <img class="img-responsive cameraPreview" src="/photos/single/${data}?height=150" basicsrc="${file}"/>
+    <a href="#" class="cameraSelectedItem"><span class="fa fa-check-circle fa-5x"></span></a>
+  </li>
+  `;
+  $("#cameraPhotoThumb").html(html + $("#cameraPhotoThumb").html());
+  updateCameraPhotoClick();
 }

@@ -48,7 +48,7 @@
               <div class="container-fluid">
                 <div class="row">
                   <div class="col-md-12">
-                    <ul class="horizontal-slide">
+                    <ul class="horizontal-slide" id="cameraPhotoThumb">
                       {{#each camera}}
                           <li class="col-md-3 col-lg-2 cameraPhoto profile-img-container">
                             <img class="img-responsive cameraPreview" src="/photos/single/camera/{{this}}?height=150" basicsrc="{{this}}"/>
@@ -63,9 +63,6 @@
           </div>
 
         </div>
-
-
-
       </div>
     </div>
   </div>
@@ -128,6 +125,17 @@
 <script src="/scripts/gallery.js"></script>
 <script src="/scripts/camera.js"></script>
 <script>
+var serverUrl = window.location.protocol + '//' + window.location.host + "/gallery"
+
+var iogallery = io.connect(serverUrl);
+
+iogallery.on('addPhoto', function(data) {
+  addPhoto(data);
+});
+
+iogallery.on('addCameraPhoto', function(data) {
+  addPhotoCamera(data);
+});
 
 var param = JSON.parse("{{jsonLinear param}}".replace(/&quot;/g,'"'));
 
@@ -136,7 +144,7 @@ $("head").append("<link href='css/gallery.css' rel='stylesheet'>");
 $( document ).ready(function() {
   $('body').css('background-image', "url('/img/gallery_background.jpg')");
 
-{{#ifCond param.eyefi.active "&&!" param.eyefi.directPrint}}
+{{#ifCond param.camera.active "&&!" param.camera.directPrint}}
   showLeftMenu();
   hidePhoto();
   updateNbAllowedSelected();

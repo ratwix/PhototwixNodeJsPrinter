@@ -26,7 +26,7 @@ var photoMessage = require ('../queues/message'); //TODO: inherite message
             photos.push(file);
           }
         });
-        if (parameter.p.eyefi.active && !parameter.p.eyefi.directPrint) {
+        if (parameter.p.camera.active && !parameter.p.camera.directPrint) {
           files = fs.readdirSync(util.singlePhotoPath + '/' + util.singleCameraPhotoPath);
           files.forEach(file => {
             var ext = path.extname(file);
@@ -111,5 +111,10 @@ var photoMessage = require ('../queues/message'); //TODO: inherite message
   gallery.addPhoto = function(message) {
     logger.debug("[GALLERY] push photo to gallery");
     gallery.socket.emit('addPhoto', message.resultFile);
+  }
+
+  gallery.addCameraPhoto = function (message) {
+    logger.debug("[GALLERY] push camera photo to gallery");
+    gallery.socket.emit('addCameraPhoto', message.media_downloaded[0]);
   }
 })(module.exports);

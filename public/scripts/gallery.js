@@ -1,12 +1,4 @@
 
-var serverUrl = window.location.protocol + '//' + window.location.host + "/gallery"
-
-var iogallery = io.connect(serverUrl);
-
-iogallery.on('addPhoto', function(data) {
-  addPhoto(data);
-});
-
 function hideLeftMenu() {
   if(!$("#wrapper").hasClass("toggled")){
     $("#wrapper").addClass("toggled");
@@ -17,12 +9,10 @@ function showLeftMenu() {
   $("#wrapper").removeClass("toggled");
 }
 
-
 function showGallery() {
   $('#camera').hide();
   $('#gallery').show();
 }
-
 
 function addPhoto(photo) {
   var photoHtml = $(`<div class="gallery-item container col-sm-4 col-md-3 col-lg-2 text-center">

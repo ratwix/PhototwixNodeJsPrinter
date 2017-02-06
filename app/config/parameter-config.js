@@ -66,11 +66,11 @@ var util = require('../util/util');
     printer : {
       active : true
     },
-    eyefi : {
+    camera : {
       active : true,
       directPrint : true,
-      mac : '',
-      uploadKey : ''
+      ip : '',
+      dcim : ''
     }
   };
 

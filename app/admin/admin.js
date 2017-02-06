@@ -109,11 +109,11 @@ const display = require('../queues/display/display');
       parameter.p.printer = {};
       parameter.p.printer.active = (req.fields.print_active === "true");
 
-      parameter.p.eyefi = {};
-      parameter.p.eyefi.active = (req.fields.eyefiActive === "true");
-      parameter.p.eyefi.directPrint = (req.fields.eyefiDirectPrint === "true");
-      parameter.p.eyefi.mac = req.fields.eyefiMac;
-      parameter.p.eyefi.uploadKey = req.fields.eyefiUploadKey;
+      parameter.p.camera = {};
+      parameter.p.camera.active = (req.fields.cameraActive === "true");
+      parameter.p.camera.directPrint = (req.fields.cameraDirectPrint === "true");
+      parameter.p.camera.ip = req.fields.cameraIP;
+      parameter.p.camera.dcim = req.fields.cameraDCIM;
 
 
       parameter.serialize();
