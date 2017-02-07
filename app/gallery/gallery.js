@@ -28,6 +28,10 @@ var photoMessage = require ('../queues/message'); //TODO: inherite message
         });
         if (parameter.p.camera.active && !parameter.p.camera.directPrint) {
           files = fs.readdirSync(util.singlePhotoPath + '/' + util.singleCameraPhotoPath);
+          files.sort(function(a, b) {
+                 return fs.statSync(util.singlePhotoPath + '/' + util.singleCameraPhotoPath + '/' + b).mtime.getTime() -
+                        fs.statSync(util.singlePhotoPath + '/' + util.singleCameraPhotoPath + '/' + a).mtime.getTime();
+             });
           files.forEach(file => {
             var ext = path.extname(file);
             if ((ext.toLowerCase() == ".jpg") || (ext.toLowerCase() == ".png")) {

@@ -11,6 +11,8 @@ const moderate = require("../moderate/moderate");
 
 (function (twitterQueue) {
   var canPopQueueNoDownloaded = true;
+  var canPopQueueNoDownloadedTimeoutValue = 20000;
+  var canPopQueueNoDownloadedTimeout;
 
   twitterQueue.queueNoDownloaded = []; //Queue with twitter message no downloded
   twitterQueue.client = '';
@@ -97,6 +99,8 @@ const moderate = require("../moderate/moderate");
     if (canPopQueueNoDownloaded) { //a download process is not already in progress
       if (twitterQueue.queueNoDownloaded.length > 0) {
           canPopQueueNoDownloaded = false;
+          clearTimeout(canPopQueueNoDownloadedTimeout);
+          canPopQueueNoDownloadedTimeout = setTimeout(function () {canPopQueueNoDownloaded = true;}, canPopQueueNoDownloadedTimeoutValue); //Timeout protection
           var tm = twitterQueue.queueNoDownloaded.shift(); //get twitter message
           logger.debug("[TWITTER] Download of twitter message :\n" + JSON.stringify(tm, null, 2) + "\n");
           //Download each file
@@ -117,6 +121,7 @@ const moderate = require("../moderate/moderate");
                   moderate.pushMessage(tm);
                 }
                 canPopQueueNoDownloaded = true;
+                clearTimeout(canPopQueueNoDownloadedTimeout);
             }
           )
       }
