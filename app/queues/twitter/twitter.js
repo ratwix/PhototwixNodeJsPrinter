@@ -88,6 +88,9 @@ const moderate = require("../moderate/moderate");
         twitterQueue.queueNoDownloaded.push(t);
         logger.info("[TWITTER] " + JSON.stringify(t, null, 2));
       }
+      if (tweets.statuses.length > 0) {
+        parameter.serialize();
+      }
     });
   }
 

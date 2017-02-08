@@ -3,6 +3,7 @@
 #include "rapidjson/document.h"
 #include "clog.h"
 
+
 #define CONFIG_FILE string(m_applicationDirPath.toString().toStdString() + "/config.json").c_str()
 
 using namespace std;

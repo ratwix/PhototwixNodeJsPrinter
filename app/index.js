@@ -17,6 +17,7 @@ const util = require("./util/util");
 var port = 3000;
 
 util.createFolders();
+util.updatePaperPrinter();
 
 logger.info("[MAIN] Read parameters");
 parameter.unserialize();

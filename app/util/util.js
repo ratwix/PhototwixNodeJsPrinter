@@ -3,6 +3,8 @@ const http = require("http");
 const request = require("request");
 var mkdirp = require('mkdirp');
 const logger = require("../config/logger-config");
+const spawn = require('child_process').spawn;
+const parameter = require('../config/parameter-config');
 
 (function (util) {
 
@@ -96,6 +98,24 @@ const logger = require("../config/logger-config");
     });
     mkdirp(util.workingPath, function(err) {
       if (err) {logger.error('Unable to create dir ' + util.workingPath + ":" + err);}
+    });
+  }
+
+  util.updatePaperPrinter = () => {
+    logger.info("[UTIL] Get paper");
+    var exe = spawn(util.getPaperPath, []);
+
+    exe.stdout.on('data', (data) => {
+      logger.info(`[UTIL] Get paper result ${data}`);
+      parameter.p.printer.currentPaper = parseInt(data);
+    });
+
+    exe.stderr.on('data', (data) => {
+      logger.info(`[UTIL] Get paper error ${data}`);
+    });
+
+    exe.on('close', (code) => {
+      logger.info(`[UTIL] eng get paper ${code}`);
     });
   }
 })(module.exports);

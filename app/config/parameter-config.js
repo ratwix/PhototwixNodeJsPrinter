@@ -64,7 +64,10 @@ var util = require('../util/util');
       mediaFile:''
     },
     printer : {
-      active : true
+      active : true,
+      currentPaper: 0,
+      maxPrint : 0,
+      currentNbPrint : 0
     },
     camera : {
       active : true,

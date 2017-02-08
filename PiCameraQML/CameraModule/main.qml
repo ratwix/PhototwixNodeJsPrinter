@@ -99,8 +99,73 @@ Window {
                     templateList.clear();
                     getTemplates();
                 }
-
                 visible: templateList.count <= 0
+            }
+
+            Item {
+                id:eth0Info
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: 10
+                anchors.right: parent.right
+                anchors.rightMargin: 10
+                height: 40
+                width: height * 5
+                visible: templateList.count <= 0
+
+                Text {
+                    width: height
+                    height: parent.height
+                    anchors.left: parent.left
+                    font.pixelSize: height
+                    font.family: "FontAwesome"
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    text: "\uf1e6"
+                    color:(networkManager.eth0IP != "") ? "green" :  "black"
+                }
+
+                Text {
+                    //height: parent.height
+                    //width: height * 4
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    text:"IP:" + networkManager.eth0IP
+                }
+            }
+
+            Item {
+                id:wlan0Info
+                anchors.bottom: eth0Info.top
+                anchors.bottomMargin: 10
+                anchors.right: parent.right
+                anchors.rightMargin: 10
+                height: 40
+                width: height * 5
+                visible: templateList.count <= 0
+
+                Text {
+                    width: height
+                    height: parent.height
+                    anchors.left: parent.left
+                    font.pixelSize: height
+                    font.family: "FontAwesome"
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    text: "\uf1eb"
+                    color:(networkManager.wlan0IP != "") ? "green" :  "black"
+                }
+
+                Text {
+                    //height: parent.height
+                    //width: height * 4
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    text:"IP:" + networkManager.wlan0IP
+                }
             }
         }
 

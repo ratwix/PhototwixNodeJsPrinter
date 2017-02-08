@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.1.82, 2017-01-29T22:28:06. -->
+<!-- Written by QtCreator 4.1.82, 2017-02-08T14:56:55. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -288,7 +288,7 @@
       </valuelist>
       <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedTimes">
        <value type="QDateTime">2017-01-29T21:01:50</value>
-       <value type="QDateTime">2017-01-29T21:25:04</value>
+       <value type="QDateTime">2017-02-08T14:32:37</value>
        <value type="QDateTime">2017-01-29T21:01:50</value>
       </valuelist>
       <value type="bool" key="RemoteLinux.GenericDirectUploadStep.IgnoreMissingFiles">false</value>
