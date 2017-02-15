@@ -5,7 +5,9 @@ var util = require('../util/util');
 (function (parameterConfig) {
   var logger = require("./logger-config");
 
-  parameterConfig.p = {
+  parameterConfig.p = {}
+
+  parameterConfig.sample = {
     twitterClient : {
       twitter_active : true,
       consumer_key: '',
@@ -87,8 +89,13 @@ var util = require('../util/util');
   };
 
   parameterConfig.unserialize = function () {
-    var data = fs.readFileSync(util.configFile);
-    parameterConfig.p = JSON.parse(data);
-    logger.info("Config unserialize");
+    if (fs.existsSync(util.configFile)) {
+      var data = fs.readFileSync(util.configFile);
+      parameterConfig.p = JSON.parse(data);
+      logger.info("Config unserialize");
+    } else {
+      parameterConfig.p = parameterConfig.sample;
+      parameterConfig.serialize();
+    }
   };
 })(module.exports);

@@ -70,6 +70,22 @@ const print = require('../print/print');
     displayQueue.toDisplayQueue.unshift(message);
   }
 
+  displayQueue.showNoPaper = function () {
+    displayQueue.socket.emit('showNoPaper');
+  }
+
+  displayQueue.hideNoPaper = function () {
+    displayQueue.socket.emit('hideNoPaper');
+  }
+
+  displayQueue.showNoPrint = function () {
+    displayQueue.socket.emit('showNoPrint');
+  }
+
+  displayQueue.hideNoPrint = function () {
+    displayQueue.socket.emit('hideNoPrint');
+  }
+
   //Display the Image
   function runDisplay() {
     if (canDisplay) {

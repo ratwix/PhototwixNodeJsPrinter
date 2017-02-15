@@ -103,19 +103,23 @@ const parameter = require('../config/parameter-config');
 
   util.updatePaperPrinter = () => {
     logger.info("[UTIL] Get paper");
-    var exe = spawn(util.getPaperPath, []);
+    try {
+      var exe = spawn(util.getPaperPath, []);
 
-    exe.stdout.on('data', (data) => {
-      logger.info(`[UTIL] Get paper result ${data}`);
-      parameter.p.printer.currentPaper = parseInt(data);
-    });
+      exe.stdout.on('data', (data) => {
+        logger.info(`[UTIL] Get paper result ${data}`);
+        parameter.p.printer.currentPaper = parseInt(data);
+      });
 
-    exe.stderr.on('data', (data) => {
-      logger.info(`[UTIL] Get paper error ${data}`);
-    });
+      exe.stderr.on('data', (data) => {
+        logger.info(`[UTIL] Get paper error ${data}`);
+      });
 
-    exe.on('close', (code) => {
-      logger.info(`[UTIL] eng get paper ${code}`);
-    });
+      exe.on('close', (code) => {
+        logger.info(`[UTIL] eng get paper ${code}`);
+      });
+    } catch (err) {
+      logger.error(`[UTIL] get paper error ${err}`);
+    }
   }
 })(module.exports);

@@ -2,10 +2,11 @@ const logger = require("../../config/logger-config");
 const util = require("../../util/util");
 const spawn = require('child_process').spawn;
 const parameter = require('../../config/parameter-config');
+const display = require('../display/display');
 var sizeOf = require('image-size');
 
 (function (printQueue) {
-  var printInterval = 500;
+  var printInterval = 1000;
 
   printQueue.toPrintQueue = [];
 
@@ -18,9 +19,28 @@ var sizeOf = require('image-size');
   printQueue.pushMessage = function (message) {
     logger.debug("[PRINT] Push message to print queue:" + JSON.stringify(message, 2, null))
     printQueue.toPrintQueue.push(message);
+    //TODO update print queue size
   }
 
   printQueue.runPrint = function () {
+    if (parameter.p.printer.active) {
+      if (parameter.p.printer.currentPaper <= 1) {
+        display.showNoPaper();
+        return;
+      } else {
+        display.hideNoPaper();
+      }
+
+      if (parameter.p.printer.maxPrint != 0) {
+        if (parameter.p.currentNbPrint >= parameter.p.printer.maxPrint) {
+          display.showNoPrint();
+          return;
+        } else {
+          display.hideNoPrint();
+        }
+      }
+    }
+
     if (printQueue.toPrintQueue.length > 0) {
       var message = printQueue.toPrintQueue.shift();
       if (parameter.p.printer.active && message.print) {
@@ -37,6 +57,9 @@ var sizeOf = require('image-size');
       if (err) {
         logger.error("[PRINT] error getting size " + filePath);
       } else {
+        //Update nb print
+        parameter.p.currentNbPrint++;
+        parameter.serialize();
         if (dimensions.width > dimensions.height) {
             printLandscape(filePath);
         } else {

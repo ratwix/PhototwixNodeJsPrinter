@@ -36,6 +36,23 @@
     </div>
 </div>
 
+<div id="noprint">
+  <span class="fa-stack fa-5x">
+    <i class="fa fa-square fa-stack-2x"></i>
+    <i class="fa fa-print fa-stack-1x fa-inverse"></i>
+    <i class="fa fa-ban fa-stack-2x text-danger fa-semitransparent"></i>
+  </span>
+</div>
+
+
+<div id="nopaper">
+  <span class="fa-stack fa-5x">
+    <i class="fa fa-square fa-stack-2x"></i>
+    <i class="fa fa-print fa-stack-1x fa-inverse"></i>
+    <i class="fa fa-refresh fa-spin fa-stack-2x fa-fw fa-inverse fa-semitransparent"></i>
+  </span>
+</div>
+
 <script src="/socket.io/socket.io.js"></script>
 <script>
 
@@ -46,6 +63,9 @@ var showPhototimer = {};
 var printProgessTimer = {};
 
 //showPhotoTest(50000);
+
+$('#noprint').hide();
+$('#nopaper').hide();
 
 ioscreen.on('displayPhoto', function(data) {
   currentMessage = data;
@@ -67,6 +87,22 @@ ioscreen.on('changeBgToVideo', function(param) {
 ioscreen.on('changeBgToImage', function(param) {
     console.log(JSON.stringify(param, null, 2));
   setImgBackground('medias/' + param.photoScreen.mediaFile);
+});
+
+ioscreen.on('showNoPrint', function(param) {
+  $('#noprint').show();
+});
+
+ioscreen.on('hideNoPrint', function(param) {
+  $('#noprint').hide();
+});
+
+ioscreen.on('showNoPaper', function(param) {
+  $('#nopaper').show();
+});
+
+ioscreen.on('hideNoPaper', function(param) {
+  $('#nopaper').hide();
 });
 
 $( document ).ready(function() {

@@ -16,11 +16,14 @@ const util = require("./util/util");
 
 var port = 3000;
 
+logger.info("[MAIN] Create Folders");
 util.createFolders();
-util.updatePaperPrinter();
 
 logger.info("[MAIN] Read parameters");
 parameter.unserialize();
+
+logger.info("[MAIN] Update papers");
+util.updatePaperPrinter();
 
 logger.info("[MAIN] configuring express....");
 expressConfig.init();

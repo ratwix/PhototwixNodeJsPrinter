@@ -296,7 +296,7 @@
               <div class="col-sm-3 col-centered">
                 <div class="column" id="cleanPrintQueue">
                   <input type='button' class="btn btn-primary" id="cleanPrintQueueButton" value='Clean'></button>
-                  <input type="text" class="form-control" id="cleanPrintQueue" name="cleanPrintQueue" value="" readonly></input> <!-- TODO add value with current nb print job -->
+                  <input type="text" class="form-control" id="cleanPrintQueue" name="cleanPrintQueue" value="{{printQueueSize}}" readonly></input> <!-- TODO add value with current nb print job -->
                 </div>
               </div>
             </div>
@@ -363,6 +363,13 @@
         $.post( "/admin/save", $( "#adminForm" ).serialize())
           .done(function( data ) {
             showSuccessMessage(data);
+          });
+      });
+
+      $("#cleanPrintQueueButton").click(function() {
+        $.post( "/admin/cleanPrint", $( "#adminForm" ).serialize())
+          .done(function( data ) {
+            location.reload();
           });
       });
 

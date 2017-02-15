@@ -4,6 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const util = require('../util/util');
 const display = require('../queues/display/display');
+const print = require('../queues/print/print');
 
 (function (admin) {
   var logger = require("../config/logger-config");
@@ -19,7 +20,8 @@ const display = require('../queues/display/display');
     expressConfig.app.get('/admin', function(req, res) {
       util.updatePaperPrinter();
       res.render('views/controler/admin', {
-        param: parameter.p
+        param: parameter.p,
+        printQueueSize:print.toPrintQueue.length
       });
     });
 
@@ -157,6 +159,12 @@ const display = require('../queues/display/display');
                     res.send(req.files.uploads.name);
                   });
       }
+    });
+
+    expressConfig.app.post('/admin/cleanPrint', function(req, res) {
+      print.toPrintQueue.splice(0);
+      res.contentType('text/html');
+    	res.send("Queue cleaned");
     });
 
     expressConfig.app.post('/admin/uploadScreenMedia', function(req, res) {
