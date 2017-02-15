@@ -46,11 +46,11 @@ public:
 private:
     QUrl        m_applicationDirPath;
 
-    QString     m_serverUrl;
-    QString     m_templatePath;
-    QString     m_uploadPhotosPath;
-    QString     m_messageUpload;
-    QString     m_messagePrint;
+    QString         m_serverUrl;
+    QString         m_templatePath;
+    QString         m_uploadPhotosPath;
+    QString         m_messageUpload;
+    QString         m_messagePrint;
 
     int         m_delayCountdown;
     int         m_delayPhotoResult;

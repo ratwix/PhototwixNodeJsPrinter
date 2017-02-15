@@ -60,12 +60,15 @@ const queueNoDownloadedInterval = 500;
           }
           if (body == "1") { //New file, update photosDone and render
             logger.debug('[CAMERA T] update');
+            if (cameraFlashAir.photosDone.length == 0) { //First update. Update photoDone without render. Lost first update
+              cameraFlashAir.updateFileList(false);
+            }
             cameraFlashAir.updateFileList(true);
           }
         });
       })
       .on('error', function(e) {
-        logger.info("[CAMERA T] unable to get camera " + e.message);
+        //logger.debug("[CAMERA T] unable to get camera " + e.message);
       });
     }
   }

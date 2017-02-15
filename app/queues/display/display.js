@@ -6,7 +6,11 @@ const print = require('../print/print');
 (function (displayQueue) {
   var displayInterval = 500;
   var displayTime = 5000;
+
+  var canDisplayTimeoutValue = 20000;
+  var canDisplayTimeout;
   var canDisplay = true;
+
 
   displayQueue.toDisplayQueue = [];
   displayQueue.socket = {};
@@ -31,6 +35,7 @@ const print = require('../print/print');
         print.pushMessage(message);
       }
       canDisplay = true;
+      clearTimeout(canDisplayTimeout);
       res.contentType('text/html');
       res.send("Photo send to print");
     });
@@ -70,6 +75,8 @@ const print = require('../print/print');
     if (canDisplay) {
       if (displayQueue.toDisplayQueue.length > 0) {
         canDisplay = false;
+        clearTimeout(canDisplayTimeout);
+        canDisplayTimeout = setTimeout(function () {canDisplay = true;}, canDisplayTimeoutValue); //Timeout protection
         logger.debug("[DISPLAY] Send photo to display Screen");
         var message = displayQueue.toDisplayQueue.shift();
         message.displayTime = displayTime;

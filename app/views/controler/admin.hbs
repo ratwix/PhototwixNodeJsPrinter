@@ -263,6 +263,43 @@
                 <input type="checkbox" class="form-control" id="print_active" name="print_active" value="true" {{#if param.printer.active}}checked{{/if}}></input>
               </div>
             </div>
+            <div class="form-group">
+              <label for="printPaper" class="control-label col-sm-2">Paper</label>
+              <div class="col-sm-3 col-centered">
+                <div class="column" id="printPaper">
+                  <!-- <input type='button' class="btn btn-primary" id="printPaperUpdate" value='Update paper'></button> -->
+                  <input type="text" class="form-control" id="printPaperInput" name="printPaper" value="{{param.printer.currentPaper}}" readonly></input>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="maxPrint" class="control-label col-sm-2">Max Print</label>
+              <div class="col-sm-3 col-centered">
+                <div class="column" id="maxPrint">
+                  <input type="text" class="form-control" id="maxPrintInput" name="maxPrintInput" value="{{param.printer.maxPrint}}"></input> (0 for unlimited print)
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="currentNbPrint" class="control-label col-sm-2">Current Print</label>
+              <div class="col-sm-3 col-centered">
+                <div class="column" id="currentNbPrint">
+                  <input type='button' class="btn btn-primary" id="currentNbPrintReset" value='Reset'></button>
+                  <input type="text" class="form-control" id="currentNbPrintInput" name="currentNbPrintInput" value="{{param.printer.currentNbPrint}}" readonly></input>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="cleanPrintQueue" class="control-label col-sm-2">Print Jobs</label>
+              <div class="col-sm-3 col-centered">
+                <div class="column" id="cleanPrintQueue">
+                  <input type='button' class="btn btn-primary" id="cleanPrintQueueButton" value='Clean'></button>
+                  <input type="text" class="form-control" id="cleanPrintQueue" name="cleanPrintQueue" value="" readonly></input> <!-- TODO add value with current nb print job -->
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -352,6 +389,10 @@
 
       $("#screenMediaLoad").click(function() {
         $("#screenMediaTypeFileInput").click();
+      })
+
+      $("#currentNbPrintReset").click(function() {
+        $("#currentNbPrintInput").val(0);
       })
 
       $('#onePhotoLandscapeLoadTemplateFileInput').on('change', function(){

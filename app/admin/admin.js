@@ -11,15 +11,22 @@ const display = require('../queues/display/display');
   admin.init = function () { //Initialise de l'admin
 
     //BEGIN ADMIN ROUTE
+    //TODO : add nb printer job (lpstat -o)
+    //TODO : cancel all print job (lprm)
+    //TODO : download all photo ZIP
+    //TODO : clean gallery
+    //TODO : gallery : get nb photos & photos single
     expressConfig.app.get('/admin', function(req, res) {
-        res.render('views/controler/admin', {
-          param: parameter.p
-        });
+      util.updatePaperPrinter();
+      res.render('views/controler/admin', {
+        param: parameter.p
+      });
     });
 
     //Save all change in form
     expressConfig.app.post('/admin/save', function(req, res) {
       logger.debug("[ADMIN] " + JSON.stringify(req.fields));
+      util.updatePaperPrinter();
       if (!parameter.p)
         parameter.p = {};
 
@@ -106,8 +113,11 @@ const display = require('../queues/display/display');
       parameter.p.photoScreen.mediaType = req.fields.screenMediaType;
       parameter.p.photoScreen.mediaFile = req.fields.screenMediaFilename;
 
-      parameter.p.printer = {};
+      if (!parameter.p.printer)
+        parameter.p.printer = {};
       parameter.p.printer.active = (req.fields.print_active === "true");
+      parameter.p.printer.maxPrint = parseInt(req.fields.maxPrintInput);
+      parameter.p.printer.currentNbPrint = parseInt(req.fields.currentNbPrintInput);
 
       parameter.p.camera = {};
       parameter.p.camera.active = (req.fields.cameraActive === "true");

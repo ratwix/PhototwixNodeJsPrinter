@@ -7,7 +7,8 @@ CONFIG += c++11
 SOURCES += main.cpp \
     cameraworker.cpp \
     clog.cpp \
-    parameters.cpp
+    parameters.cpp \
+    networkmanager.cpp
 
 RESOURCES += qml.qrc
 
@@ -25,7 +26,8 @@ INSTALLS += scripts
 HEADERS += \
     cameraworker.h \
     clog.h \
-    parameters.h
+    parameters.h \
+    networkmanager.h
 
 DISTFILES += \
     scripts/light_on.py \

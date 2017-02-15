@@ -1,6 +1,7 @@
 const logger = require("../../config/logger-config");
 const util = require("../../util/util");
 const spawn = require('child_process').spawn;
+const parameter = require('../../config/parameter-config');
 var sizeOf = require('image-size');
 
 (function (printQueue) {
@@ -22,8 +23,12 @@ var sizeOf = require('image-size');
   printQueue.runPrint = function () {
     if (printQueue.toPrintQueue.length > 0) {
       var message = printQueue.toPrintQueue.shift();
-      logger.debug("[PRINT] Shift print message " + JSON.stringify(message, 2, null));
-      print(util.resultPhotoPath + '/' + message.resultFile);
+      if (parameter.p.printer.active && message.print) {
+        logger.debug("[PRINT] Shift print message " + JSON.stringify(message, 2, null));
+        print(util.resultPhotoPath + '/' + message.resultFile);
+      } else {
+        logger.debug("[PRINT] Printer not active for message or noprint " + JSON.stringify(message, 2, null));
+      }
     }
   }
 
