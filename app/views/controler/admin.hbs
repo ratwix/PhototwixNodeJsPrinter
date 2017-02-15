@@ -103,14 +103,38 @@
                 <div class="col-sm-1 col-centered">
                   <input type="checkbox" class="form-control" id="onePhotoLandscapeActivated" name="onePhotoLandscapeActivated" value="true" {{#if param.render.onePhotoLandscape.active}}checked{{/if}}></input>
                 </div>
-                <div class="col-sm-3 col-centered">
-                  <div class="column">
-                    <input type='button' class="btn btn-primary" id="onePhotoLandscapeLoadTemplate" value='load'></button>
-                    <input type="text" class="form-control" id="onePhotoLandscapeFilename" name="onePhotoLandscapeFilename" value="{{param.render.onePhotoLandscape.templateFile}}" readonly></input>
-                    <input type='button' class="btn btn-warning" id="onePhotoLandscapeTest" value='test'></button>
-                  </div>
-                </div>
                 <div class="col-sm-4 col-centered">
+                  <div class="panel-group">
+                    <div class="panel panel-default">
+                      <div class="panel-heading">Template file</div>
+                      <div class="panel-body">
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control" id="onePhotoLandscapeFilename" name="onePhotoLandscapeFilename" value="{{param.render.onePhotoLandscape.templateFile}}" readonly></input>
+                        </div>
+                        <div class="col-sm-4">
+                          <input type='button' class="btn btn-primary" id="onePhotoLandscapeLoadTemplate" value='load'></button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                      <div class="panel-heading">Message Text</div>
+                      <div class="panel-body">
+                        <div class="col-sm-3">
+                          <input type="checkbox" class="form-control" id="onePhotoLandscapeMessageTextActivated" name="onePhotoLandscapeMessageTextActivated" value="true" {{#if param.render.onePhotoLandscape.onePhotoLandscapeMessageTextActivated}}checked{{/if}}></input>
+                        </div>
+                        <div class="col-sm-3">
+                          <input type="text" class="form-control" id="onePhotoLandscapeMessageTextColor" name="onePhotoLandscapeMessageTextColor" value="{{param.render.onePhotoLandscape.onePhotoLandscapeMessageTextColor}}" placeholder="#000000"></input>
+                        </div>
+                        <div class="col-sm-6">
+                          <input type="text" class="form-control" id="onePhotoLandscapeMessageTextFont" name="onePhotoLandscapeMessageTextFont" value="{{param.render.onePhotoLandscape.onePhotoLandscapeMessageTextFont}}" placeholder="Gabrielle"></input>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="col-sm-3 col-centered">
                   <img class="img-responsive small_img" id="onePhotoLandscapePreview" src="{{#if param.render.onePhotoLandscape.templateFile}}templates/{{param.render.onePhotoLandscape.templateFile}}{{/if}}"></img>
                 </div>
                 <div class="col-sm-4 col-centered">
@@ -373,6 +397,9 @@
           });
       });
 
+      $("#onePhotoLandscapeMessageTextColor").spectrum({
+          showInput: true
+      });
 
       $("#onePhotoLandscapeLoadTemplate").click(function() {
         $("#onePhotoLandscapeLoadTemplateFileInput").click();
