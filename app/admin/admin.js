@@ -5,6 +5,8 @@ const fs = require('fs');
 const util = require('../util/util');
 const display = require('../queues/display/display');
 const print = require('../queues/print/print');
+const gallery = require('../gallery/gallery');
+const zipFolder = require('zip-folder');
 
 (function (admin) {
   var logger = require("../config/logger-config");
@@ -12,16 +14,70 @@ const print = require('../queues/print/print');
   admin.init = function () { //Initialise de l'admin
 
     //BEGIN ADMIN ROUTE
-    //TODO : add nb printer job (lpstat -o)
-    //TODO : cancel all print job (lprm)
     //TODO : download all photo ZIP
     //TODO : clean gallery
     //TODO : gallery : get nb photos & photos single
+
+    function getPhotosStats() {
+      var p = {};
+
+      p.final = {};
+      var tmp = fs.readdirSync(util.resultPhotoPath);
+      p.final.nb = tmp.length;
+      p.final.size = 0;
+      for (var i = 0; i < tmp.length; i++) {
+        p.final.size += fs.statSync(util.resultPhotoPath + '/' + tmp[i])["size"] / 1000000.0;
+      }
+      p.final.size = Math.round(p.final.size * 100) / 100;
+
+      p.deleted = {};
+      var tmp = fs.readdirSync(util.deletedPhotoPath);
+      p.deleted.nb = tmp.length;
+      p.deleted.size = 0;
+      for (var i = 0; i < tmp.length; i++) {
+        p.deleted.size += fs.statSync(util.deletedPhotoPath + '/' + tmp[i])["size"] / 1000000.0;
+      }
+      p.deleted.size = Math.round(p.deleted.size * 100) / 100;
+
+      p.singleCamera = {};
+      var tmp = fs.readdirSync(util.singlePhotoPath + '/' + util.singleCameraPhotoPath);
+      p.singleCamera.nb = tmp.length;
+      p.singleCamera.size = 0;
+      for (var i = 0; i < tmp.length; i++) {
+        p.singleCamera.size += fs.statSync(util.singlePhotoPath + '/' + util.singleCameraPhotoPath + '/' + tmp[i])["size"] / 1000000.0;
+      }
+      p.singleCamera.size = Math.round(p.singleCamera.size * 100) / 100;
+
+      p.singleCameraPi = {};
+      var tmp = fs.readdirSync(util.singlePhotoPath + '/' + util.singleCameraPiPhotoPath);
+      p.singleCameraPi.nb = tmp.length;
+      p.singleCameraPi.size = 0;
+      for (var i = 0; i < tmp.length; i++) {
+        p.singleCameraPi.size += fs.statSync(util.singlePhotoPath + '/' + util.singleCameraPiPhotoPath + '/' + tmp[i])["size"] / 1000000.0;
+      }
+      p.singleCameraPi.size = Math.round(p.singleCameraPi.size * 100) / 100;
+
+      p.singleSocial = {};
+      var tmp = fs.readdirSync(util.singlePhotoPath + '/' + util.singleSocialPhotoPath);
+      p.singleSocial.nb = tmp.length;
+      p.singleSocial.size = 0;
+      for (var i = 0; i < tmp.length; i++) {
+        p.singleSocial.size += fs.statSync(util.singlePhotoPath + '/' + util.singleSocialPhotoPath + '/' + tmp[i])["size"] / 1000000.0;
+      }
+      p.singleSocial.size = Math.round(p.singleSocial.size * 100) / 100;
+
+      return p;
+    }
+
     expressConfig.app.get('/admin', function(req, res) {
       util.updatePaperPrinter();
+
+      var p = getPhotosStats();
+
       res.render('views/controler/admin', {
         param: parameter.p,
-        printQueueSize:print.toPrintQueue.length
+        printQueueSize:print.toPrintQueue.length,
+        photos: p
       });
     });
 
@@ -106,7 +162,7 @@ const print = require('../queues/print/print');
       parameter.p.render.fourPhotos.templateFile = req.fields.fourPhotosFilename;
       parameter.p.render.fourPhotos.messageTextActivated = (req.fields.fourPhotosMessageTextActivated === "true");
       parameter.p.render.fourPhotos.messageTextColor = req.fields.fourPhotosMessageTextColor;
-      parameter.p.render.fourPhotos.messageTextFont = req.fields.fourPhotosMessageTextFont;        
+      parameter.p.render.fourPhotos.messageTextFont = req.fields.fourPhotosMessageTextFont;
       try {
         parameter.p.render.fourPhotos.positions = JSON.parse(req.fields.fourPhotosPositions);
       } catch (e) {
@@ -193,6 +249,24 @@ const print = require('../queues/print/print');
                     res.send(req.files.screenMediaFile.name);
                   });
       }
+    });
+
+    expressConfig.app.get('/admin/cleanGallery', function(req, res) {
+      gallery.cleanGallery();
+      res.contentType('text/html');
+    	res.send("Gallery Cleaned");
+    });
+
+    expressConfig.app.get('/admin/downloadGallery', function(req, res) {
+      zipFolder(util.photosPath, util.workingPath + '/photos.zip', function(err) {
+          if(err) {
+              logger.error('[ADMIN] error zipping : ', err);
+              res.contentType('text/html');
+              res.send("Zipping error");
+          } else {
+            res.download(util.workingPath + '/photos.zip', 'photos.zip');
+          }
+      });
     });
     //END ROUTE
   };

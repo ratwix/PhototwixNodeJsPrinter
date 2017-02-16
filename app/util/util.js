@@ -8,6 +8,7 @@ const parameter = require('../config/parameter-config');
 
 (function (util) {
 
+  util.photosPath = require('app-root-path') + '/public/photos';
   util.singlePhotoPath = require('app-root-path') + '/public/photos/single';
   util.singleSocialPhotoPath = 'social';
   util.singleCameraPhotoPath = 'camera';
@@ -19,7 +20,7 @@ const parameter = require('../config/parameter-config');
   util.mediaPath = require('app-root-path') + '/public/medias';
   util.imgPath = require('app-root-path') + '/public/img';
   util.uploadPath = require('app-root-path') + '/upload';
-  util.workingPath = require('app-root-path') + '/working';
+  util.workingPath = require('app-root-path') + '/public/working';
   util.configFolder = require('app-root-path') + '/configjson';
   util.configFile =  util.configFolder + '/config.json';
   util.logPath = require('app-root-path') + '/logs';

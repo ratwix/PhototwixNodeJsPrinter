@@ -23,7 +23,8 @@
     "session-file-store": "^1.0.0",
     "socket.io": "^1.7.2",
     "twitter": "^1.7.0",
-    "winston": "^2.3.0"
+    "winston": "^2.3.0",
+    "zip-folder": "^1.0.0"
   },
   "devDependencies": {
     "mocha": "^3.1.2",

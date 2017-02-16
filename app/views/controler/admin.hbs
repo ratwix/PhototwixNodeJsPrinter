@@ -345,7 +345,7 @@
               <label for="screenMediaFile" class="control-label col-sm-2">Media</label>
               <div class="col-sm-3 col-centered">
                 <div class="column" id="screenMediaFile">
-                  <input type='button' class="btn btn-primary" id="screenMediaLoad" value='load'></button>
+                  <input type='button' class="btn btn-primary" id="screenMediaLoad" value='load'></input>
                   <input type="text" class="form-control" id="screenMediaFilename" name="screenMediaFilename" value="{{param.photoScreen.mediaFile}}" readonly></input>
                 </div>
               </div>
@@ -360,8 +360,58 @@
 
       <!-- END SCREEN -->
 
+      <!-- GALLERY -->
+
+      <div>
+        <div class="panel panel-info">
+          <div class="panel-heading">Print</div>
+          <div class="panel-body">
+              <table class="table table-striped col-sm-12">
+                <thead>
+                  <tr>
+                    <th>Photo Type</th>
+                    <th>Number</th>
+                    <th>Size</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Final Result</td>
+                    <td>{{photos.final.nb}}</td>
+                    <td>{{photos.final.size}} Mb</td>
+                  </tr>
+                  <tr>
+                    <td>Deleted</td>
+                    <td>{{photos.deleted.nb}}</td>
+                    <td>{{photos.deleted.size}} Mb</td>
+                  </tr>
+                  <tr>
+                    <td>Single Social</td>
+                    <td>{{photos.singleSocial.nb}}</td>
+                    <td>{{photos.singleSocial.size}} Mb</td>
+                  </tr>
+                  <tr>
+                    <td>Single Camera</td>
+                    <td>{{photos.singleCamera.nb}}</td>
+                    <td>{{photos.singleCamera.size}} Mb</td>
+                  </tr>
+                  <tr>
+                    <td>Single Camera Pi</td>
+                    <td>{{photos.singleCameraPi.nb}}</td>
+                    <td>{{photos.singleCameraPi.size}} Mb</td>
+                  </tr>
+                </tbody>
+              </table>
+              <input type='button' class="btn btn-primary" id="downloadGallery" value='Download'></input>
+              <input type='button' class="btn btn-primary" id="cleanGallery" value='Clean'></input>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- END GALLERY -->
+
       <!-- PRINTER -->
-      <!-- TODO: Ajouter papier restant, nb print max, nb print current -->
       <div>
         <div class="panel panel-info">
           <div class="panel-heading">Print</div>
@@ -467,6 +517,22 @@
       {{/if}}
       $( "#successAlert" ).hide();
       $( "#errorAlert" ).hide();
+
+      $("#downloadGallery").click(function() {
+        $.fileDownload("/admin/downloadGallery")
+          .done(function () { alert('File download a success!'); })
+          .fail(function () { alert('File download failed!'); });
+      });
+
+      $("#cleanGallery").confirmation({
+        rootSelector: '#cleanGallery',
+        title:"Sure to clean ?",
+        onConfirm: function() {
+          $.get( "/admin/cleanGallery", function(data) {
+            location.reload();
+          });
+        }
+      });
 
       $("#save_button").click(function() {
         $.post( "/admin/save", $( "#adminForm" ).serialize())

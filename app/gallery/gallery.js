@@ -121,4 +121,37 @@ var photoMessage = require ('../queues/message'); //TODO: inherite message
     logger.debug("[GALLERY] push camera photo to gallery");
     gallery.socket.emit('addCameraPhoto', message.media_downloaded[0]);
   }
+
+  gallery.cleanGallery = function () {
+    logger.debug("[GALLERY] clean gallery");
+    var tmp = fs.readdirSync(util.resultPhotoPath);
+    for (var i = 0; i < tmp.length; i++) {
+      fs.unlinkSync(util.resultPhotoPath + '/' + tmp[i]);
+    }
+
+    var tmp = fs.readdirSync(util.deletedPhotoPath);
+    for (var i = 0; i < tmp.length; i++) {
+      fs.unlinkSync(util.deletedPhotoPath + '/' + tmp[i]);
+    }
+
+    var tmp = fs.readdirSync(util.singlePhotoPath + '/' + util.singleCameraPhotoPath);
+    for (var i = 0; i < tmp.length; i++) {
+      fs.unlinkSync(util.singlePhotoPath + '/' + util.singleCameraPhotoPath + '/' + tmp[i]);
+    }
+
+    var tmp = fs.readdirSync(util.singlePhotoPath + '/' + util.singleCameraPiPhotoPath);
+    for (var i = 0; i < tmp.length; i++) {
+      fs.unlinkSync(util.singlePhotoPath + '/' + util.singleCameraPiPhotoPath + '/' + tmp[i]);
+    }
+
+    var tmp = fs.readdirSync(util.singlePhotoPath + '/' + util.singleSocialPhotoPath);
+    for (var i = 0; i < tmp.length; i++) {
+      fs.unlinkSync(util.singlePhotoPath + '/' + util.singleSocialPhotoPath + '/' + tmp[i]);
+    }
+
+    var tmp = fs.readdirSync(util.thumbs);
+    for (var i = 0; i < tmp.length; i++) {
+      fs.unlinkSync(util.thumbs + '/' + tmp[i]);
+    }
+  }
 })(module.exports);
