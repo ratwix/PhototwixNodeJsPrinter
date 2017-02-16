@@ -23,6 +23,9 @@ var util = require('../util/util');
       onePhotoLandscape: {
         active:true,
         templateFile:'',
+        messageTextActivated:false,
+        messageTextColor:'#000000',
+        messageTextFont:'Comic Sans MS',
         positions:{
           photos:[{xa:0,yb:0,xb:0,yb:0}],
           text:{xa:0,yb:0,xb:0,yb:0}
@@ -31,6 +34,9 @@ var util = require('../util/util');
       onePhotoPortrait: {
         active:true,
         templateFile:'',
+        messageTextActivated:false,
+        messageTextColor:'#000000',
+        messageTextFont:'Comic Sans MS',
         positions:{
           photos:[{xa:0,yb:0,xb:0,yb:0}],
           text:{xa:0,yb:0,xb:0,yb:0}
@@ -39,6 +45,9 @@ var util = require('../util/util');
       twoPhotos: {
         active:true,
         templateFile:'',
+        messageTextActivated:false,
+        messageTextColor:'#000000',
+        messageTextFont:'Comic Sans MS',
         positions:{
           photos:[{xa:0,yb:0,xb:0,yb:0},{xa:0,yb:0,xb:0,yb:0}],
           text:{xa:0,yb:0,xb:0,yb:0}
@@ -47,6 +56,9 @@ var util = require('../util/util');
       threePhotos: {
         active:true,
         templateFile:'',
+        messageTextActivated:false,
+        messageTextColor:'#000000',
+        messageTextFont:'Comic Sans MS',
         positions:{
           photos:[{xa:0,yb:0,xb:0,yb:0},{xa:0,yb:0,xb:0,yb:0},{xa:0,yb:0,xb:0,yb:0}],
           text:{xa:0,yb:0,xb:0,yb:0}
@@ -55,6 +67,9 @@ var util = require('../util/util');
       fourPhotos: {
         active:true,
         templateFile:'',
+        messageTextActivated:false,
+        messageTextColor:'#000000',
+        messageTextFont:'Comic Sans MS',        
         positions:{
           photos:[{xa:0,yb:0,xb:0,yb:0},{xa:0,yb:0,xb:0,yb:0},{xa:0,yb:0,xb:0,yb:0},{xa:0,yb:0,xb:0,yb:0}],
           text:{xa:0,yb:0,xb:0,yb:0}

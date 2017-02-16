@@ -51,6 +51,9 @@ const print = require('../queues/print/print');
         parameter.p.render.onePhotoLandscape = {};
       parameter.p.render.onePhotoLandscape.active = (req.fields.onePhotoLandscapeActivated === "true");
       parameter.p.render.onePhotoLandscape.templateFile = req.fields.onePhotoLandscapeFilename;
+      parameter.p.render.onePhotoLandscape.messageTextActivated = (req.fields.onePhotoLandscapeMessageTextActivated === "true");
+      parameter.p.render.onePhotoLandscape.messageTextColor = req.fields.onePhotoLandscapeMessageTextColor;
+      parameter.p.render.onePhotoLandscape.messageTextFont = req.fields.onePhotoLandscapeMessageTextFont;
       try {
           parameter.p.render.onePhotoLandscape.positions = JSON.parse(req.fields.onePhotoLandscapePositions);
       } catch (e) {
@@ -62,6 +65,9 @@ const print = require('../queues/print/print');
         parameter.p.render.onePhotoPortrait = {};
       parameter.p.render.onePhotoPortrait.active = (req.fields.onePhotoPortraitActivated === "true");
       parameter.p.render.onePhotoPortrait.templateFile = req.fields.onePhotoPortraitFilename;
+      parameter.p.render.onePhotoPortrait.messageTextActivated = (req.fields.onePhotoPortraitMessageTextActivated === "true");
+      parameter.p.render.onePhotoPortrait.messageTextColor = req.fields.onePhotoPortraitMessageTextColor;
+      parameter.p.render.onePhotoPortrait.messageTextFont = req.fields.onePhotoPortraitMessageTextFont;
       try {
         parameter.p.render.onePhotoPortrait.positions = JSON.parse(req.fields.onePhotoPortraitPositions);
       } catch (e) {
@@ -72,6 +78,9 @@ const print = require('../queues/print/print');
         parameter.p.render.twoPhotos = {};
       parameter.p.render.twoPhotos.active = (req.fields.twoPhotosActivated === "true");
       parameter.p.render.twoPhotos.templateFile = req.fields.twoPhotosFilename;
+      parameter.p.render.twoPhotos.messageTextActivated = (req.fields.twoPhotosMessageTextActivated === "true");
+      parameter.p.render.twoPhotos.messageTextColor = req.fields.twoPhotosMessageTextColor;
+      parameter.p.render.twoPhotos.messageTextFont = req.fields.twoPhotosMessageTextFont;
       try {
         parameter.p.render.twoPhotos.positions = JSON.parse(req.fields.twoPhotosPositions);
       } catch (e) {
@@ -82,6 +91,9 @@ const print = require('../queues/print/print');
         parameter.p.render.threePhotos = {};
       parameter.p.render.threePhotos.active = (req.fields.threePhotosActivated === "true");
       parameter.p.render.threePhotos.templateFile = req.fields.threePhotosFilename;
+      parameter.p.render.threePhotos.messageTextActivated = (req.fields.threePhotosMessageTextActivated === "true");
+      parameter.p.render.threePhotos.messageTextColor = req.fields.threePhotosMessageTextColor;
+      parameter.p.render.threePhotos.messageTextFont = req.fields.threePhotosMessageTextFont;
       try {
         parameter.p.render.threePhotos.positions = JSON.parse(req.fields.threePhotosPositions);
       } catch (e) {
@@ -92,6 +104,9 @@ const print = require('../queues/print/print');
         parameter.p.render.fourPhotos = {};
       parameter.p.render.fourPhotos.active = (req.fields.fourPhotosActivated === "true");
       parameter.p.render.fourPhotos.templateFile = req.fields.fourPhotosFilename;
+      parameter.p.render.fourPhotos.messageTextActivated = (req.fields.fourPhotosMessageTextActivated === "true");
+      parameter.p.render.fourPhotos.messageTextColor = req.fields.fourPhotosMessageTextColor;
+      parameter.p.render.fourPhotos.messageTextFont = req.fields.fourPhotosMessageTextFont;        
       try {
         parameter.p.render.fourPhotos.positions = JSON.parse(req.fields.fourPhotosPositions);
       } catch (e) {

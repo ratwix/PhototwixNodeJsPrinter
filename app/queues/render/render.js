@@ -64,22 +64,32 @@ var exec = require('child_process').exec;
     return `photo_${cd.getFullYear()}_${cd.getMonth() + 1}_${cd.getDate()}_${cd.getHours()}-${cd.getMinutes()}-${cd.getSeconds()}-${Math.floor((Math.random() * 10000) + 1)}.jpg`;
   }
 
-  function merge(message, positions, nbPhotos, templateFile, destFile, callback) {
+  function merge(message, positions, nbPhotos, templateFile, textActive, textColor, textFont, destFile, callback) {
     sizeOf(templateFile, function (err, dimensions){
       if (err) {
         callback(err);
       } else {
         var cmd = `${util.convertExe} -size ${dimensions.width}x${dimensions.height} xc:black`;
         for (var i = 0; i < nbPhotos; i++) {
-          var imageWidth = (positions.photos[i].xb - positions.photos[i].xa) * dimensions.width / 100;
-          var imageHeight = (positions.photos[i].yb - positions.photos[i].ya) * dimensions.height / 100;
-          var x = positions.photos[i].xa * dimensions.width / 100;
-          var y = positions.photos[i].ya * dimensions.height / 100;
+          var imageWidth = Math.round((positions.photos[i].xb - positions.photos[i].xa) * dimensions.width / 100);
+          var imageHeight = Math.round((positions.photos[i].yb - positions.photos[i].ya) * dimensions.height / 100);
+          var x = Math.round(positions.photos[i].xa * dimensions.width / 100);
+          var y = Math.round(positions.photos[i].ya * dimensions.height / 100);
 
           cmd += ` ${util.openPar} "${util.singlePhotoPath}/${message.media_downloaded[i]}" -resize "${imageWidth}x${imageHeight}^" -gravity center -crop ${imageWidth}x${imageHeight}+0+0 ${util.closePar} -gravity NorthWest -geometry +${x}+${y} -composite`;
         }
-        cmd += ` "${templateFile}" -composite "${destFile}"`;
-        //TODO : Add text
+        cmd += ` "${templateFile}" -composite `;
+
+        if (textActive) {
+          var textHeight = Math.round((positions.text.yb - positions.text.ya)  * dimensions.height / 100);
+          var textWidth = Math.round((positions.text.xb - positions.text.xa) * dimensions.width / 100);
+          var textx = Math.round(positions.text.xa * dimensions.width / 100);
+          var texty = Math.round(positions.text.ya * dimensions.height / 100);
+          cmd += ` ${util.openPar} -background transparent -size ${textWidth}x${textHeight} -fill "${textColor}" -font "${textFont}" "caption:${message.text}" ${util.closePar} -gravity NorthWest -geometry +${textx}+${texty} -composite`;
+        }
+
+        cmd += ` "${destFile}"`
+
         logger.debug('[RENDER] Merge CMD : ' + cmd);
         exec(cmd, function(err, stdout, stderr) {
           if (err) {
@@ -117,6 +127,9 @@ var exec = require('child_process').exec;
         param.p.render.onePhotoLandscape.positions,
         1,
         util.templatePath + '/' + param.p.render.onePhotoLandscape.templateFile,
+        param.p.render.onePhotoLandscape.messageTextActivated,
+        param.p.render.onePhotoLandscape.messageTextColor,
+        param.p.render.onePhotoLandscape.messageTextFont,
         util.resultPhotoPath + '/' + destFile,
         function (err) {
           if (err) {
@@ -147,6 +160,9 @@ var exec = require('child_process').exec;
         param.p.render.onePhotoPortrait.positions,
         1,
         util.templatePath + '/' + param.p.render.onePhotoPortrait.templateFile,
+        param.p.render.onePhotoPortrait.messageTextActivated,
+        param.p.render.onePhotoPortrait.messageTextColor,
+        param.p.render.onePhotoPortrait.messageTextFont,
         util.resultPhotoPath + '/' + destFile,
         function (err) {
           if (err) {
@@ -177,6 +193,9 @@ var exec = require('child_process').exec;
         param.p.render.twoPhotos.positions,
         2,
         util.templatePath + '/' + param.p.render.twoPhotos.templateFile,
+        param.p.render.twoPhotos.messageTextActivated,
+        param.p.render.twoPhotos.messageTextColor,
+        param.p.render.twoPhotos.messageTextFont,
         util.resultPhotoPath + '/' + destFile,
         function (err) {
           if (err) {
@@ -202,6 +221,9 @@ var exec = require('child_process').exec;
         param.p.render.threePhotos.positions,
         3,
         util.templatePath + '/' + param.p.render.threePhotos.templateFile,
+        param.p.render.threePhotos.messageTextActivated,
+        param.p.render.threePhotos.messageTextColor,
+        param.p.render.threePhotos.messageTextFont,
         util.resultPhotoPath + '/' + destFile,
         function (err) {
           if (err) {
@@ -227,6 +249,9 @@ var exec = require('child_process').exec;
         param.p.render.fourPhotos.positions,
         4,
         util.templatePath + '/' + param.p.render.fourPhotos.templateFile,
+        param.p.render.fourPhotos.messageTextActivated,
+        param.p.render.fourPhotos.messageTextColor,
+        param.p.render.fourPhotos.messageTextFont,
         util.resultPhotoPath + '/' + destFile,
         function (err) {
           if (err) {

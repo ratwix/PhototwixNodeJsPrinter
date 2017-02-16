@@ -68,15 +68,6 @@
       </div>
       <!-- END TWITTER -->
 
-      <!-- BEGIN INSTAGRAM -->
-      <div class="panel panel-info">
-        <div class="panel-heading">Instagram</div>
-        <div class="panel-body">
-
-        </div>
-      </div>
-      <!-- END INSTAGRAM -->
-
       <!-- BEGIN VALIDATION -->
       <div class="panel panel-info">
         <div class="panel-heading">Moderator</div>
@@ -100,10 +91,10 @@
             <label for="onePhotoLandscape" class="control-label col-sm-2">1 photo landscape</label>
             <div class="col-sm-10" id="onePhotoLandscape">
               <div class="row row-centered">
-                <div class="col-sm-1 col-centered">
+                <div class="col-lg-1 col-md-4 col-centered">
                   <input type="checkbox" class="form-control" id="onePhotoLandscapeActivated" name="onePhotoLandscapeActivated" value="true" {{#if param.render.onePhotoLandscape.active}}checked{{/if}}></input>
                 </div>
-                <div class="col-sm-4 col-centered">
+                <div class="col-lg-4 col-md-8 col-centered">
                   <div class="panel-group">
                     <div class="panel panel-default">
                       <div class="panel-heading">Template file</div>
@@ -121,23 +112,23 @@
                       <div class="panel-heading">Message Text</div>
                       <div class="panel-body">
                         <div class="col-sm-3">
-                          <input type="checkbox" class="form-control" id="onePhotoLandscapeMessageTextActivated" name="onePhotoLandscapeMessageTextActivated" value="true" {{#if param.render.onePhotoLandscape.onePhotoLandscapeMessageTextActivated}}checked{{/if}}></input>
+                          <input type="checkbox" class="form-control" id="onePhotoLandscapeMessageTextActivated" name="onePhotoLandscapeMessageTextActivated" value="true" {{#if param.render.onePhotoLandscape.messageTextActivated}}checked{{/if}}></input>
                         </div>
                         <div class="col-sm-3">
-                          <input type="text" class="form-control" id="onePhotoLandscapeMessageTextColor" name="onePhotoLandscapeMessageTextColor" value="{{param.render.onePhotoLandscape.onePhotoLandscapeMessageTextColor}}" placeholder="#000000"></input>
+                          <input type="text" class="form-control" id="onePhotoLandscapeMessageTextColor" name="onePhotoLandscapeMessageTextColor" value="{{param.render.onePhotoLandscape.messageTextColor}}" placeholder="#000000"></input>
                         </div>
                         <div class="col-sm-6">
-                          <input type="text" class="form-control" id="onePhotoLandscapeMessageTextFont" name="onePhotoLandscapeMessageTextFont" value="{{param.render.onePhotoLandscape.onePhotoLandscapeMessageTextFont}}" placeholder="Gabrielle"></input>
+                          <input type="text" class="form-control" id="onePhotoLandscapeMessageTextFont" name="onePhotoLandscapeMessageTextFont" value="{{param.render.onePhotoLandscape.messageTextFont}}" placeholder="Gabrielle"></input>
                         </div>
                       </div>
                     </div>
                   </div>
-
                 </div>
-                <div class="col-sm-3 col-centered">
+
+                <div class="col-lg-3 col-sm-8 col-centered">
                   <img class="img-responsive small_img" id="onePhotoLandscapePreview" src="{{#if param.render.onePhotoLandscape.templateFile}}templates/{{param.render.onePhotoLandscape.templateFile}}{{/if}}"></img>
                 </div>
-                <div class="col-sm-4 col-centered">
+                <div class="col-lg-4 col-sm-12 col-centered">
                   <textarea class="form-control" rows="6" id="onePhotoLandscapePositions" name="onePhotoLandscapePositions">{{json param.render.onePhotoLandscape.positions}}</textarea>
                 </div>
               </div>
@@ -148,20 +139,43 @@
             <label for="onePhotoPortrait" class="control-label col-sm-2">1 photo portrait</label>
             <div class="col-sm-10" id="onePhotoPortrait">
               <div class="row row-centered">
-                <div class="col-sm-1 col-centered">
+                <div class="col-lg-1 col-md-4 col-centered">
                   <input type="checkbox" class="form-control" id="onePhotoPortraitActivated" name="onePhotoPortraitActivated" value="true" {{#if param.render.onePhotoPortrait.active}}checked{{/if}}></input>
                 </div>
-                <div class="col-sm-3 col-centered">
-                  <div class="column">
-                    <input type='button' class="btn btn-primary" id="onePhotoPortraitLoadTemplate" value='load'></button>
-                    <input type="text" class="form-control" id="onePhotoPortraitFilename" name="onePhotoPortraitFilename" value="{{param.render.onePhotoPortrait.templateFile}}" readonly></input>
-                    <input type='button' class="btn btn-warning" id="onePhotoPortraitTest" value='test'></button>
+                <div class="col-lg-4 col-md-8 col-centered">
+                  <div class="panel-group">
+                    <div class="panel panel-default">
+                      <div class="panel-heading">Template file</div>
+                      <div class="panel-body">
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control" id="onePhotoPortraitFilename" name="onePhotoPortraitFilename" value="{{param.render.onePhotoPortrait.templateFile}}" readonly></input>
+                        </div>
+                        <div class="col-sm-4">
+                          <input type='button' class="btn btn-primary" id="onePhotoPortraitLoadTemplate" value='load'></button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                      <div class="panel-heading">Message Text</div>
+                      <div class="panel-body">
+                        <div class="col-sm-3">
+                          <input type="checkbox" class="form-control" id="onePhotoPortraitMessageTextActivated" name="onePhotoPortraitMessageTextActivated" value="true" {{#if param.render.onePhotoPortrait.messageTextActivated}}checked{{/if}}></input>
+                        </div>
+                        <div class="col-sm-3">
+                          <input type="text" class="form-control" id="onePhotoPortraitMessageTextColor" name="onePhotoPortraitMessageTextColor" value="{{param.render.onePhotoPortrait.messageTextColor}}" placeholder="#000000"></input>
+                        </div>
+                        <div class="col-sm-6">
+                          <input type="text" class="form-control" id="onePhotoPortraitMessageTextFont" name="onePhotoPortraitMessageTextFont" value="{{param.render.onePhotoPortrait.messageTextFont}}" placeholder="Gabrielle"></input>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div class="col-sm-4 col-centered">
+                <div class="col-lg-3 col-sm-8 col-centered">
                   <img class="img-responsive small_img" id="onePhotoPortraitPreview" src="{{#if param.render.onePhotoPortrait.templateFile}}templates/{{param.render.onePhotoPortrait.templateFile}}{{/if}}"></img>
                 </div>
-                <div class="col-sm-4 col-centered">
+                <div class="col-lg-4 col-sm-12 col-centered">
                   <textarea class="form-control" rows="6" id="onePhotoPortraitPositions" name="onePhotoPortraitPositions">{{json param.render.onePhotoPortrait.positions}}</textarea>
                 </div>
               </div>
@@ -172,68 +186,139 @@
             <label for="twoPhotos" class="control-label col-sm-2">2 photos</label>
             <div class="col-sm-10" id="twoPhotos">
               <div class="row row-centered">
-                <div class="col-sm-1 col-centered">
+                <div class="col-lg-1 col-md-4 col-centered">
                   <input type="checkbox" class="form-control" id="twoPhotosActivated" name="twoPhotosActivated" value="true" {{#if param.render.twoPhotos.active}}checked{{/if}}></input>
                 </div>
-                <div class="col-sm-3 col-centered">
-                  <div class="column">
-                    <input type='button' class="btn btn-primary" id="twoPhotosLoadTemplate" value='load'></button>
-                    <input type="text" class="form-control" id="twoPhotosFilename" name="twoPhotosFilename" value="{{param.render.twoPhotos.templateFile}}" readonly></input>
-                    <input type='button' class="btn btn-warning" id="twoPhotosTest" value='test'></button>
+                <div class="col-lg-4 col-md-8 col-centered">
+                  <div class="panel-group">
+                    <div class="panel panel-default">
+                      <div class="panel-heading">Template file</div>
+                      <div class="panel-body">
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control" id="twoPhotosFilename" name="twoPhotosFilename" value="{{param.render.twoPhotos.templateFile}}" readonly></input>
+                        </div>
+                        <div class="col-sm-4">
+                          <input type='button' class="btn btn-primary" id="twoPhotosLoadTemplate" value='load'></button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                      <div class="panel-heading">Message Text</div>
+                      <div class="panel-body">
+                        <div class="col-sm-3">
+                          <input type="checkbox" class="form-control" id="twoPhotosMessageTextActivated" name="twoPhotosMessageTextActivated" value="true" {{#if param.render.twoPhotos.messageTextActivated}}checked{{/if}}></input>
+                        </div>
+                        <div class="col-sm-3">
+                          <input type="text" class="form-control" id="twoPhotosMessageTextColor" name="twoPhotosMessageTextColor" value="{{param.render.twoPhotos.messageTextColor}}" placeholder="#000000"></input>
+                        </div>
+                        <div class="col-sm-6">
+                          <input type="text" class="form-control" id="twoPhotosMessageTextFont" name="twoPhotosMessageTextFont" value="{{param.render.twoPhotos.messageTextFont}}" placeholder="Gabrielle"></input>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div class="col-sm-4 col-centered">
+                <div class="col-lg-3 col-sm-8 col-centered">
                   <img class="img-responsive small_img" id="twoPhotosPreview" src="{{#if param.render.twoPhotos.templateFile}}templates/{{param.render.twoPhotos.templateFile}}{{/if}}"></img>
                 </div>
-                <div class="col-sm-4 col-centered">
+                <div class="col-lg-4 col-sm-12 col-centered">
                   <textarea class="form-control" rows="6" id="twoPhotosPositions" name="twoPhotosPositions">{{json param.render.twoPhotos.positions}}</textarea>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="form-group">
-            <label for="threePhotos" class="control-label col-sm-2">3 photos</label>
-            <div class="col-sm-10" id="threePhotos">
-              <div class="row row-centered">
-                <div class="col-sm-1 col-centered">
-                  <input type="checkbox" class="form-control" id="threePhotosActivated" name="threePhotosActivated" value="true" {{#if param.render.threePhotos.active}}checked{{/if}}></input>
-                </div>
-                <div class="col-sm-3 col-centered">
-                  <div class="column">
-                    <input type='button' class="btn btn-primary" id="threePhotosLoadTemplate" value='load'></button>
-                    <input type="text" class="form-control" id="threePhotosFilename" name="threePhotosFilename" value="{{param.render.threePhotos.templateFile}}" readonly></input>
-                    <input type='button' class="btn btn-warning" id="threePhotosTest" value='test'></button>
+
+        <div class="form-group">
+          <label for="threePhotos" class="control-label col-sm-2">3 photos</label>
+          <div class="col-sm-10" id="threePhotos">
+            <div class="row row-centered">
+              <div class="col-lg-1 col-md-4 col-centered">
+                <input type="checkbox" class="form-control" id="threePhotosActivated" name="threePhotosActivated" value="true" {{#if param.render.threePhotos.active}}checked{{/if}}></input>
+              </div>
+              <div class="col-lg-4 col-md-8 col-centered">
+                <div class="panel-group">
+                  <div class="panel panel-default">
+                    <div class="panel-heading">Template file</div>
+                    <div class="panel-body">
+                      <div class="col-sm-8">
+                        <input type="text" class="form-control" id="threePhotosFilename" name="threePhotosFilename" value="{{param.render.threePhotos.templateFile}}" readonly></input>
+                      </div>
+                      <div class="col-sm-4">
+                        <input type='button' class="btn btn-primary" id="threePhotosLoadTemplate" value='load'></button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="panel panel-default">
+                    <div class="panel-heading">Message Text</div>
+                    <div class="panel-body">
+                      <div class="col-sm-3">
+                        <input type="checkbox" class="form-control" id="threePhotosMessageTextActivated" name="threePhotosMessageTextActivated" value="true" {{#if param.render.threePhotos.messageTextActivated}}checked{{/if}}></input>
+                      </div>
+                      <div class="col-sm-3">
+                        <input type="text" class="form-control" id="threePhotosMessageTextColor" name="threePhotosMessageTextColor" value="{{param.render.threePhotos.messageTextColor}}" placeholder="#000000"></input>
+                      </div>
+                      <div class="col-sm-6">
+                        <input type="text" class="form-control" id="threePhotosMessageTextFont" name="threePhotosMessageTextFont" value="{{param.render.threePhotos.messageTextFont}}" placeholder="Gabrielle"></input>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div class="col-sm-4 col-centered">
-                  <img class="img-responsive small_img" id="threePhotosPreview" src="{{#if param.render.threePhotos.templateFile}}templates/{{param.render.threePhotos.templateFile}}{{/if}}"></img>
-                </div>
-                <div class="col-sm-4 col-centered">
-                  <textarea class="form-control" rows="6" id="threePhotosPositions" name="threePhotosPositions">{{json param.render.threePhotos.positions}}</textarea>
-                </div>
+              </div>
+              <div class="col-lg-3 col-sm-8 col-centered">
+                <img class="img-responsive small_img" id="threePhotosPreview" src="{{#if param.render.threePhotos.templateFile}}templates/{{param.render.threePhotos.templateFile}}{{/if}}"></img>
+              </div>
+              <div class="col-lg-4 col-sm-12 col-centered">
+                <textarea class="form-control" rows="6" id="threePhotosPositions" name="threePhotosPositions">{{json param.render.threePhotos.positions}}</textarea>
               </div>
             </div>
           </div>
+        </div>
+
 
           <div class="form-group">
             <label for="fourPhotos" class="control-label col-sm-2">4 photos</label>
             <div class="col-sm-10" id="fourPhotos">
               <div class="row row-centered">
-                <div class="col-sm-1 col-centered">
+                <div class="col-lg-1 col-md-4 col-centered">
                   <input type="checkbox" class="form-control" id="fourPhotosActivated" name="fourPhotosActivated" value="true" {{#if param.render.fourPhotos.active}}checked{{/if}}></input>
                 </div>
-                <div class="col-sm-3 col-centered">
-                  <div class="column">
-                    <input type='button' class="btn btn-primary" id="fourPhotosLoadTemplate" value='load'></button>
-                    <input type="text" class="form-control" id="fourPhotosFilename" name="fourPhotosFilename" value="{{param.render.fourPhotos.templateFile}}" readonly></input>
-                    <input type='button' class="btn btn-warning" id="fourPhotosTest" value='test'></button>
+                <div class="col-lg-4 col-md-8 col-centered">
+                  <div class="panel-group">
+                    <div class="panel panel-default">
+                      <div class="panel-heading">Template file</div>
+                      <div class="panel-body">
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control" id="fourPhotosFilename" name="fourPhotosFilename" value="{{param.render.fourPhotos.templateFile}}" readonly></input>
+                        </div>
+                        <div class="col-sm-4">
+                          <input type='button' class="btn btn-primary" id="fourPhotosLoadTemplate" value='load'></button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                      <div class="panel-heading">Message Text</div>
+                      <div class="panel-body">
+                        <div class="col-sm-3">
+                          <input type="checkbox" class="form-control" id="fourPhotosMessageTextActivated" name="fourPhotosMessageTextActivated" value="true" {{#if param.render.fourPhotos.messageTextActivated}}checked{{/if}}></input>
+                        </div>
+                        <div class="col-sm-3">
+                          <input type="text" class="form-control" id="fourPhotosMessageTextColor" name="fourPhotosMessageTextColor" value="{{param.render.fourPhotos.messageTextColor}}" placeholder="#000000"></input>
+                        </div>
+                        <div class="col-sm-6">
+                          <input type="text" class="form-control" id="fourPhotosMessageTextFont" name="fourPhotosMessageTextFont" value="{{param.render.fourPhotos.messageTextFont}}" placeholder="Gabrielle"></input>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div class="col-sm-4 col-centered">
+                <div class="col-lg-3 col-sm-8 col-centered">
                   <img class="img-responsive small_img" id="fourPhotosPreview" src="{{#if param.render.fourPhotos.templateFile}}templates/{{param.render.fourPhotos.templateFile}}{{/if}}"></img>
                 </div>
-                <div class="col-sm-4 col-centered">
+                <div class="col-lg-4 col-sm-12 col-centered">
                   <textarea class="form-control" rows="6" id="fourPhotosPositions" name="fourPhotosPositions">{{json param.render.fourPhotos.positions}}</textarea>
                 </div>
               </div>
@@ -398,6 +483,27 @@
       });
 
       $("#onePhotoLandscapeMessageTextColor").spectrum({
+        preferredFormat: "hex",
+          showInput: true
+      });
+
+      $("#onePhotoPortraitMessageTextColor").spectrum({
+          showInput: true,
+          preferredFormat: "hex"
+      });
+
+      $("#twoPhotosMessageTextColor").spectrum({
+        preferredFormat: "hex",
+          showInput: true
+      });
+
+      $("#threePhotosMessageTextColor").spectrum({
+        preferredFormat: "hex",
+          showInput: true
+      });
+
+      $("#fourPhotosMessageTextColor").spectrum({
+        preferredFormat: "hex",
           showInput: true
       });
 

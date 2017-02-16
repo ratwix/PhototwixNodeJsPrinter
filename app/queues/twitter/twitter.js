@@ -53,7 +53,8 @@ const moderate = require("../moderate/moderate");
   twitterQueue.requestTwitter = function () {
     logger.debug("[TWITTER] Scan twitter");
     var twitterQuery = {
-      q: parameter.p.twitterClient.account + " " + parameter.p.twitterClient.tags + " filter:images"
+      q: parameter.p.twitterClient.account + " " + parameter.p.twitterClient.tags + " filter:images",
+      tweet_mode: 'extended'
     };
     if (parameter.p.twitterClient.lastScanId != '') {
       twitterQuery.since_id = parameter.p.twitterClient.lastScanId;
@@ -66,13 +67,16 @@ const moderate = require("../moderate/moderate");
       }
       for (var i = tweets.statuses.length - 1; i >= 0; i--) {
         var message = tweets.statuses[i];
+        logger.debug("[TWITTER] Twitter message:" + JSON.stringify(message, null, 2));
         var t = new twitterMessage();
         t.messageType = 'twitter';
         t.id = message.id_str;
         if (t.id > parameter.p.twitterClient.lastScanId) {
           parameter.p.twitterClient.lastScanId = t.id;
         }
-        t.text = message.text;
+        t.text = message.full_text;
+        //Remove text url
+        t.text = t.text.substring(0, t.text.indexOf('https://')).trim();
         t.userName = message.user.name;
         t.userScreenName = message.user.screen_name;
         t.userId = message.user.id;
