@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Terminal=false
+Name=Phototwix
+Icon=/home/phototwix/phototwix/PhototwixNodeJsPrinter/icon.svg
+Exec=/home/phototwix/phototwix/PhototwixNodeJsPrinter/startup.sh
+
+

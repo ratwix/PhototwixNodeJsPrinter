@@ -14,3 +14,5 @@ ifconfig wlan0 192.168.50.1 up
 sleep 1
 service dnsmasq start
 service hostapd start
+hostapd /etc/hostapd/hostapd.conf
+

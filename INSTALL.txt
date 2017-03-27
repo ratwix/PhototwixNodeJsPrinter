@@ -1,3 +1,8 @@
+* Install GIT
+** sudo apt-get install git
+** 
+
+
 * Install WIFI driver from https://github.com/abperiasamy/rtl8812AU_8821AU_linux.git
 ** sudo apt-get install linux-headers-generic build-essential git
 ** git clone https://github.com/abperiasamy/rtl8812AU_8821AU_linux.git
@@ -7,6 +12,7 @@
 ** sudo modprobe -a rtl8812au
 
 * Install NodeJS
+** sudo apt-get install curl
 ** curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
 ** sudo apt-get install -y nodejs
 
@@ -16,20 +22,35 @@
 
 * Install Printer
 ** Download gutenprint
+** sudo apt-get install build-essential linux-headers-generic libcups2-dev libcupsimage2-dev
 ** Install gutenprint
+** sudo ldconfig
 ** http://localhost:631/admin
+** Install printer
 
 * Change grub config to revert to wlan0 / eth0
+** sudo nano /etc/default/grub
 ** Add GRUB_CMDLINE_LINUX="net.ifnames=0 biosdevname=0"
+** sudo grub2-mkconfig
 
 * Install dnsmasq
+** sudo apt-get install dnsmasq
+** copy config file to /etc/dnsmasq.conf
 
 * Install hostapd
+** sudo apt-get install hostapd
+** copy config file to /etc/hostapd/hostapd.conf
 
 * Change network config
+** sudo nano /etc/network/interfaces
+** Copy config file to /etc/network/interfaces
 
 * Remove sudo password
 ** Edit /etc/sudoers
 ** Add phototwix ALL=(ALL) NOPASSWD: ALL
 
+* Startup program
+** Add startup.sh at startup program
+** Copy phototwix.desktop in /usr/share/applications/
+** After reboot add Phototwix app in menu
 
