@@ -327,7 +327,7 @@ Window {
 
     //Start global photo process
     function startGlobalPhotoProcess(photoNumber) {
-        camera.switchOnLight();
+        //camera.switchOnLight();
         globalVar.nb_photos = photoNumber;
         globalVar.currentPhoto = 0;
         resultList.clear();
@@ -336,6 +336,7 @@ Window {
 
     //for each photo, start single photo process
     function startPhotoProcess(photoNumber) {
+        camera.switchOnLight();
         cameraItem.state = "PHOTO_MODE";
         globalVar.countdown_delay = parameters.delayCountdown
         //Display preview
@@ -373,9 +374,11 @@ Window {
     Connections {
         target: camera
         onImageCaptured : {
+            camera.switchOffLight();
             showPhotoResult(filename);
         }
         onPhotosUploaded : {
+            camera.switchOffLight();
             mbox.message = parameters.messagePrint + error
             mbox.imageTag = "\uf02f"
             mbox.state = "hide"
@@ -410,7 +413,7 @@ Window {
     //End of photo process
     function endGlobalPhotoProcess() {
         console.log("End global Photo Process");
-        camera.switchOffLight();
+        //camera.switchOffLight();
         cameraItem.state = "PHOTO_FINAL_RESULT";
     }
 

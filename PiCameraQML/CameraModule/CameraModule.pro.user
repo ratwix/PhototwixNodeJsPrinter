@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.1.82, 2017-02-08T14:56:55. -->
+<!-- Written by QtCreator 4.1.82, 2017-03-28T00:46:24. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -267,9 +267,9 @@
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">RemoteLinux.DirectUploadStep</value>
       <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedFiles">
-       <value type="QString">/home/charles/projects/PhototwixNodeJsPrinter/PiCameraQML/CameraModule/scripts/light_off.py</value>
        <value type="QString">/home/charles/projects/PhototwixNodeJsPrinter/PiCameraQML/build-CameraModule-RaspberryPiCommand-Debug/CameraModule</value>
        <value type="QString">/home/charles/projects/PhototwixNodeJsPrinter/PiCameraQML/CameraModule/scripts/light_on.py</value>
+       <value type="QString">/home/charles/projects/PhototwixNodeJsPrinter/PiCameraQML/CameraModule/scripts/light_off.py</value>
       </valuelist>
       <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedHosts">
        <value type="QString">192.168.2.26</value>
@@ -277,8 +277,8 @@
        <value type="QString">192.168.2.26</value>
       </valuelist>
       <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedRemotePaths">
-       <value type="QString">/opt/CameraModule/bin/scripts</value>
        <value type="QString">/opt/CameraModule/bin</value>
+       <value type="QString">/opt/CameraModule/bin/scripts</value>
        <value type="QString">/opt/CameraModule/bin/scripts</value>
       </valuelist>
       <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedSysroots">
@@ -287,8 +287,8 @@
        <value type="QString">/home/charles/QT/QT_sources/raspi/sysroot</value>
       </valuelist>
       <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedTimes">
-       <value type="QDateTime">2017-01-29T21:01:50</value>
        <value type="QDateTime">2017-02-08T14:32:37</value>
+       <value type="QDateTime">2017-01-29T21:01:50</value>
        <value type="QDateTime">2017-01-29T21:01:50</value>
       </valuelist>
       <value type="bool" key="RemoteLinux.GenericDirectUploadStep.IgnoreMissingFiles">false</value>
