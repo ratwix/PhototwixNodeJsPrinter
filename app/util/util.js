@@ -120,7 +120,8 @@ const parameter = require('../config/parameter-config');
         logger.info(`[UTIL] eng get paper ${code}`);
       });
     } catch (err) {
-      logger.error(`[UTIL] get paper error ${err}`);
+      logger.error(`[UTIL] get paper error 2 ${err}`);
+      parameter.p.printer.currentPaper = 0;
     }
   }
 })(module.exports);
