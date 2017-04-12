@@ -199,6 +199,29 @@ $( document ).ready(function() {
     deletePhoto(photoSrc);
   });
 
+  //Twitter message
+  {{#if param.twitterClient.twitter_active}}
+    function showTwitterMessage() {
+    $.notify(
+        {
+          message:'<h3>Envoyez vos photos par <strong>tweeter</strong> à {{param.twitterClient.account}} {{param.twitterClient.tags}}</h3>',
+          icon: 'fa fa-3x fa-twitter'
+        }, {
+          delay: 5000,
+          animate: {
+            enter: 'animated lightSpeedIn',
+            exit: 'animated lightSpeedOut'
+          }
+        }
+      );
+    }
+
+    showTwitterMessage();
+    setInterval(function() {
+      showTwitterMessage();
+    }, 30000);
+  {{/if}}
+
   updateCameraPhotoClick();
 });
 

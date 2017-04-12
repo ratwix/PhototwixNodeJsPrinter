@@ -42,8 +42,7 @@ var photoMessage = require ('../queues/message'); //TODO: inherite message
         res.render('views/controler/gallery', {
           param: parameter.p,
           photos: photos,
-          camera: camera,
-          param: parameter.p
+          camera: camera
         });
       });
 
