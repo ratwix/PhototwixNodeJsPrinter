@@ -1,5 +1,5 @@
 * {
-/*   cursor: none;*/
+  /*cursor: none;*/
 }
 
 .videoWrapper {
@@ -30,7 +30,7 @@
   background-repeat:no-repeat;
   background-position:center;
   background-color: black;
-  background-size:contain;
+  background-size:cover;
 }
 
 .container-full {

@@ -56,6 +56,10 @@
 <script src="/socket.io/socket.io.js"></script>
 <script>
 
+$('body').css({
+	'cursor' : 'none'
+});
+
 var serverUrl = window.location.protocol + '//' + window.location.host + "/screen"
 var ioscreen = io.connect(serverUrl);
 var currentMessage = {};

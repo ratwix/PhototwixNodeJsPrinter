@@ -126,6 +126,10 @@
 <script src="/scripts/camera.js"></script>
 <script>
 
+$('body').css({
+	'cursor' : 'none'
+});
+
 var serverUrl = window.location.protocol + '//' + window.location.host + "/gallery"
 
 var iogallery = io.connect(serverUrl);

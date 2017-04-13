@@ -12,5 +12,5 @@ npm start &
 
 sleep 3
 
-chromium-browser  --disable --disable-translate --disable-infobars --disable-suggestions-service --disable-save-password-bubble --disable-session-crashed-bubble --kiosk "http://localhost:3000/photoScreen"&
+chromium-browser  --disable --disable-session-crashed-bubble --disable-infobars --disable-translate --disable-infobars --disable-suggestions-service --disable-save-password-bubble --disable-session-crashed-bubble --kiosk "http://localhost:3000/photoScreen"&
 
