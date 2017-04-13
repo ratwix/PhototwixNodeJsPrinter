@@ -84,11 +84,8 @@ const moderate = require("../moderate/moderate");
           t.media_url.push(message.extended_entities.media[j].media_url);
         }
         //If do not need validation, auto validate message
-        if (!parameter.needValidation) {
-          t.validate_status = 'validated';
-        } else {
-          t.validate_status = 'pending';
-        }
+        t.validate_status = 'pending';
+
         twitterQueue.queueNoDownloaded.push(t);
         logger.info("[TWITTER] " + JSON.stringify(t, null, 2));
       }

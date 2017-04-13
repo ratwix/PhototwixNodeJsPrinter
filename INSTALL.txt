@@ -54,3 +54,8 @@
 ** Copy phototwix.desktop in /usr/share/applications/
 ** After reboot add Phototwix app in menu
 
+* Phototwix Box
+** Config wifi key in /etc/wpa_supplicant/wpa_supplicant.conf
+** Arret avec "sudo systemctl stop phototwix.service"
+** l/p : pi raspberry
+
