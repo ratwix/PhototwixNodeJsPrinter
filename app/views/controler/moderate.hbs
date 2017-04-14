@@ -38,10 +38,19 @@
   </div>
   <!-- end padding container -->
 <!-- jTinder trigger by buttons  -->
-<div class="actions">
-  <a href="#" class="dislike"><i></i></a>
-  <a href="#" class="hold"><i></i></a>
-  <a href="#" class="like"><i></i></a>
+<div class="actions col-sm-12">
+  <a class="btnaction btn btn-danger dislike col-xs-3" href="#" aria-label="Dislike">
+    <i class="fa fa-thumbs-down fa-4x" aria-hidden="true"></i>
+  </a>
+
+  <a class="btnaction btn btn-warning hold col-xs-4 col-xs-offset-1" href="#" aria-label="Dislike">
+    <i class="fa fa-clock-o  fa-4x" aria-hidden="true"></i>
+  </a>
+
+  <a class="btnaction btn btn-success like col-xs-3 col-xs-offset-1" href="#" aria-label="Dislike">
+    <i class="fa fa-thumbs-up fa-4x" aria-hidden="true"></i>
+  </a>
+
 </div>
 
 <script>
@@ -80,9 +89,19 @@ $("#tinderslide").jTinder({
 	dislikeSelector: '.dislike'
 });
 
-$('.actions .like, .actions .dislike, .actions .hold').click(function(e){
+$('.actions .like').click(function(e){
 	e.preventDefault();
-	$("#tinderslide").jTinder($(this).attr('class'));
+	$("#tinderslide").jTinder('like');
+});
+
+$('.actions .dislike').click(function(e){
+	e.preventDefault();
+	$("#tinderslide").jTinder('dislike');
+});
+
+$('.actions .hold').click(function(e){
+	e.preventDefault();
+	$("#tinderslide").jTinder('hold');
 });
 
 textFit($('.message'), {alignHoriz: true, alignVert: true});
