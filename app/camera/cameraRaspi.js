@@ -60,7 +60,10 @@ const fs = require('fs');
       logger.debug("[CAMERA] " + "Recieve photos:" + JSON.stringify(req.fields) + " " + JSON.stringify(req.files));
       if (req.files["images[]"]) {
         var message = new photoMessage();
-        message.messageType = 'cameraRaspi';
+        var nbPhotoPrint = req.fields.nbPhotoPrint;
+	logger.debug("[CAMERA] nb photo print : " + nbPhotoPrint);
+	message.nbPhotoPrint = nbPhotoPrint;
+	message.messageType = 'cameraRaspi';
         message.validate_status = 'validated';
         var images = req.files["images[]"];
         if (!Array.isArray(images)) {

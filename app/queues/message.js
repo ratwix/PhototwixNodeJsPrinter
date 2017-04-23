@@ -23,6 +23,7 @@ function Message() {
   this.resultFile = "";
   this.validate_status = 'pending'; //'pending', 'validated', 'rejected'
   this.print = true;
+  this.nbPhotoPrint = 1;
 }
 
 module.exports = Message;

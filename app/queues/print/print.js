@@ -45,14 +45,14 @@ var sizeOf = require('image-size');
       var message = printQueue.toPrintQueue.shift();
       if (parameter.p.printer.active && message.print) {
         logger.debug("[PRINT] Shift print message " + JSON.stringify(message, 2, null));
-        print(util.resultPhotoPath + '/' + message.resultFile);
+        print(util.resultPhotoPath + '/' + message.resultFile, message.nbPhotoPrint);
       } else {
         logger.debug("[PRINT] Printer not active for message or noprint " + JSON.stringify(message, 2, null));
       }
     }
   }
 
-  function print(filePath) {
+  function print(filePath, nb) {
     sizeOf(filePath, function (err, dimensions) {
       if (err) {
         logger.error("[PRINT] error getting size " + filePath);
@@ -61,21 +61,21 @@ var sizeOf = require('image-size');
         parameter.p.currentNbPrint++;
         parameter.serialize();
         if (dimensions.width > dimensions.height) {
-            printLandscape(filePath);
+            printLandscape(filePath, nb);
         } else {
           if ((dimensions.width * 2) > dimensions.height) {
-            printPortrait(filePath);
+            printPortrait(filePath, nb);
           } else {
-            printCutter(filePath);
+            printCutter(filePath, nb);
           }
         }
       }
     });
   }
 
-  function printLandscape(filePath) {
+  function printLandscape(filePath, nb) {
     logger.info("[PRINT] print landscape:" + filePath);
-    var exe = spawn(util.printPath, ['duplicate:false', 'portrait:false', 'cutter:false', filePath]);
+    var exe = spawn(util.printPath, ['duplicate:false', 'portrait:false', 'cutter:false', nb, filePath]);
 
     exe.stderr.on('data', (data) => {
       logger.info(`[PRINT] Error printing printing ${filePath} ${data}`);
@@ -86,10 +86,10 @@ var sizeOf = require('image-size');
     });
   }
 
-  function printPortrait(filePath) {
+  function printPortrait(filePath, nb) {
     logger.info("[PRINT] print portrait:" + filePath);
     //gutenprint 5.2.12 auto rotate
-    var exe = spawn(util.printPath, ['duplicate:false', 'portrait:false', 'cutter:false', filePath]);
+    var exe = spawn(util.printPath, ['duplicate:false', 'portrait:false', 'cutter:false', nb, filePath]);
 
     exe.stderr.on('data', (data) => {
       logger.info(`[PRINT] Error printing printing ${filePath} ${data}`);
@@ -100,10 +100,10 @@ var sizeOf = require('image-size');
     });
   }
 
-  function printCutter(filePath) {
+  function printCutter(filePath, nb) {
     logger.info("[PRINT] print cutter:" + filePath);
     //gutenprint 5.2.12 auto rotate
-    var exe = spawn(util.printPath, ['duplicate:true', 'portrait:false', 'cutter:true', filePath]);
+    var exe = spawn(util.printPath, ['duplicate:true', 'portrait:false', 'cutter:true', nb, filePath]);
 
     exe.stderr.on('data', (data) => {
       logger.info(`[PRINT] Error printing printing ${filePath} ${data}`);

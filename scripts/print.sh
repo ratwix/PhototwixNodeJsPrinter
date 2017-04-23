@@ -4,16 +4,18 @@
 # Pour avoir la liste des options : lpoptions -l
 # Imprime sur l'imprimante par défaut
 
-echo "Usage print.sh duplicate:[true|false] portrait:[true|false] cutter:[true|false] source.png"
+echo "Usage print.sh duplicate:[true|false] portrait:[true|false] cutter:[true|false] [nbPrint] source.png"
 
 duplicate=$1
 portrait=$2
 cutter=$3
-source=$4
+nbPrint=$4
+source=$5
 
 echo $duplicate
 echo $portrait
 echo $cutter
+echo $nbPrint
 echo $source
 
 dest=/tmp/phototwix_$RANDOM.jpg
@@ -53,4 +55,4 @@ fi
 
 #Print
 
-lpr -o $orientation -o fit-to-page -o media=$media $dest
+lpr -o $orientation -o fit-to-page -o media=$media -#$nbPrint $dest
