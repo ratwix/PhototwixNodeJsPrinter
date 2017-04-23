@@ -1,0 +1,11 @@
+{
+    "serverUrl": "http://192.168.50.1:3000",
+    "templatePath": "/camera/getTemplates",
+    "uploadPhotosPath": "/camera/uploadPhotos",
+    "messagePrint": "Votre photo va s'imprimer",
+    "messageUpload": "Envoie des photos",
+    "messagePoorWifi": "Signal trop faible",
+    "delayCountdown": 5,
+    "delayPhotoResult": 4
+}
+

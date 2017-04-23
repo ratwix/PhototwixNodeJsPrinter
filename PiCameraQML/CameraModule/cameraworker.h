@@ -39,7 +39,7 @@ public:
 
     Q_INVOKABLE void cleanPhotoList();
     Q_INVOKABLE void pushPhotoUrl(QString url);
-    Q_INVOKABLE void sendPhotos();
+    Q_INVOKABLE void sendPhotos(int nbPhotoPrint);
 
     Q_INVOKABLE void switchOnLight();
     Q_INVOKABLE void switchOffLight();

@@ -16,6 +16,7 @@ Window {
         property int        countdown_delay : 0
         property int        currentPhoto : 0
         property int        nb_photos : 0
+        property int        nb_photo_print : 1
     }
 
     ListModel {
@@ -154,7 +155,7 @@ Window {
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
                     text: "\uf1eb"
-                    color:(networkManager.wlan0IP != "") ? "green" :  "black"
+                    color:(networkManager.wlan0IP != "") ? (networkManager.wlan0Signal > 80 ? "green" : (networkManager.wlan0Signal > 40 ? "orange" : "red")) :  "black"
                 }
 
                 Text {
@@ -257,10 +258,55 @@ Window {
                     size:parent.width
                     code:"\uf02f"
                     onClicked: {
-                        sendToPrinter();
-                        mbox.message = parameters.messageUpload
-                        mbox.imageTag = "\uf093"
-                        mbox.state = "show"
+                        if (networkManager.wlan0Signal < 20) {
+                            mbox.message = parameters.messagePoorWifi
+                            mbox.imageTag = "\uf093"
+                            mbox.state = "show"
+                        } else {
+                            sendToPrinter();
+                            mbox.message = parameters.messageUpload
+                            mbox.imageTag = "\uf093"
+                            mbox.timeoutInterval = 30000
+                            mbox.state = "show"
+                        }
+                    }
+                }
+
+                Item {
+                    id:numberPrint
+                    width: parent.width
+                    height: width / 3
+                    ButtonAwesome {
+                        id:minusButton
+                        size:parent.height
+                        anchors.left: parent.left
+                        code:"\uf068"
+                        onClicked: {
+                            if (globalVar.nb_photo_print > 1) {
+                                globalVar.nb_photo_print = globalVar.nb_photo_print - 1
+                            }
+                        }
+                    }
+                    Text {
+                        id: photoNumberPrint
+                        height: parent.height
+                        width: height
+                        font.pixelSize: height
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                        text:globalVar.nb_photo_print
+                    }
+                    ButtonAwesome {
+                        id:plusButton
+                        size:parent.height
+                        anchors.right: parent.right
+                        code:"\uf067"
+                        onClicked: {
+                            if (globalVar.nb_photo_print < 6) {
+                                globalVar.nb_photo_print = globalVar.nb_photo_print + 1
+                            }
+                        }
                     }
                 }
 
@@ -275,7 +321,26 @@ Window {
             }
 
 
+
         }
+
+
+        Text {
+            width: height
+            height: parent.height * 0.1
+            anchors.right: parent.right
+            anchors.rightMargin: 10
+            anchors.top: parent.top
+            anchors.topMargin: 10
+            font.pixelSize: height
+            font.family: "FontAwesome"
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            visible: templateList.count > 0
+            text: "\uf1eb"
+            color:(networkManager.wlan0IP != "") ? (networkManager.wlan0Signal > 80 ? "green" : (networkManager.wlan0Signal > 40 ? "orange" : "red")) :  "black"
+        }
+
 
         states: [
             State {
@@ -379,10 +444,16 @@ Window {
         }
         onPhotosUploaded : {
             camera.switchOffLight();
-            mbox.message = parameters.messagePrint + error
+            if (error == "") {
+                mbox.message = parameters.messagePrint
+            } else {
+                mbox.message = "Erreur : " + error
+            }
             mbox.imageTag = "\uf02f"
             mbox.state = "hide"
+            mbox.timeoutInterval = 3000
             mbox.state = "show"
+            cameraItem.state = "TEMPLATE_MODE"
         }
     }
 
@@ -413,12 +484,10 @@ Window {
     //End of photo process
     function endGlobalPhotoProcess() {
         console.log("End global Photo Process");
+        globalVar.nb_photo_print = 1;
         //camera.switchOffLight();
         cameraItem.state = "PHOTO_FINAL_RESULT";
     }
-
-
-
 
     ////////////////////////////////////////////
     ////////////////////////////////////////////
@@ -450,7 +519,7 @@ Window {
         for (var i = 0; i < resultList.count; i++) {
             camera.pushPhotoUrl(resultList.get(i).url);
         }
-        camera.sendPhotos();
+        camera.sendPhotos(globalVar.nb_photo_print);
     }
 
 }
