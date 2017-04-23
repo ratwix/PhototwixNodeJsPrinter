@@ -91,8 +91,8 @@ const print = require('../print/print');
     if (canDisplay) {
       if (displayQueue.toDisplayQueue.length > 0) {
         canDisplay = false;
-        clearTimeout(canDisplayTimeout);
-        canDisplayTimeout = setTimeout(function () {canDisplay = true;}, canDisplayTimeoutValue); //Timeout protection
+        //clearTimeout(canDisplayTimeout);
+        //canDisplayTimeout = setTimeout(function () {canDisplay = true;}, canDisplayTimeoutValue); //Timeout protection
         logger.debug("[DISPLAY] Send photo to display Screen");
         var message = displayQueue.toDisplayQueue.shift();
         message.displayTime = displayTime;

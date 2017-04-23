@@ -7,3 +7,7 @@ Photo screen : http://localhost:3000/photoScreen
 Gallery + camera : http://192.168.50.1:3000/gallery
 Admin : http://192.168.50.1:3000/admin
 Moderate : http://192.168.50.1:3000/moderate
+
+ssh phototwix-main : l:phototwix p:photomaton
+ssh pi : l:pi p:raspberry
+

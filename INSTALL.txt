@@ -2,6 +2,8 @@
 ** sudo apt-get install git
 ** 
 
+* Disable automatic update
+
 
 * Install WIFI driver from https://github.com/abperiasamy/rtl8812AU_8821AU_linux.git
 ** sudo apt-get install linux-headers-generic build-essential git
@@ -58,4 +60,7 @@
 ** Config wifi key in /etc/wpa_supplicant/wpa_supplicant.conf
 ** Arret avec "sudo systemctl stop phototwix.service"
 ** l/p : pi raspberry
+
+* Install ssh
+** sudo apt-get install openssh-server
 

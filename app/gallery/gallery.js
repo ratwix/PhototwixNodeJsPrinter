@@ -20,6 +20,10 @@ var photoMessage = require ('../queues/message'); //TODO: inherite message
         var files = [];
 
         files = fs.readdirSync(util.resultPhotoPath);
+        files.sort(function(a, b) {
+             return fs.statSync(util.resultPhotoPath + '/' + a).mtime.getTime() -
+                    fs.statSync(util.resultPhotoPath + '/' + b).mtime.getTime();
+        });
         files.forEach(file => {
           var ext = path.extname(file);
           if ((ext.toLowerCase() == ".jpg") || (ext.toLowerCase() == ".png")) {
