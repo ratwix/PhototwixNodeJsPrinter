@@ -23,6 +23,8 @@ var sizeOf = require('image-size');
   }
 
   printQueue.runPrint = function () {
+    //logger.debug("[PRINT] live queueSize:" + printQueue.toPrintQueue.length);
+
     if (parameter.p.printer.active) {
       if (parameter.p.printer.currentPaper <= 1) {
         display.showNoPaper();

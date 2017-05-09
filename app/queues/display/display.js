@@ -36,8 +36,11 @@ const print = require('../print/print');
       }
       canDisplay = true;
       clearTimeout(canDisplayTimeout);
+      res.header("Access-Control-Allow-Origin", "*").sendStatus(200);
+      /*
       res.contentType('text/html');
       res.send("Photo send to print");
+      */
     });
 
     displayQueue.socket = expressConfig.io
@@ -88,6 +91,7 @@ const print = require('../print/print');
 
   //Display the Image
   function runDisplay() {
+    //logger.debug("[DISPLAY] live canDisplay:" + canDisplay + " queueSize:" + displayQueue.toDisplayQueue.length);
     if (canDisplay) {
       if (displayQueue.toDisplayQueue.length > 0) {
         canDisplay = false;

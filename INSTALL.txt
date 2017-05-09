@@ -64,3 +64,4 @@
 * Install ssh
 ** sudo apt-get install openssh-server
 
+sudo npm install forever -g

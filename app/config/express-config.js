@@ -3,6 +3,8 @@ const exphbs  = require('express-handlebars');
 const formidable = require('express-formidable');
 const util = require('../util/util');
 const thumb = require('./express-thumbnail');
+const session = require('express-session');
+const timeout = require('connect-timeout');
 
 (function (expressConfig) {
 
@@ -16,6 +18,16 @@ const thumb = require('./express-thumbnail');
   expressConfig.server = {};
   expressConfig.host = '';
   expressConfig.port = 3000;
+
+  expressConfig.haltOnTimedout = function (req, res, next) {
+    if (!req.timedout) {
+      next()
+    } else {
+      logger.error("[CONFIG EXP] Timeout ! Restart");
+      expressConfig.server.close();
+      //Timeout : restart node
+    }
+  }
 
   expressConfig.init = function () {
 
@@ -63,10 +75,16 @@ const thumb = require('./express-thumbnail');
     expressConfig.app.set('view engine', '.hbs')
     expressConfig.app.set('views', path.join(__dirname, '../'))
 
+    expressConfig.app.use(timeout('20s'));
+
+    //BUG in thumbnail ?
+
     expressConfig.app.use(thumb.register(
       require('app-root-path') + '/public',
       util.thumbs
     ));
+
+    expressConfig.app.use(expressConfig.haltOnTimedout);
 
     //Enable GZip compression
     /*
@@ -76,6 +94,7 @@ const thumb = require('./express-thumbnail');
       threshold: 512
     }));
 */
+
     logger.debug("[CONFIG EXP] Setting 'Public' folder with maxAge: 1 Day.");
     /*
     var publicFolder = path.dirname(module.parent.filename)  + "/public";
@@ -83,6 +102,7 @@ const thumb = require('./express-thumbnail');
     app.use(express.static(publicFolder, { maxAge: oneYear }));
     */
     expressConfig.app.use(express.static('public'));
+    expressConfig.app.use(expressConfig.haltOnTimedout);
 /*
     logger.debug("Setting parse urlencoded request bodies into req.body.");
     var bodyParser = require('body-parser');
@@ -96,8 +116,13 @@ const thumb = require('./express-thumbnail');
       multiples: true // req.files to be arrays of files
     }));
 
+    expressConfig.app.use(expressConfig.haltOnTimedout);
+
     logger.debug("[CONFIG EXP] Overriding 'Express' logger");
     expressConfig.app.use(require('morgan')("combined", { "stream": logger.stream }));
+
+    expressConfig.app.use(expressConfig.haltOnTimedout);
+    //expressConfig.app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 
     //Main route definition
     expressConfig.app.get('/', (request, response) => {
@@ -106,11 +131,16 @@ const thumb = require('./express-thumbnail');
     })
   };
 
+  expressConfig.setTimeoutAlert = function() {
+    expressConfig.app.use(expressConfig.haltOnTimedout);
+  }
+
   expressConfig.connect = function() {
+    expressConfig.app.use(expressConfig.haltOnTimedout);
     expressConfig.server = expressConfig.app.listen(expressConfig.port);
     expressConfig.host = expressConfig.server.address().address;
     expressConfig.io = require('socket.io').listen(expressConfig.server);
-    logger.info('[CONFIG EXP] Example app listening with io at http://%s:%s', expressConfig.host, expressConfig.port);
+    logger.info('[CONFIG EXP] Phototwix app listening with io at http://%s:%s', expressConfig.host, expressConfig.port);
   }
 
 })(module.exports);

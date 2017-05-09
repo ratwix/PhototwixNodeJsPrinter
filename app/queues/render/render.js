@@ -10,7 +10,7 @@ var exec = require('child_process').exec;
 
 
 (function (renderQueue) {
-  var renderInterval = 500;
+  var renderInterval = 1000;
   var canRender = true;
 
   renderQueue.toRenderQueue = []; //message to be rendered
@@ -26,11 +26,12 @@ var exec = require('child_process').exec;
   }
 
   renderQueue.unshiftMessage = function (message) {
-    logger.debug("[RENDER] Push New message FIRST");
-    renderQueue.toRenderQueue.unshift(message);
+    logger.debug("[RENDER] Push New message");
+    renderQueue.toRenderQueue.push(message);
   }
 
   renderQueue.runRender = function () {
+    //logger.debug("[RENDER] live canRender:" + canRender + " queueSize:" + renderQueue.toRenderQueue.length);
     if (canRender) {
       if (renderQueue.toRenderQueue.length > 0) {
         canRender = false;

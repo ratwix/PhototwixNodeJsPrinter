@@ -16,6 +16,12 @@ const util = require("./util/util");
 
 var port = 3000;
 
+process.on('uncaughtException', function (exception) {
+  logger.error(exception);
+});
+
+process.on('warning', e => logger.warn(e.stack));
+
 logger.info("[MAIN] Create Folders");
 util.createFolders();
 
@@ -28,6 +34,7 @@ util.updatePaperPrinter();
 logger.info("[MAIN] configuring express....");
 expressConfig.init();
 expressConfig.connect();
+
 logger.info("[MAIN] Express configured");
 
 logger.info("[MAIN] configuring render");
@@ -66,9 +73,13 @@ logger.info("[MAIN] configuring camera flashair");
 cameraFlashAir.init();
 logger.info("[MAIN] Camera configured");
 
+logger.info("[MAIN] Express connect");
+
 //Error management
 expressConfig.app.use((err, request, response, next) => {
   // log the error, for now just console.log
-  console.log(err)
+  logger.error(err);
+  expressConfig.server.close();
+  process.exit(1)
   response.status(500).send('Something broke!')
 })

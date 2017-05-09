@@ -61,9 +61,9 @@ const fs = require('fs');
       if (req.files["images[]"]) {
         var message = new photoMessage();
         var nbPhotoPrint = req.fields.nbPhotoPrint;
-	logger.debug("[CAMERA] nb photo print : " + nbPhotoPrint);
-	message.nbPhotoPrint = nbPhotoPrint;
-	message.messageType = 'cameraRaspi';
+      	logger.debug("[CAMERA] nb photo print : " + nbPhotoPrint);
+      	message.nbPhotoPrint = nbPhotoPrint;
+      	message.messageType = 'cameraRaspi';
         message.validate_status = 'validated';
         var images = req.files["images[]"];
         if (!Array.isArray(images)) {
@@ -77,7 +77,7 @@ const fs = require('fs');
         message.print = true;
         render.unshiftMessage(message);
       }
-      res.send("");
+      res.header("Access-Control-Allow-Origin", "*").sendStatus(200);
     });
 
     //END ROUTE
