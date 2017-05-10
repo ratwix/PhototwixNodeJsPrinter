@@ -108,6 +108,17 @@ void Parameters::setMessageUpload(const QString &messageUpload)
     emit messageUploadChange();
 }
 
+QString Parameters::messagePoorWifi() const
+{
+    return m_messagePoorWifi;
+}
+
+void Parameters::setMessagePoorWifi(const QString &messagePoorWifi)
+{
+    m_messagePoorWifi = messagePoorWifi;
+    emit messagePoorWifiChange();
+}
+
 void Parameters::unserialize()
 {
     ifstream jsonFile(CONFIG_FILE, ios::in);
@@ -149,5 +160,8 @@ void Parameters::unserialize()
     }
     if (document.HasMember("messageUpload")) {
         m_messageUpload = QString(document["messageUpload"].GetString());
+    }
+    if (document.HasMember("messagePoorWifi")) {
+        m_messagePoorWifi = QString(document["messagePoorWifi"].GetString());
     }
 }

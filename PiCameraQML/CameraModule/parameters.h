@@ -12,6 +12,7 @@ class Parameters : public QObject
     Q_PROPERTY(QString templatePath READ templatePath WRITE setTemplatePath NOTIFY templatePathChange)
     Q_PROPERTY(QString messagePrint READ messagePrint WRITE setMessagePrint NOTIFY messagePrintChange)
     Q_PROPERTY(QString messageUpload READ messageUpload WRITE setMessageUpload NOTIFY messageUploadChange)
+    Q_PROPERTY(QString messagePoorWifi READ messagePoorWifi WRITE setMessagePoorWifi NOTIFY messagePoorWifiChange)
     Q_PROPERTY(QString uploadPhotosPath READ uploadPhotosPath WRITE setUploadPhotosPath NOTIFY uploadPhotosPathChange)
     Q_PROPERTY(int delayCountdown READ delayCountdown WRITE setDelayCountdown NOTIFY delayCountdownChange)
     Q_PROPERTY(int delayPhotoResult READ delayPhotoResult WRITE setDelayPhotoResult NOTIFY delayPhotoResultChange)
@@ -43,6 +44,9 @@ public:
     QString messageUpload() const;
     void setMessageUpload(const QString &messageUpload);
 
+    QString messagePoorWifi() const;
+    void setMessagePoorWifi(const QString &messagePoorWifi);
+
 private:
     QUrl        m_applicationDirPath;
 
@@ -51,6 +55,7 @@ private:
     QString         m_uploadPhotosPath;
     QString         m_messageUpload;
     QString         m_messagePrint;
+    QString         m_messagePoorWifi;
 
     int         m_delayCountdown;
     int         m_delayPhotoResult;
@@ -61,6 +66,7 @@ signals:
     void        serverUrlChange();
     void        templatePathChange();
     void        messagePrintChange();
+    void        messagePoorWifiChange();
     void        delayCountdownChange();
     void        delayPhotoResultChange();
     void        uploadPhotosPathChange();

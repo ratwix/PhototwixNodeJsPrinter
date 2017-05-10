@@ -48,9 +48,14 @@ void CameraWorker::pushPhotoUrl(QString url)
     m_photoList.append(url);
 }
 
-void CameraWorker::sendPhotos()
+void CameraWorker::sendPhotos(int nbPhotoPrint)
 {
     QHttpMultiPart *multiPart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
+
+    QHttpPart textPart;
+    textPart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"nbPhotoPrint\""));
+    textPart.setBody(QString::number(nbPhotoPrint).toStdString().c_str());
+    multiPart->append(textPart);
 
     for (int i = 0; i < m_photoList.length(); i++) {
         QHttpPart imagePart;
