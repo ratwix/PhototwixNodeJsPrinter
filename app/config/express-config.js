@@ -1,10 +1,12 @@
 const express = require('express');
 const exphbs  = require('express-handlebars');
-const formidable = require('express-formidable');
+//const expressFormidable = require('express-formidable');
 const util = require('../util/util');
 const thumb = require('./express-thumbnail');
 const session = require('express-session');
 const timeout = require('connect-timeout');
+
+const formidable = require('formidable');
 
 (function (expressConfig) {
 
@@ -27,6 +29,43 @@ const timeout = require('connect-timeout');
       expressConfig.server.close();
       //Timeout : restart node
     }
+  }
+
+  expressConfig.formidableMiddleware = function (req, res, next) {
+    var form = new formidable.IncomingForm();
+    form.encoding = 'utf-8',
+    form.uploadDir = require('app-root-path') + '/upload',
+    form.multiples = true // req.files to be arrays of files
+
+    var files = {};
+    var fields = {};
+    form.on('field', function(field, value) {
+        //logger.debug('[CONFIG EXP] formidable field ' + field + ":" + value);
+        fields[field] = value;
+    })
+    form.on('file', function(name, file) {
+        //logger.debug('[CONFIG EXP] formidable file ' + name + ":" + file.name);
+        if (!Array.isArray(files[name])) {
+          files[name] = [];
+        }
+        files[name].push(file);
+    })
+    form.on('end', function() {
+        logger.debug('[CONFIG EXP] formidable done');
+        req.files = {};
+        req.fields = {};
+
+        Object.assign(req.files, files);
+        Object.assign(req.fields, fields);
+        //Object.assign(req, { fields, files });
+        logger.debug("[CONFIG EXP] " + "formidable end:" + JSON.stringify(req.fields) + " " + JSON.stringify(req.files));
+        next();
+    });
+    form.on('error', function(err) {
+      logger.error("[CONFIG EXP] Formidable error : " + err);
+      next(err);
+    });
+    form.parse(req);
   }
 
   expressConfig.init = function () {
@@ -75,7 +114,7 @@ const timeout = require('connect-timeout');
     expressConfig.app.set('view engine', '.hbs')
     expressConfig.app.set('views', path.join(__dirname, '../'))
 
-    expressConfig.app.use(timeout('20s'));
+    expressConfig.app.use(timeout('25s'));
 
     //BUG in thumbnail ?
 
@@ -110,12 +149,17 @@ const timeout = require('connect-timeout');
     app.use(bodyParser.json());
 */
     logger.debug("[CONFIG EXP] Set formidable");
-    expressConfig.app.use(formidable({
+
+
+    expressConfig.app.use(expressConfig.formidableMiddleware);
+
+    /*
+    expressConfig.app.use(expressFormidable({
       encoding: 'utf-8',
       uploadDir: require('app-root-path') + '/upload',
       multiples: true // req.files to be arrays of files
     }));
-
+    */
     expressConfig.app.use(expressConfig.haltOnTimedout);
 
     logger.debug("[CONFIG EXP] Overriding 'Express' logger");

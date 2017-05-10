@@ -103,6 +103,9 @@ var sizeOf = require('image-size');
   }
 
   function printCutter(filePath, nb) {
+    //BUG in gutenprint : multi print with cutter doesn't print right nb of flies
+    nb = 1;
+
     logger.info("[PRINT] print cutter:" + filePath);
     //gutenprint 5.2.12 auto rotate
     var exe = spawn(util.printPath, ['duplicate:true', 'portrait:false', 'cutter:true', nb, filePath]);

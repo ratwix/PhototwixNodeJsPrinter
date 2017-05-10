@@ -14,9 +14,6 @@ const zipFolder = require('zip-folder');
   admin.init = function () { //Initialise de l'admin
 
     //BEGIN ADMIN ROUTE
-    //TODO : download all photo ZIP
-    //TODO : clean gallery
-    //TODO : gallery : get nb photos & photos single
 
     function getPhotosStats() {
       var p = {};
@@ -207,27 +204,27 @@ const zipFolder = require('zip-folder');
     expressConfig.app.post('/admin/uploadTemplate', function(req, res) {
       logger.debug("[ADMIN] " + "Receive new template:\n" + JSON.stringify(req.fields) + "\n\n" + JSON.stringify(req.files));
       if (req.files.uploads) {
-        fs.rename(req.files.uploads.path,
-                  util.templatePath + '/' + req.files.uploads.name,
+        fs.rename(req.files.uploads[0].path,
+                  util.templatePath + '/' + req.files.uploads[0].name,
                   function (err) {
                     if (err) throw err;
                     if (req.fields.templateType == 'oneLandscape') {
-                      parameter.p.render.onePhotoLandscape.templateFile = req.files.uploads.name;
+                      parameter.p.render.onePhotoLandscape.templateFile = req.files.uploads[0].name;
                     }
                     if (req.fields.templateType == 'onePortrait') {
-                      parameter.p.render.onePhotoPortrait.templateFile = req.files.uploads.name;
+                      parameter.p.render.onePhotoPortrait.templateFile = req.files.uploads[0].name;
                     }
                     if (req.fields.templateType == 'two') {
-                      parameter.p.render.twoPhotos.templateFile = req.files.uploads.name;
+                      parameter.p.render.twoPhotos.templateFile = req.files.uploads[0].name;
                     }
                     if (req.fields.templateType == 'three') {
-                      parameter.p.render.threePhotos.templateFile = req.files.uploads.name;
+                      parameter.p.render.threePhotos.templateFile = req.files.uploads[0].name;
                     }
                     if (req.fields.templateType == 'four') {
-                      parameter.p.render.fourPhotos.templateFile = req.files.uploads.name;
+                      parameter.p.render.fourPhotos.templateFile = req.files.uploads[0].name;
                     }
                     parameter.serialize();
-                    res.send(req.files.uploads.name);
+                    res.send(req.files.uploads[0].name);
                   });
       }
     });
@@ -241,12 +238,12 @@ const zipFolder = require('zip-folder');
     expressConfig.app.post('/admin/uploadScreenMedia', function(req, res) {
       logger.debug("[ADMIN] " + "Recieve screen media file:" + JSON.stringify(req.fields) + '\n' + JSON.stringify(req.files));
       if (req.files.screenMediaFile) {
-        fs.rename(req.files.screenMediaFile.path,
-                  util.mediaPath + '/' + req.files.screenMediaFile.name, function (err) {
+        fs.rename(req.files.screenMediaFile[0].path,
+                  util.mediaPath + '/' + req.files.screenMediaFile[0].name, function (err) {
                     if (err) throw err;
                     //parameter.p.photoScreen.mediaFile = req.files.screenMediaFile.name;
                     parameter.serialize();
-                    res.send(req.files.screenMediaFile.name);
+                    res.send(req.files.screenMediaFile[0].name);
                   });
       }
     });
